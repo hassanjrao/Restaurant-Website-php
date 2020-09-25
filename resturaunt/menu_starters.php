@@ -9,8 +9,10 @@ class menu extends database
 
         $id = $_SESSION['rest_id'];
 
-        $sql = "select * from menu_tb";
+        $sql = "SELECT * from menu_starter_tb where rest_id='$id'";
         $res = mysqli_query($this->link, $sql);
+
+
         if (mysqli_num_rows($res) > 0) {
             return $res;
         } else {
@@ -24,25 +26,28 @@ class menu extends database
         if (isset($_POST['submit'])) {
             $rest_id = $_SESSION['rest_id'];
 
-            $starter = $_POST['starter_name'];
-            $s_price = $_POST["starter_price"];
-            $dish = $_POST['dish_name'];
-            $d_price = $_POST["dish_price"];
-            $dessert = $_POST['dessert_name'];
-            $ds_price = $_POST["dessert_price"];
+            $starter = $_POST['name'];
+            $s_price = $_POST["price"];
 
             $lang = $_POST["lang"];
 
             if ($lang == "english") {
-                $sql = "INSERT INTO `menu_tb` (`starter_name_en`, `starter_price`, `dish_name_en`, `dish_price`, `dessert_name_en`, `dessert_price`,`rest_id`) VALUES ('$starter', '$s_price', '$dish', '$d_price', '$dessert', '$ds_price', '$rest_id')";
+                $sql = "INSERT INTO `menu_starter_tb` (`starter_en`, `price`, `rest_id`,`created`) VALUES ('$starter', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
                 $res = mysqli_query($this->link, $sql);
             } else if ($lang == "hebrew") {
-                $sql = "INSERT INTO `menu_tb` (`starter_name_heb`, `starter_price`, `dish_name_heb`, `dish_price`, `dessert_name_heb`, `dessert_price`,`rest_id`) VALUES ('$starter', '$s_price', '$dish', '$d_price', '$dessert', '$ds_price', '$rest_id')";
+                $sql = "INSERT INTO `menu_starter_tb` (`starter_heb`, `price`,`rest_id`,`created`) VALUES ('$starter', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
                 $res = mysqli_query($this->link, $sql);
             }
 
-
-            header("location: menu.php");
+            if ($res) {
+                $msg = "success_add";
+                header("location: menu_starters.php?msg=$msg");
+                return true;
+            } else {
+                $msg = "fail_add";
+                header("location: menu_starters.php?msg=$msg");
+                return false;
+            }
         }
         # code...
     }
@@ -101,7 +106,7 @@ $objCreate = $obj->saveFunction();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Menu </h1>
+                    <h1 class="h3 mb-2 text-gray-800">Menu - Starters</h1>
 
 
                     <!-- DataTales Example -->
@@ -109,14 +114,14 @@ $objCreate = $obj->saveFunction();
 
 
                         <div class="card-header py-3">
-                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">Create
-                                Menu</button>
+                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">Add
+                                Starter</button>
                             <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="menuModalLabel">Add Menu
+                                                <h5 class="modal-title" id="menuModalLabel">Add Starter
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -140,30 +145,16 @@ $objCreate = $obj->saveFunction();
                                                 <br><br>
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="starter_name" class="border-0 form-control" placeholder="Starter" required>
+                                                        <input type="text" name="name" class="border-0 form-control" placeholder="Name" required>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="number" name="starter_price" class="form-control border-0" placeholder="Starter Price" required>
+                                                        <input type="number" name="price" class="form-control border-0" placeholder="Price" required>
                                                     </div>
+
+
                                                 </div>
                                                 <br>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <input type="text" name="dish_name" class="border-0 form-control" placeholder="Dish" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="dish_price" class="form-control border-0" placeholder="Dish Price" required>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <input type="text" name="dessert_name" class="border-0 form-control" placeholder="Dessert" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="dessert_price" class="form-control border-0" placeholder="Dessert Price" required>
-                                                    </div>
-                                                </div>
+
 
 
                                             </div>
@@ -178,6 +169,32 @@ $objCreate = $obj->saveFunction();
                         </div>
                         <div class="card-body">
 
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Successfully Added!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_add') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Addition Failed!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
 
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -186,10 +203,9 @@ $objCreate = $obj->saveFunction();
                                             <th>ID</th>
                                             <th>Starter</th>
                                             <th>Starter Price</th>
-                                            <th>Dish</th>
-                                            <th>Dish Price</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
+                                            <th>Created</th>
+                                            <th>Edit/Delete</th>
+
 
 
                                         </tr>
@@ -199,10 +215,8 @@ $objCreate = $obj->saveFunction();
                                             <th>ID</th>
                                             <th>Starter</th>
                                             <th>Starter Price</th>
-                                            <th>Dish</th>
-                                            <th>Dish Price</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
+                                            <th>Created</th>
+                                            <th>Edit/Delete</th>
 
 
                                         </tr>
@@ -217,26 +231,28 @@ $objCreate = $obj->saveFunction();
                                                     <td><?php echo $a++ ?></td>
 
                                                     <?php
-                                                    if ($row['starter_name_en'] != NULL) {
+                                                    if ($row['starter_en'] != NULL) {
                                                     ?>
-                                                        <td><?php echo $row['starter_name_en']; ?></td>
-                                                        <td><?php echo $row['starter_price']; ?></td>
-                                                        <td><?php echo $row['dish_name_en']; ?></td>
-                                                        <td><?php echo $row['dish_price']; ?></td>
-                                                        <td><?php echo $row['dessert_name_en']; ?></td>
-                                                        <td><?php echo $row['dessert_price']; ?></td>
+                                                        <td><?php echo $row['starter_en']; ?></td>
+                                                        <td><?php echo $row['price']; ?></td>
+                                                        <td><?php echo $row['created']; ?></td>
+
                                                     <?php
-                                                    } else if ($row['starter_name_heb'] != NULL) {
+                                                    } else if ($row['starter_heb'] != NULL) {
                                                     ?>
-                                                        <td><?php echo $row['starter_name_heb']; ?></td>
-                                                        <td><?php echo $row['starter_price']; ?></td>
-                                                        <td><?php echo $row['dish_name_heb']; ?></td>
-                                                        <td><?php echo $row['dish_price']; ?></td>
-                                                        <td><?php echo $row['dessert_name_heb']; ?></td>
-                                                        <td><?php echo $row['dessert_price']; ?></td>
+                                                        <td><?php echo $row['starter_heb']; ?></td>
+                                                        <td><?php echo $row['price']; ?></td>
+                                                        <td><?php echo $row['created']; ?></td>
+
                                                     <?php
                                                     }
+
                                                     ?>
+
+                                                    <td>
+                                                        <a href="menu_starter_edit.php" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="menu_starter_delete.php" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
 
 
 

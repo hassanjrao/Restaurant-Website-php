@@ -37,10 +37,24 @@
       </li>
 
       <li class="nav-item">
-          <a class="nav-link" href="menu.php">
-              <i class="fas fa-fw fa-chart-area"></i>
-              <span>Menu</span></a>
-      </li>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pages" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Menu</span>
+        </a>
+        <div id="pages" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Select Page:</h6>
+
+
+                <a class="collapse-item" href="menu_starters.php">Starters</a>
+                <a class="collapse-item" href="menu_dishes.php">Dishes</a>
+                <a class="collapse-item" href="menu_desserts.php">Dessert</a>
+
+
+
+            </div>
+        </div>
+    </li>
 
      
 
