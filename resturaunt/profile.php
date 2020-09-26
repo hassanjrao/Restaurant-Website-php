@@ -9,7 +9,7 @@ class profile extends database
     protected $link;
     public function profileFunction()
     {
-        $rest_id=$_SESSION['rest_id'];
+        $rest_id = $_SESSION['rest_id'];
         $sql = "select * from restaurant_tbl where id = '$rest_id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
@@ -33,51 +33,97 @@ class profile extends database
     public function updateFunction()
     {
         if (isset($_POST['submit'])) {
+
             $name = $_SESSION['Rname'];
-            $image = time() . '_' . $_FILES['image']['name'];
-            $image1 = time() . '_' . $_FILES['image1']['name'];
-            $image2 = time() . '_' . $_FILES['image2']['name'];
-            $image3 = time() . '_' . $_FILES['image3']['name'];
             $phone = $_POST['phone'];
             $speciality = serialize($_POST['specialty']);
             $kosher = $_POST['kosher'];
-            $target = 'rest_img/' . $image;
-            $target1 = 'rest_img/' . $image1;
-            $target2 = 'rest_img/' . $image2;
-            $target3 = 'rest_img/' . $image3;
+
             // $terrace = $_POST['terrace'];
             // $bar = $_POST['bar'];
             // $music = $_POST['music'];
             // $parking = $_POST['parking'];
 
-            if ($_FILES['image']['name'] == '' && $_FILES['image1']['name'] == '' && $_FILES['image2']['name'] == '' && $_FILES['image3']['name'] == '') {
+            $folder = "rest_img/";
 
-               
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone' where name = '$name' ";
-          
-                 } else {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `image` = '$image', `gallery1` = '$image1', `gallery2` = '$image2', `gallery3` = '$image3' where name = '$name' ";
+            $image = $_FILES['image']['name'];
+            $image1 = $_FILES['image1']['name'];
+            $image2 = $_FILES['image2']['name'];
+            $image3 = $_FILES['image3']['name'];
+
+
+            $path = $folder . $image;
+            $path1 = $folder . $image1;
+            $path2 = $folder . $image2;
+            $path3 = $folder . $image3;
+
+            if ($image !== "") {
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `image` = '$image' where name_en = '$name' ";
+                $res = mysqli_query($this->link, $sql);
+                if ($res) {
+                    move_uploaded_file($_FILES['image']['tmp_name'], $path);
+                    header("location: profile.php");
+                    return $res;
+                } else {
+                    header("location: profile.php");
+                    return false;
+                }
             }
 
+            if ($image1 !== "") {
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `gallery1` = '$image1' where name_en = '$name' ";
+                $res = mysqli_query($this->link, $sql);
+                if ($res) {
+                    move_uploaded_file($_FILES['image1']['tmp_name'], $path1);
+                    header("location: profile.php");
+                    return $res;
+                } else {
+                    header("location: profile.php");
+                    return false;
+                }
+            }
+            if ($image2 !== "") {
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `gallery2` = '$image2' where name_en = '$name' ";
+                $res = mysqli_query($this->link, $sql);
+                if ($res) {
+                    move_uploaded_file($_FILES['image2']['tmp_name'], $path2);
+                    header("location: profile.php");
+                    return $res;
+                } else {
+                    header("location: profile.php");
+                    return false;
+                }
+            }
 
-            $res = mysqli_query($this->link, $sql);
+            if ($image3 !== "") {
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `gallery3` = '$image3' where name_en = '$name' ";
+                $res = mysqli_query($this->link, $sql);
+                if ($res) {
+                    move_uploaded_file($_FILES['image3']['tmp_name'], $path3);
+                    header("location: profile.php");
+                    return $res;
+                } else {
+                    header("location: profile.php");
+                    return false;
+                }
+            }
 
-            // $sql2 = "INSERT INTO `restaurant_feature` (`id`, `rest_name`, `park`, `bar`, `music`, `terrace`, `name`) VALUES (NULL, '$name', '$parking', '$bar', '$music', '$terrace', '')";
-            // mysqli_query($this->link, $sql2);
-            if ($res) {
-                move_uploaded_file($_FILES['image']['tmp_name'], $target);
-                move_uploaded_file($_FILES['image1']['tmp_name'], $target1);
-                move_uploaded_file($_FILES['image2']['tmp_name'], $target2);
-                move_uploaded_file($_FILES['image3']['tmp_name'], $target3);
-                // header('location:profile.php');
+            if ($image == '' && $image1 == '' && $image2 == '' && $image3 == '') {
 
-               
-                return $res;
-            } else {
-                return false;
+
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone' where name_en = '$name' ";
+                $res = mysqli_query($this->link, $sql);
+                if ($res) {
+
+                    header("location: profile.php");
+                    return true;
+                } else {
+
+
+                    return false;
+                }
             }
         }
-        # code...
     }
 }
 $obj = new profile;
@@ -128,6 +174,7 @@ $row = mysqli_fetch_assoc($objProfile);
 
 </head>
 
+
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -143,9 +190,21 @@ $row = mysqli_fetch_assoc($objProfile);
             <!-- Main Content -->
             <div id="content">
 
-                <!-- topbar -->
-                <?php include('topbar.php'); ?>
-                <!-- End of topbar -->
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+
+
+
+
+
+                </nav>
+                <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -170,7 +229,7 @@ $row = mysqli_fetch_assoc($objProfile);
                                                 <div class="row">
                                                     <div class="col-md-4 mx-auto">
                                                         <img class="profileImage mt-4" onclick="triggerClick()" id="profileDisplay" src="rest_img/<?php echo $row['image']; ?>" alt="">
-                                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
+                                                        <input type="file" accept="image/*" name="image" id="profileImage" value="rest_img/<?php echo $row['image']; ?>" onchange="displayImage(this)" style="display: none;">
                                                         <!-- <p class="lead text-center">Tap to upload image</p> -->
                                                     </div>
                                                     <div class="col-md-8">
@@ -184,71 +243,86 @@ $row = mysqli_fetch_assoc($objProfile);
                                                         </h1>
                                                         <input type="text" placeholder="Phone Number" class="form-control w-50" value="<?php echo $row['phone']; ?>" name="phone">
                                                         <br>
-                                                        Specialty:
-                                                        <select name="specialty[]" class="form-control w-50" multiple required>
-                                                            <?php
 
-                                                            if ($objSpec) { ?>
-                                                                <?php while ($row = mysqli_fetch_assoc($objSpec)) {
-
-                                                                ?>
-                                                                    <option value="<?php echo $row["specialty"] ?>"><?php echo ucwords($row["specialty"]) ?></option>
-                                                            <?php
-                                                                }
-                                                            }
-
-                                                            ?>
-
-                                                        </select>
 
                                                         <input type="text" placeholder="Kosher" class="form-control w-50 mt-4" value="<?php echo $row['kosher']; ?>" name="kosher">
 
 
                                                     </div>
                                                 </div>
-                                                <div class="container">
-                                                    <hr>
-                                                </div>
+
+                                                <hr>
 
 
-                                                <section>
+                                                <section class="pt-4 pb-5">
                                                     <h1 class="h4 mt-4 text-gray-900 mb-4 ">Restaurant Image</h1>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <img class="profileImageSq mt-4" onclick="triggerClick1()" id="profileDisplay1" src="<?php echo "rest_img/".$row['gallery1']; ?>" alt="">
-                                                            <input type="file" accept="image/*" name="image1" id="profileImage1" onchange="displayImage1(this)" style="display: none;">
+                                                            <img class="profileImageSq mt-4" onclick="triggerClick1()" id="profileDisplay1" src="rest_img/<?php echo $row['gallery1']; ?>" alt="">
+                                                            <input type="file" accept="image/*" name="image1" id="profileImage1" value="rest_img/<?php echo $row['gallery1']; ?>" onchange="displayImage1(this)" style="display: none;">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <img class="profileImageSq mt-4" onclick="triggerClick2()" id="profileDisplay2" src="rest_img/<?php echo $row['gallery2']; ?>" alt="">
-                                                            <input type="file" accept="image/*" name="image2" id="profileImage2" onchange="displayImage2(this)" style="display: none;">
+                                                            <input type="file" accept="image/*" name="image2" id="profileImage2" value="rest_img/<?php echo $row['gallery2']; ?>" onchange="displayImage2(this)" style="display: none;">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <img class="profileImageSq mt-4" onclick="triggerClick3()" id="profileDisplay3" src="rest_img/<?php echo $row['gallery3']; ?>" alt="">
-                                                            <input type="file" accept="image/*" name="image3" id="profileImage3" onchange="displayImage3(this)" style="display: none;">
+                                                            <input type="file" accept="image/*" name="image3" id="profileImage3" value="rest_img/<?php echo $row['gallery3']; ?>" onchange="displayImage3(this)" style="display: none;">
                                                         </div>
                                                     </div>
                                                 </section>
+
+                                                <hr>
                                                 <section>
-                                                    <h1 class="h4 mt-4 text-gray-900 mb-4 ">Services</h1>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input name="terrace" type="checkbox" class="form-check-input" value="Yes">Terrace
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input name="park" type="checkbox" class="form-check-input" value="Yes">Parking
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input name="bar" type="checkbox" class="form-check-input" value="Yes">Bar
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input name="music" type="checkbox" class="form-check-input" value="Yes">Music
-                                                        </label>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+
+                                                            <h1 class="h4 mt-4 text-gray-900 mb-4 ">Services</h1>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input name="terrace" type="checkbox" class="form-check-input" value="Yes">Terrace
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input name="park" type="checkbox" class="form-check-input" value="Yes">Parking
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input name="bar" type="checkbox" class="form-check-input" value="Yes">Bar
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input name="music" type="checkbox" class="form-check-input" value="Yes">Music
+                                                                </label>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+
+
+                                                            <h1 class="h4 mt-4 text-gray-900 mb-4 ">Specialty:</h1>
+                                                            <select name="specialty[]" class="form-control w-50" multiple required>
+                                                                <?php
+
+                                                                if ($objSpec) { ?>
+                                                                    <?php while ($row = mysqli_fetch_assoc($objSpec)) {
+
+                                                                    ?>
+                                                                        <option value="<?php echo $row["specialty"] ?>"><?php echo ucwords($row["specialty"]) ?></option>
+                                                                <?php
+                                                                    }
+                                                                }
+
+                                                                ?>
+
+                                                            </select>
+
+                                                        </div>
+
                                                     </div>
 
                                                 </section>

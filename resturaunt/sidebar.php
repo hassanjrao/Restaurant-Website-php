@@ -30,6 +30,13 @@
               <i class="fas fa-fw fa-chart-area"></i>
               <span>Discount</span></a>
       </li>
+
+      <li class="nav-item">
+          <a class="nav-link" href="notes.php">
+              <i class="fas fa-fw fa-chart-area"></i>
+              <span>Notes</span></a>
+      </li>
+
       <li class="nav-item">
           <a class="nav-link" href="profile.php">
               <i class="fas fa-fw fa-chart-area"></i>
