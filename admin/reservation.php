@@ -86,7 +86,7 @@ class reservation extends database
         $sql = "SELECT * FROM $rest_name  where time='$time'";
         $res = mysqli_query($this->link, $sql);
 
-      
+
 
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -111,7 +111,7 @@ $objDate = $obj->getDate();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Resturaunt Panel - Reservation </title>
+    <title>Admin - Reservation </title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -210,11 +210,7 @@ $objDate = $obj->getDate();
                                                                     <?php echo $row['code']; ?>
                                                                 </h1>
 
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Hour:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['time']; ?>
-                                                                </h1>
+
 
 
                                                                 <?php if ($row['confirm_people'] == NULL) {
@@ -266,7 +262,16 @@ $objDate = $obj->getDate();
 
                                                             </div>
                                                             <div class="col-md-4 text-center">
-                                                                <h1 class="h6 text-secondary mb-5 font-weight-bold">Discount
+
+                                                                <h1 class="h6 text-secondary mb-2 font-weight-bold">Hour:-
+                                                                </h1>
+                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                    <?php echo $row['time']; ?>
+                                                                </h1>
+
+                                                                <br>
+
+                                                                <h1 class="h6 text-secondary mb-2 font-weight-bold">Discount
                                                                 </h1>
 
                                                                 <?php
@@ -283,7 +288,7 @@ $objDate = $obj->getDate();
                                                                     $result = mysqli_fetch_assoc($objDiscount);
 
                                                                 ?>
-                                                                    <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold"><?php echo $result["$day"]!=NULL? $result["$day"] : "0" ; ?>%</button>
+                                                                    <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold"><?php echo $result["$day"] != NULL ? $result["$day"] : "0"; ?>%</button>
 
                                                                 <?php
                                                                 } else {

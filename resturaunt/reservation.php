@@ -1,9 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['Rname'])) {
+    header('location:restaurant_login.php');
+}
 include('class/database.php');
 class reservation extends database
 {
-    public $link;
+    protected $link;
     public function reservationFunction()
     {
         $name = $_SESSION['Rname'];
@@ -41,9 +44,120 @@ class reservation extends database
             return false;
         }
     }
+
+    public function countRes($date)
+    {
+
+        $rest_name = $_SESSION['Rname'];
+        $sql = "SELECT COUNT(1) FROM reservation_tbl  where rest_name='$rest_name' and date='$date'";
+        $res = mysqli_query($this->link, $sql);
+
+
+        if ($res) {
+            $row = mysqli_fetch_array($res);
+            $total = $row[0];
+            return $total;
+        } else {
+            return false;
+        }
+    }
+
+    public function getDiscount($t, $rest_name)
+    {
+        $time = explode("-", $t);
+
+        $start_time = $time[0];
+        $s_t = explode(":", $start_time);
+
+        $st = $s_t[0];
+
+
+        if ($st == "9") {
+            $time = "09:00-10:00";
+        } else if ($st == "10") {
+            $time = "10:00-11:00";
+        } else if ($st == "11") {
+            $time = "11:00-12:00";
+        } else if ($st == "12") {
+            $time = "12:00-13:00";
+        } else if ($st == "13") {
+            $time = "13:00-14:00";
+        } else if ($st == "14") {
+            $time = "14:00-15:00";
+        } else if ($st == "15") {
+            $time = "15:00-16:00";
+        } else if ($st == "16") {
+            $time = "16:00-17:00";
+        } else if ($st == "17") {
+            $time = "17:00-18:00";
+        } else if ($st == "18") {
+            $time = "18:00-19:00";
+        } else if ($st == "19") {
+            $time = "19:00-20:00";
+        } else if ($st == "20") {
+            $time = "20:00-21:00";
+        } else if ($st == "21") {
+            $time = "21:00-22:00";
+        } else if ($st == "22") {
+            $time = "22:00-23:00";
+        }
+
+
+        $sql = "SELECT * FROM $rest_name  where time='$time'";
+        $res = mysqli_query($this->link, $sql);
+
+
+
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
+    public function getDetails($date)
+    {
+
+
+        $rest_name = $_SESSION['Rname'];
+        $sql = "SELECT *
+                FROM user_tbl
+                INNER JOIN reservation_tbl
+                ON user_tbl.email = reservation_tbl.email where reservation_tbl.rest_name = '$rest_name' AND reservation_tbl.date = '$date' AND reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
+        $res = mysqli_query($this->link, $sql);
+
+
+
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            false;
+        }
+    }
+
+
+    public function confirmPeople($date)
+    {
+
+        $rest_name = $_SESSION['Rname'];
+        $sql = "SELECT confirm_people FROM reservation_tbl where rest_name='$rest_name' and date='$date'";
+        $res = mysqli_query($this->link, $sql);
+
+
+
+        if (mysqli_num_rows($res) > 0) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                if ($row["confirm_people"] == NULL) {
+                    return true;
+                    break;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
 }
 $obj = new reservation;
-$objLink = $obj->link;
 $objReservation = $obj->reservationFunction();
 $objDate = $obj->getDate();
 ?>
@@ -102,8 +216,8 @@ $objDate = $obj->getDate();
                             foreach ($objDate as $ind => $date) {
 
 
-                                $ndate=date_create("$date");
-                                $nd= date_format($ndate,"d/m/Y");
+                                $ndate = date_create("$date");
+                                $nd = date_format($ndate, "d/m/Y");
 
 
 
@@ -116,31 +230,56 @@ $objDate = $obj->getDate();
                                                 <button class="btn btn-link" style="text-decoration: none;" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $ind ?>" aria-expanded="true" aria-controls="collapseOne">
                                                     <strong>Date:</strong> <?php echo $nd ?>
 
+                                                    <?php
+
+                                                    $newObj = new reservation;
+
+                                                    $total = $newObj->countRes($date);
+
+                                                    echo "<span display='font-weight:900'>(" . $total . ")</span>";
+
+                                                    ?>
+
                                                 </button>
+
+                                                <?php
+                                                if ($newObj->confirmPeople($date)) {
+                                                    echo '<i class=" text-danger pl-5 fas fa-times-circle"></i>';
+                                                } else {
+                                                    echo '<i class=" text-success pl-5 fas fa-check-circle"></i>';
+                                                }
+
+                                                ?>
+
                                             </h2>
                                         </div>
 
                                         <div id="collapseOne<?php echo $ind ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                            <form action="confirm.php" method="POST">
+                                          
                                                 <?php
 
 
-                                                $rest_name = $_SESSION['Rname'];
-                                                $sql = "SELECT *
-                                        FROM user_tbl
-                                        INNER JOIN reservation_tbl
-                                        ON user_tbl.email = reservation_tbl.email where reservation_tbl.rest_name = '$rest_name' AND reservation_tbl.date = '$date' AND reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
-                                                $res = mysqli_query($objLink, $sql);
+                                                $objNew2 = new reservation;
+
+                                                $objDetail = $objNew2->getDetails($date);
 
 
 
-                                                if (mysqli_num_rows($res) > 0) {
-                                                    while ($row = mysqli_fetch_assoc($res)) {
+                                                if ($objDetail) {
+                                                    while ($row = mysqli_fetch_assoc($objDetail)) {
 
                                                 ?>
+                                                  <form action="confirm.php" method="POST">
 
                                                         <div class="card-body">
                                                             <div class="row">
+
+                                                                <div class="col-md-12">
+
+                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Restaurant Name:- <span class="h6 text-gray-900 mb-4 font-weight-bold"><?php echo ucwords($row["rest_name"]); ?></span>
+                                                                    </h1>
+
+                                                                </div>
                                                                 <div class="col-md-4">
                                                                     <h1 class="h6 text-secondary mb-4 font-weight-bold">Name:-
                                                                     </h1>
@@ -153,6 +292,8 @@ $objDate = $obj->getDate();
                                                                     <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                         <?php echo $row['code']; ?>
                                                                     </h1>
+
+
 
 
                                                                     <?php if ($row['confirm_people'] == NULL) {
@@ -204,9 +345,43 @@ $objDate = $obj->getDate();
 
                                                                 </div>
                                                                 <div class="col-md-4 text-center">
-                                                                    <h1 class="h6 text-secondary mb-5 font-weight-bold">Discount
+                                                                    <h1 class="h6 text-secondary mb-2 font-weight-bold">Hour:-
                                                                     </h1>
-                                                                    <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold">20%</button>
+                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                        <?php echo $row['time']; ?>
+                                                                    </h1>
+
+                                                                    <br>
+                                                                    <h1 class="h6 text-secondary mb-2 font-weight-bold">Discount
+                                                                    </h1>
+
+                                                                    <?php
+                                                                    $time = $row["time"];
+                                                                    $date = $row["date"];
+                                                                    $day = strtolower(date('D', strtotime("$date")));
+
+                                                                    $newObj = new reservation;
+
+                                                                    $objDiscount = $newObj->getDiscount($time, $row["rest_name"]);
+
+                                                                    if ($objDiscount) {
+
+                                                                        $result = mysqli_fetch_assoc($objDiscount);
+
+                                                                    ?>
+                                                                        <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold"><?php echo $result["$day"] != NULL ? $result["$day"] : "0"; ?>%</button>
+
+                                                                    <?php
+                                                                    } else {
+                                                                    ?>
+                                                                        <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold">0%</button>
+
+                                                                    <?php
+                                                                    }
+
+                                                                    ?>
+
+
                                                                 </div>
 
 

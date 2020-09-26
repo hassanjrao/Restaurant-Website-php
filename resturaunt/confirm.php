@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (!isset($_SESSION['Rname'])) {
+    header('location:restaurant_login.php');
+}
 include('class/database.php');
 class confirm extends database
 {

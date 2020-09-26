@@ -1,7 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['Rname']) {
-} else {
+if (!isset($_SESSION['Rname'])) {
     header('location:restaurant_login.php');
 }
 include('class/database.php');

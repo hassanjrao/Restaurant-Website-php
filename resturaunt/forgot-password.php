@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION['Rname'])) {
+    header('location:restaurant_login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
