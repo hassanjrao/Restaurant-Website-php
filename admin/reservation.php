@@ -86,7 +86,7 @@ class reservation extends database
         $sql = "SELECT * FROM $rest_name  where time='$time'";
         $res = mysqli_query($this->link, $sql);
 
-        var_dump($sql);
+      
 
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -150,7 +150,7 @@ $objDate = $obj->getDate();
 
 
 
-                    if (count($objDate) > 0) {
+                    if ($objDate) {
                         if (count($objDate) > 0) {
 
                             foreach ($objDate as $ind => $date) {

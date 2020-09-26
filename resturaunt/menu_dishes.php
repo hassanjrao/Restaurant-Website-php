@@ -1,5 +1,10 @@
 <?php
 session_start();
+if ($_SESSION['Rname']) {
+} else {
+    header('location:restaurant_login.php');
+}
+
 include('class/database.php');
 class menu extends database
 {
@@ -195,6 +200,59 @@ $objCreate = $obj->saveFunction();
                                 }
                             } ?>
 
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Successfully Updated!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+
+                                if (strcmp($_GET["msg"], 'success_del') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Successfully Deleted!</strong>
+                                    </div>
+
+
+                            <?php }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_del') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Deletion Failed!</strong>
+                                    </div>
+
+
+                            <?php }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Update Failed!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+
+
 
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -204,6 +262,7 @@ $objCreate = $obj->saveFunction();
                                             <th>Dish</th>
                                             <th>Dish Price</th>
                                             <th>Created</th>
+                                            <th>Updated</th>
                                             <th>Edit/Delete</th>
 
 
@@ -216,6 +275,7 @@ $objCreate = $obj->saveFunction();
                                             <th>Dish</th>
                                             <th>Dish Price</th>
                                             <th>Created</th>
+                                            <th>Updated</th>
                                             <th>Edit/Delete</th>
 
 
@@ -226,7 +286,9 @@ $objCreate = $obj->saveFunction();
                                         <?php
                                         $a = 1;
                                         if ($objMenu) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objMenu)) { ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objMenu)) {
+                                                $id = $row["id"];
+                                            ?>
                                                 <tr>
                                                     <td><?php echo $a++ ?></td>
 
@@ -236,6 +298,7 @@ $objCreate = $obj->saveFunction();
                                                         <td><?php echo $row['dish_en']; ?></td>
                                                         <td><?php echo $row['price']; ?></td>
                                                         <td><?php echo $row['created']; ?></td>
+                                                        <td><?php echo $row['updated']; ?></td>
 
                                                     <?php
                                                     } else if ($row['dish_heb'] != NULL) {
@@ -243,6 +306,8 @@ $objCreate = $obj->saveFunction();
                                                         <td><?php echo $row['dish_heb']; ?></td>
                                                         <td><?php echo $row['price']; ?></td>
                                                         <td><?php echo $row['created']; ?></td>
+                                                        <td><?php echo $row['updated']; ?></td>
+
 
                                                     <?php
                                                     }
@@ -250,8 +315,8 @@ $objCreate = $obj->saveFunction();
                                                     ?>
 
                                                     <td>
-                                                        <a href="menu_dish_edit.php" class="btn btn-primary btn-sm">Edit</a>
-                                                        <a href="menu_dish_delete.php" class="btn btn-danger btn-sm">Delete</a>
+                                                        <a href="menu_dish_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="menu_dish_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
                                                     </td>
 
 
