@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 
@@ -13,7 +13,35 @@ class Translation extends database
 
         $id = $_GET['id'];
 
-        $sql = "select * from menu_tb where id = '$id' ";
+        $sql = "select * from menu_starter_tb where id = '$id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+    public function getDishMenu()
+    {
+
+        $id = $_GET['id'];
+
+        $sql = "select * from menu_dish_tb where id = '$id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+    public function getDessertMenu()
+    {
+
+        $id = $_GET['id'];
+
+        $sql = "select * from menu_dessert_tb where id = '$id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -24,7 +52,13 @@ class Translation extends database
     }
 }
 $obj = new Translation;
-$objMenu = $obj->getmenu();
+$objMenu = $obj->getMenu();
+$objDishMenu = $obj->getDishMenu();
+$objDessertMenu = $obj->getDessertMenu();
+
+$categ = $_GET["cat"];
+
+$rest_id=$_GET["rest_id"];
 
 
 ?>
@@ -90,196 +124,217 @@ $objMenu = $obj->getmenu();
 
                     </div>
 
-                    <!-- Content Row -->
-                    <div class="row">
+                    <?php
 
-                        <div class="col-lg-12">
-                            <?php
+                    if ($categ == 1) {
+                    ?>
+                        <!-- Content Row -->
+                        <div class="row">
 
-                            $row = mysqli_fetch_assoc($objMenu)
+                            <div class="col-lg-12">
+                                <?php
+
+                                $row = mysqli_fetch_assoc($objMenu)
 
 
-                            ?>
+                                ?>
 
-                            <!-- ------Menu English Starts -->
-                            <div class="card shadow mb-4">
 
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Menu English</h6>
+                                <div class="card shadow mb-4">
+
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Starter</h6>
+                                    </div>
+
+
+                                    <div class="card-body">
+
+                                        <form method="POST" action="update_menu.php">
+                                            <input type="hidden" name="menu_id" value="<?php echo $row['id']; ?>">
+                                            <input type="hidden" name="rest_id" value="<?php echo $rest_id; ?>">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Starter Name English
+                                                    <input type="text" name="starter_en" value="<?php echo $row['starter_en'] == NULL ? "" : $row['starter_en']; ?>" class=" form-control" placeholder="Starter English" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    Starter Name Hebrew
+                                                    <input type="text" name="starter_heb" value="<?php echo $row['starter_heb'] == NULL ? "" : $row['starter_heb']; ?>" class=" form-control" placeholder="Starter Heb" required>
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    Starter Name French
+                                                    <input type="text" name="starter_fr" value="<?php echo $row['starter_fr'] == NULL ? "" : $row['starter_fr']; ?>" class=" form-control" placeholder="Starter French" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Starter Price
+                                                    <input type="number" readonly name="price" value="<?php echo $row['price']; ?>" class="form-control " placeholder="Price" required>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <br>
+
+                                            <button name="submit_starter" type="submit" class="btn btn-sm btn-primary">Submit</button>
+
+                                        </form>
+
+                                    </div>
                                 </div>
-                                <div class="card-body">
 
-                                    <form method="POST" action="update_menu.php">
-                                        <input type="hidden" name="menu_id" value="<?php echo $row['id']; ?>">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Starter Name
-                                                <input type="text" name="starter_name" value="<?php echo $row['starter_name_en'] == NULL ? "" : $row['starter_name_en']; ?>" class=" form-control" placeholder="Starter" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Starter Price
-                                                <input type="number" readonly name="starter_price" value="<?php echo $row['starter_price']; ?>" class="form-control " placeholder="Starter Price" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Dish Name
-                                                <input type="text" name="dish_name" value="<?php echo $row['dish_name_en'] == NULL ? "" : $row['dish_name_en']; ?>" class=" form-control" placeholder="Dish" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Starter Price
-                                                <input type="number" readonly name="dish_price" value="<?php echo $row['dish_price']; ?>" class="form-control " placeholder="Dish Price" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Dessert Name
-                                                <input type="text" name="dessert_name" value="<?php echo $row['dessert_name_en'] == NULL ? "" : $row['dessert_name_en']; ?>" class=" form-control" placeholder="Dessert" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Dessert Price
-                                                <input type="number" readonly name="dessert_price" value="<?php echo $row['dessert_price']; ?>" class="form-control " placeholder="Dessert Price" required>
-                                            </div>
-                                        </div>
 
-                                        <br>
-
-                                        <button name="submit_en" type="submit" class="btn btn-sm btn-primary">Submit</button>
-
-                                    </form>
-
-                                </div>
                             </div>
-
-                            <!-- Menu English Ends -->
-
-
-
-                            <!-- ------Menu Hebrew Starts -->
-
-                            <div class="card shadow mb-4">
-
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Menu Hebrew</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <form method="POST" action="update_menu.php">
-
-                                        <input type="hidden" name="menu_id" value="<?php echo $row['id']; ?>">
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Starter Name
-                                                <input type="text" name="starter_name" value="<?php echo $row['starter_name_heb'] == NULL ? "" : $row['starter_name_heb']; ?>" class=" form-control" placeholder="Starter" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Starter Price
-                                                <input type="number" readonly name="starter_price" value="<?php echo $row['starter_price']; ?>" class="form-control " placeholder="Starter Price" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Dish Name
-                                                <input type="text" name="dish_name" value="<?php echo $row['dish_name_heb'] == NULL ? "" : $row['dish_name_heb']; ?>" class=" form-control" placeholder="Dish" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Starter Price
-                                                <input type="number" readonly name="dish_price" value="<?php echo $row['dish_price']; ?>" class="form-control " placeholder="Dish Price" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Dessert Name
-                                                <input type="text" name="dessert_name" value="<?php echo $row['dessert_name_heb'] == NULL ? "" : $row['dessert_name_heb']; ?>" class=" form-control" placeholder="Dessert" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Dessert Price
-                                                <input type="number" readonly name="dessert_price" value="<?php echo $row['dessert_price']; ?>" class="form-control " placeholder="Dessert Price" required>
-                                            </div>
-                                        </div>
-
-                                        <br>
-                                        <button name="submit_heb" type="submit" class="btn btn-sm btn-primary">Submit</button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                            <!--  ------Menu Hebrew Ends -->
-
-
-
-
-                            <!-- ------Menu French Starts -->
-
-                            <div class="card shadow mb-4">
-
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Menu French</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <form method="POST" action="update_menu.php">
-                                        <input type="hidden" name="menu_id" value="<?php echo $row['id']; ?>">
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Starter Name
-                                                <input type="text" name="starter_name" value="<?php echo $row['starter_name_fr'] == NULL ? "" : $row['starter_name_fr']; ?>" class=" form-control" placeholder="Starter" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Starter Price
-                                                <input type="number" readonly name="starter_price" value="<?php echo $row['starter_price']; ?>" class="form-control " placeholder="Starter Price" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Dish Name
-                                                <input type="text" name="dish_name" value="<?php echo $row['dish_name_fr'] == NULL ? "" : $row['dish_name_fr']; ?>" class=" form-control" placeholder="Dish" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Starter Price
-                                                <input type="number" readonly name="dish_price" value="<?php echo $row['dish_price']; ?>" class="form-control " placeholder="Dish Price" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Dessert Name
-                                                <input type="text" name="dessert_name" value="<?php echo $row['dessert_name_fr'] == NULL ? "" : $row['dessert_name_fr']; ?>" class=" form-control" placeholder="Dessert" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                Dessert Price
-                                                <input type="number" readonly name="dessert_price" value="<?php echo $row['dessert_price']; ?>" class="form-control " placeholder="Dessert Price" required>
-                                            </div>
-                                        </div>
-
-                                        <br>
-                                        <button name="submit_fr" type="submit" class="btn btn-sm btn-primary">Submit</button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                            <!--  ------Menu French Ends -->
-
-
-
-
-
-
 
                         </div>
 
-                    </div>
+                        <!-- Content Row -->
+                    <?php
+                    } else  if ($categ == 2) {
+                    ?>
+                        <!-- Content Row -->
+                        <div class="row">
 
-                    <!-- Content Row -->
+                            <div class="col-lg-12">
+                                <?php
+
+                                $row = mysqli_fetch_assoc($objDishMenu)
+
+
+                                ?>
+
+
+
+                                <div class="card shadow mb-4">
+
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Dish</h6>
+                                    </div>
+
+
+                                    <div class="card-body">
+
+                                        <form method="POST" action="update_menu.php">
+                                            <input type="hidden" name="menu_id" value="<?php echo $row['id']; ?>">
+                                            <input type="hidden" name="rest_id" value="<?php echo $rest_id; ?>">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Dish Name English
+                                                    <input type="text" name="dish_en" value="<?php echo $row['dish_en'] == NULL ? "" : $row['dish_en']; ?>" class=" form-control" placeholder="Dish English" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    Dish Name Hebrew
+                                                    <input type="text" name="dish_heb" value="<?php echo $row['dish_heb'] == NULL ? "" : $row['dish_heb']; ?>" class=" form-control" placeholder="Dish Hebrew" required>
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    Dish Name French
+                                                    <input type="text" name="dish_fr" value="<?php echo $row['dish_fr'] == NULL ? "" : $row['dish_fr']; ?>" class=" form-control" placeholder="Dish French" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Dish Price
+                                                    <input type="number" readonly name="price" value="<?php echo $row['price']; ?>" class="form-control " placeholder="Price" required>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <br>
+
+                                            <button name="submit_dish" type="submit" class="btn btn-sm btn-primary">Submit</button>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- Content Row -->
+                    <?php
+                    } else  if ($categ == 3) {
+                    ?>
+                        <!-- Content Row -->
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <?php
+
+                                $row = mysqli_fetch_assoc($objDessertMenu)
+
+
+                                ?>
+
+
+                                <div class="card shadow mb-4">
+
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Dessert</h6>
+                                    </div>
+
+                                   
+                                    <div class="card-body">
+
+                                        <form method="POST" action="update_menu.php">
+                                            <input type="hidden" name="menu_id" value="<?php echo $row['id']; ?>">
+                                            <input type="hidden" name="rest_id" value="<?php echo $rest_id; ?>">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Dessert Name English
+                                                    <input type="text" name="dessert_en" value="<?php echo $row['dessert_en'] == NULL ? "" : $row['dessert_en']; ?>" class=" form-control" placeholder="Dessert English" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    Dessert Name Hebrew
+                                                    <input type="text" name="dessert_heb" value="<?php echo $row['dessert_heb'] == NULL ? "" : $row['dessert_heb']; ?>" class=" form-control" placeholder="Dessert Hebrew" required>
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    Dessert Name French
+                                                    <input type="text" name="dessert_fr" value="<?php echo $row['dessert_fr'] == NULL ? "" : $row['dessert_fr']; ?>" class=" form-control" placeholder="Dessert French" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Dessert Price
+                                                    <input type="number" readonly name="price" value="<?php echo $row['price']; ?>" class="form-control " placeholder="Price" required>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <br>
+
+                                            <button name="submit_dessert" type="submit" class="btn btn-sm btn-primary">Submit</button>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Content Row -->
+                    <?php
+                    }
+                    ?>
+
+
 
 
 

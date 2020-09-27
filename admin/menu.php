@@ -1,18 +1,18 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 include('class/database.php');
 class menu extends database
 {
     protected $link;
-    public function getMenu()
+    public function getStarters()
     {
 
         $id = $_GET['id'];
 
-        $sql = "select * from menu_tb where rest_id = '$id' ";
+        $sql = "select * from menu_starter_tb where rest_id = '$id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -22,32 +22,46 @@ class menu extends database
         # code...
     }
 
-
-    public function saveFunction()
+    public function getDishes()
     {
-        if (isset($_POST['submit'])) {
-            $rest_id = $_SESSION['rest_id'];
 
-            $starter = $_POST['starter_name'];
-            $s_price = $_POST["starter_price"];
-            $dish = $_POST['dish_name'];
-            $d_price = $_POST["dish_price"];
-            $dessert = $_POST['dessert_name'];
-            $ds_price = $_POST["dessert_price"];
+        $id = $_GET['id'];
 
-            $sql = "INSERT INTO `menu` (`starter_name`, `starter_price`, `dish_name`, `dish_price`, `dessert_name`, `dessert_price`,`rest_id`) VALUES ('$starter', '$s_price', '$dish', '$d_price', '$dessert', '$ds_price', '$rest_id')";
-            $res = mysqli_query($this->link, $sql);
+        $sql = "select * from menu_dish_tb where rest_id = '$id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
 
-            header("location: menu.php");
+    public function getDesserts()
+    {
+
+        $id = $_GET['id'];
+
+        $sql = "select * from menu_dessert_tb where rest_id = '$id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
         }
         # code...
     }
 }
 $obj = new menu;
-$objMenu = $obj->getmenu();
-$objCreate = $obj->saveFunction();
+$objMenu = $obj->getStarters();
+$objDishMenu = $obj->getDishes();
+$objDessertMenu = $obj->getDesserts();
+$rest1_id = $_GET['id'];
 
+$categ = $_GET["cat"];
 // $row = mysqli_fetch_assoc($objProfile);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,116 +119,384 @@ $objCreate = $obj->saveFunction();
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 ml-5 text-gray-800">Menu </h1>
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Menu </h1>
+                <br>
+                <select id="change-dish" onchange="changeDish()" class="form-control w-25 ml-5">
+                    <option selected disbled>Select Item</option>
+                    <option value="1">Starters</option>
+                    <option value="2">Dish</option>
+                    <option value="3">Desserts</option>
+                </select>
+                <br>
 
+                <?php
+                if ($_GET["cat"] == 1) {
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-
-
-                        <div class="card-body">
-
-
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Starter</th>
-                                            <th>Starter Price</th>
-                                            <th>Dish</th>
-                                            <th>Dish Price</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
-                                            <th>Add Translation</th>
+                ?>
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
 
 
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Starter</th>
-                                            <th>Starter Price</th>
-                                            <th>Dish</th>
-                                            <th>Dish Price</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
-                                            <th>Add Translation</th>
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
 
 
-                                        </tr>
-                                    </tfoot>
 
-                                    <tbody>
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Successfully Updated!</strong>
+                                    </div>
 
-                                        <?php
-                                        $a = 1;
-                                        if ($objMenu) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objMenu)) { ?>
-                                                <tr>
-                                                    <td><?php echo $a++ ?></td>
 
-                                                    <?php
-                                                    if ($row['starter_name_en'] != NULL) {
-                                                    ?>
-                                                        <td><?php echo $row['starter_name_en']; ?></td>
-                                                        <td><?php echo $row['starter_price']; ?></td>
-                                                        <td><?php echo $row['dish_name_en']; ?></td>
-                                                        <td><?php echo $row['dish_price']; ?></td>
-                                                        <td><?php echo $row['dessert_name_en']; ?></td>
-                                                        <td><?php echo $row['dessert_price']; ?></td>
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Update Failed!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <div class="card-body">
+
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Starter English</th>
+                                                <th>Starter Hebrew</th>
+                                                <th>Starter French</th>
+                                                <th>Price</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Edit</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Starter English</th>
+                                                <th>Starter Hebrew</th>
+                                                <th>Starter French</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Price</th>
+
+                                                <th>Edit</th>
+
+
+                                            </tr>
+                                        </tfoot>
+
+                                        <tbody>
+
+                                            <?php
+                                            $a = 1;
+                                            if ($objMenu) { ?>
+                                                <?php while ($row = mysqli_fetch_assoc($objMenu)) { ?>
+                                                    <tr>
+                                                        <td><?php echo $a++ ?></td>
+
+
+                                                        <td><?php echo $row['starter_en']; ?></td>
+                                                        <td><?php echo $row['starter_heb']; ?></td>
+                                                        <td><?php echo $row['starter_fr']; ?></td>
+                                                        <td><?php echo $row['price']; ?></td>
+                                                        <td><?php echo $row['created']; ?></td>
+                                                        <td><?php echo $row['updated']; ?></td>
+
+
                                                         <td><a href="translation.php?<?php
                                                                                         $id = $row["id"];
                                                                                         $rest_id = $_GET["id"];
-                                                                                        echo "id=$id&rest_id=$rest_id" ?>" class="btn btn-success btn-sm">
+                                                                                        echo "id=$id&rest_id=$rest_id&cat=$categ" ?>" class="btn btn-success btn-sm">
 
-                                                                <span class="text">Add Translation</span>
+                                                                <span class="text">Edit</span>
                                                             </a></td>
-                                                    <?php
-                                                    } else if ($row['starter_name_heb'] != NULL) {
-                                                    ?>
-                                                        <td><?php echo $row['starter_name_heb']; ?></td>
-                                                        <td><?php echo $row['starter_price']; ?></td>
-                                                        <td><?php echo $row['dish_name_heb']; ?></td>
-                                                        <td><?php echo $row['dish_price']; ?></td>
-                                                        <td><?php echo $row['dessert_name_heb']; ?></td>
-                                                        <td><?php echo $row['dessert_price']; ?></td>
-                                                        <td><a href="translation.php?<?php
-                                                                                        $id = $row["id"];
-                                                                                        $rest_id = $_GET["id"];
-                                                                                        echo "id=$id&rest_id=$rest_id" ?>" class="btn btn-success btn-sm">
 
-                                                                <span class="text">Add Translation</span>
-                                                            </a></td>
-                                                    <?php
-                                                    }
-                                                    ?>
-
-
-
-                                                </tr>
+                                                    </tr>
+                                                <?php } ?>
                                             <?php } ?>
-                                        <?php } ?>
 
-                                    </tbody>
+                                        </tbody>
 
-                                   
-                                </table>
+
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
+
+
+
                     </div>
+                    <!-- /.container-fluid -->
+
+                <?php
+                }
+                ?>
+
+                <?php
+                if ($_GET["cat"] == 2) {
+
+                ?>
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Successfully Updated!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Update Failed!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <div class="card-body">
+
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Dish English</th>
+                                                <th>Dish Hebrew</th>
+                                                <th>Dish French</th>
+                                                <th>Price</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Edit</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Dish English</th>
+                                                <th>Dish Hebrew</th>
+                                                <th>Dish French</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Price</th>
+
+                                                <th>Edit</th>
+
+
+                                            </tr>
+                                        </tfoot>
+
+                                        <tbody>
+
+                                            <?php
+                                            $a = 1;
+
+                                            if ($objDishMenu) { ?>
+                                                <?php while ($row = mysqli_fetch_assoc($objDishMenu)) { ?>
+                                                    <tr>
+                                                        <td><?php echo $a++ ?></td>
+
+
+                                                        <td><?php echo $row['dish_en']; ?></td>
+                                                        <td><?php echo $row['dish_heb']; ?></td>
+                                                        <td><?php echo $row['dish_fr']; ?></td>
+                                                        <td><?php echo $row['price']; ?></td>
+                                                        <td><?php echo $row['created']; ?></td>
+                                                        <td><?php echo $row['updated']; ?></td>
+
+
+                                                        <td><a href="translation.php?<?php
+                                                                                        $id = $row["id"];
+                                                                                        $rest_id = $_GET["id"];
+                                                                                        echo "id=$id&rest_id=$rest_id&cat=$categ" ?>" class="btn btn-success btn-sm">
+
+                                                                <span class="text">Edit</span>
+                                                            </a></td>
+
+                                                    </tr>
+                                                <?php } ?>
+                                            <?php } ?>
+
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 
 
 
 
-                </div>
-                <!-- /.container-fluid -->
+                    </div>
+                    <!-- /.container-fluid -->
+
+                <?php
+                }
+                ?>
+
+                <?php
+                if ($_GET["cat"] == 3) {
+
+                ?>
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Successfully Updated!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Update Failed!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <div class="card-body">
+
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Dessert English</th>
+                                                <th>Dessert Hebrew</th>
+                                                <th>Dessert French</th>
+                                                <th>Price</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Edit</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Dessert English</th>
+                                                <th>Dessert Hebrew</th>
+                                                <th>Dessert French</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Price</th>
+
+                                                <th>Edit</th>
+
+
+                                            </tr>
+                                        </tfoot>
+
+                                        <tbody>
+
+                                            <?php
+                                            $a = 1;
+                                            if ($objDessertMenu) { ?>
+                                                <?php while ($row = mysqli_fetch_assoc($objDessertMenu)) { ?>
+                                                    <tr>
+                                                        <td><?php echo $a++ ?></td>
+
+
+                                                        <td><?php echo $row['dessert_en']; ?></td>
+                                                        <td><?php echo $row['dessert_heb']; ?></td>
+                                                        <td><?php echo $row['dessert_fr']; ?></td>
+                                                        <td><?php echo $row['price']; ?></td>
+                                                        <td><?php echo $row['created']; ?></td>
+                                                        <td><?php echo $row['updated']; ?></td>
+
+
+                                                        <td><a href="translation.php?<?php
+                                                                                        $id = $row["id"];
+                                                                                        $rest_id = $_GET["id"];
+                                                                                        echo "id=$id&rest_id=$rest_id&cat=$categ" ?>" class="btn btn-success btn-sm">
+
+                                                                <span class="text">Edit</span>
+                                                            </a></td>
+
+                                                    </tr>
+                                                <?php } ?>
+                                            <?php } ?>
+
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- /.container-fluid -->
+
+                <?php
+                }
+                ?>
 
             </div>
             <!-- End of Main Content -->
@@ -275,6 +557,13 @@ $objCreate = $obj->saveFunction();
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
+
+    <script>
+        function changeDish() {
+            var cat = document.getElementById("change-dish").value;
+            location.replace("<?php echo "menu.php?id=$rest1_id&cat=" ?>" + cat);
+        }
+    </script>
 
 </body>
 

@@ -214,6 +214,19 @@ $objCreate = $obj->saveFunction();
 
                             <?php
                             if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Update Failed!</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
 
                                 if (strcmp($_GET["msg"], 'success_del') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
@@ -237,18 +250,7 @@ $objCreate = $obj->saveFunction();
                             <?php }
                             } ?>
 
-                            <?php
-                            if (isset($_GET["msg"])) {
-                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
-                                    <div class="alert alert-warning alert-dismissible">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Update Failed!</strong>
-                                    </div>
 
-
-                            <?php
-                                }
-                            } ?>
 
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

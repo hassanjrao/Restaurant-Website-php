@@ -87,7 +87,7 @@ $objRestS2 = $obj->getRestaurants();
                     <?php while ($row = mysqli_fetch_assoc($objRestS)) { ?>
 
 
-                        <a class="collapse-item" href="menu.php?id=<?php echo $row['id']; ?>"><?php echo $row['name_en']; ?></a>
+                        <a class="collapse-item" href="menu.php?id=<?php echo $row['id']; ?>&cat=1"><?php echo $row['name_en']; ?></a>
 
                     <?php } ?>
                 <?php } ?>
