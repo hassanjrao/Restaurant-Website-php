@@ -1,16 +1,15 @@
 <?php
 session_start();
-if (!isset($_SESSION['Rname'])) {
-    header('location:restaurant_login.php');
+if(!isset( $_SESSION['name'])){
+    header("location: login.php");
 }
 include('class/database.php');
-class Notes extends database
+class Services extends database
 {
     protected $link;
-    public function getNotes()
+    public function getServices()
     {
-        $rest_id = $_SESSION['rest_id'];
-        $sql = "select * from notes_tb where rest_id='$rest_id'";
+        $sql = "select * from services_tb";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -19,41 +18,33 @@ class Notes extends database
         }
         # code...
     }
-    public function createNote()
+    public function createService()
     {
         if (isset($_POST['submit'])) {
-            $note = strtolower($_POST['note']);
-            $day=$_POST["day"];
-            $rest_id = $_SESSION['rest_id'];
+            $service_en = $_POST['service_en'] == NULL ? NULL : strtolower($_POST['service_en']);
+            $service_heb = $_POST['service_heb'] == NULL ? NULL : strtolower($_POST['service_heb']);
+            $service_fr = $_POST['service_fr'] == NULL ? NULL : strtolower($_POST['service_fr']);
 
-            $sqlFind = "select * from notes_tb where day = '$day' and rest_id='$rest_id' ";
-            $resFind = mysqli_query($this->link, $sqlFind);
-            if (mysqli_num_rows($resFind) > 0) {
-                $msg = "taken";
-                header("location: notes.php?msg=$msg");
+
+
+            $sql = "INSERT INTO services_tb (`service_en`,`service_heb`,`service_fr`, `created`) VALUES ('$service_en','$service_heb','$service_fr', CURRENT_TIMESTAMP)";
+            $res = mysqli_query($this->link, $sql);
+
+            if ($res) {
+                $msg = "success_add";
+                header("location: services.php?msg=$msg");
                 return true;
             } else {
-
-                $sql = "INSERT INTO notes_tb (`note_en`, `day`,`rest_id` ,`created`) VALUES ('$note', '$day','$rest_id' ,CURRENT_TIMESTAMP)";
-                $res = mysqli_query($this->link, $sql);
-
-                if ($res) {
-                    $msg = "success_add";
-                    header("location: notes.php?msg=$msg");
-                    return true;
-                } else {
-                    $msg = "fail_add";
-                    header("location: notes.php?msg=$msg");
-                    return false;
-                }
+                $msg = "fail_add";
+                header("location: services.php?msg=$msg");
+                return false;
             }
         }
-        # code...
     }
 }
-$obj = new Notes;
-$objCity = $obj->getNotes();
-$objCreate = $obj->createNote();
+$obj = new Services;
+$objService = $obj->getServices();
+$objCreate = $obj->createService();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +57,7 @@ $objCreate = $obj->createNote();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Restaurant Panel - Notes</title>
+    <title>Admin - All Services</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -86,7 +77,7 @@ $objCreate = $obj->createNote();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_admin.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -115,44 +106,37 @@ $objCreate = $obj->createNote();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Notes</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Services</h1>
 
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">Add
-                                Note</button>
+                                Service</button>
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Note
+                                                <h5 class="modal-title" id="exampleModalLabel">Service
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            
                                             <div class="modal-body bg-light">
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <input type="text" required name="note" class="form-control" placeholder="Note">
+                                                    <div class="col-md-4">
+                                                        <input type="text" required name="service_en" class="border-0 form-control" placeholder="Service Name English">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="service_heb" class="border-0 form-control" placeholder="Service Name Hebrew">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="service_fr" class="border-0 form-control" placeholder="Service Name French">
                                                     </div>
 
-                                                    <div class="col-md-6">
-                                                        <select required name="day" class="form-control">
-                                                            <option selected disabled>Select Day</option>
-                                                            <option>sun</option>
-                                                            <option>mon</option>
-                                                            <option>tue</option>
-                                                            <option>wed</option>
-                                                            <option>thu</option>
-                                                            <option>fri</option>
-                                                            <option>sat</option>
-                                                        </select>
-                                                    </div>
 
                                                 </div>
 
@@ -168,17 +152,7 @@ $objCreate = $obj->createNote();
                         </div>
                         <div class="card-body">
 
-                            <?php if (strcmp($objCreate, 'taken') == 0) { ?>
-                                <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Restaurant Name Is Taken!</strong>
-                                </div>
-
-
-                            <?php } ?>
-
-
-                            <?php
+                        <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
@@ -254,16 +228,14 @@ $objCreate = $obj->createNote();
                             <?php
                                 }
                             } ?>
-
-
-
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Note</th>
-                                            <th>Day</th>
+                                            <th>Service English</th>
+                                            <th>Service Hebrew</th>
+                                            <th>Service French</th>
                                             <th>Created</th>
                                             <th>Updated</th>
                                             <th>Edit/Delete</th>
@@ -273,8 +245,9 @@ $objCreate = $obj->createNote();
                                     <tfoot>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Note</th>
-                                            <th>Day</th>
+                                            <th>Service English</th>
+                                            <th>Service Hebrew</th>
+                                            <th>Service French</th>
                                             <th>Created</th>
                                             <th>Updated</th>
                                             <th>Edit/Delete</th>
@@ -282,24 +255,24 @@ $objCreate = $obj->createNote();
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php if ($objCity) {
-                                            $a = 1;
-                                        ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objCity)) {
+                                        <?php if ($objService) {
+                                            $a = 1; ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objService)) {
 
                                                 $id = $row['id'];
-
 
                                             ?>
                                                 <tr>
                                                     <td><?php echo $a++; ?></td>
-                                                    <td><?php echo $row['note_en']; ?></td>
-                                                    <td><?php echo $row['day']; ?></td>
+                                                    <td><?php echo $row['service_en']; ?></td>
+                                                    <td><?php echo $row['service_heb']; ?></td>
+                                                    <td><?php echo $row['service_fr']; ?></td>
                                                     <td><?php echo $row['created']; ?></td>
                                                     <td><?php echo $row['updated']; ?></td>
                                                     <td>
-                                                        <a href="<?php echo "note_edit.php?id=$id"; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                        <a href="<?php echo "note_delete.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                        <a href="<?php echo "service_edit.php?id=$id"; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="<?php echo "service_delete.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a>
+
                                                     </td>
 
                                                 </tr>

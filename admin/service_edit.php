@@ -3,18 +3,17 @@ session_start();
 if(!isset( $_SESSION['name'])){
     header("location: login.php");
 }
-
 include('class/database.php');
-class Restaurant extends database
+class ServiceEdit extends database
 {
     protected $link;
-    public function getRest()
+    public function getService()
     {
 
-        $id = $_GET['id'];
-        $name = $_GET['name'];
 
-        $sql = "select * from restaurant_tbl where id = '$id' ";
+        $id = $_GET['id'];
+
+        $sql = "select * from services_tb where id = '$id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -24,63 +23,37 @@ class Restaurant extends database
         # code...
     }
 
-    public function updateRest()
+    public function updateService()
     {
 
         if (isset($_POST['submit'])) {
             $id = $_GET['id'];
-            $name = $_GET['name'];
+
+            $service_en = strtolower($_POST['service_en']);
+            $service_heb = strtolower($_POST['service_heb']);
+            $service_fr = strtolower($_POST['service_fr']);
 
 
-            $name_en = addslashes($_POST['name_en']);
-            $name_heb = addslashes($_POST['name_heb']);
-            $name_fr = addslashes($_POST['name_fr']);
 
-            $address_en = addslashes($_POST['address_en']);
-            $address_heb = addslashes($_POST['address_heb']);
-            $address_fr = addslashes($_POST['address_fr']);
+            $sql = "UPDATE services_tb SET service_en='$service_en', service_heb='$service_heb', service_fr='$service_fr' , updated=CURRENT_TIMESTAMP where id='$id'";
+            $res = mysqli_query($this->link, $sql);
 
 
-            $email = addslashes($_POST['email']);
-            $password = addslashes($_POST['password']);
-            $phone = $_POST['phone'];
-
-            $pass = password_hash($password, PASSWORD_DEFAULT);
-
-            if ($name !== $name_en) {
-
-                $sqlFind = "select * from restaurant_tbl where name_en = '$name_en' ";
-                $resFind = mysqli_query($this->link, $sqlFind);
-                if (mysqli_num_rows($resFind) > 0) {
-                    $msg = "taken";
-                    return $msg;
-                } else {
-                    $sql = "UPDATE restaurant_tbl SET name_en='$name_en', name_heb='$name_heb', name_fr='$name_fr', phone='$phone', address_en='$address_en', address_heb='$address_heb', address_fr='$address_fr', email='$email', password='$pass', updated=CURRENT_TIMESTAMP where id='$id'";
-                    $res = mysqli_query($this->link, $sql);
-
-                    if ($res) {
-                        $msg="success";
-                        header("location: all_restaurants.php?msg=success");
-                        return true;
-                    }
-                }
+            if ($res) {
+                $msg = "success_upd";
+                header("location: services.php?msg=$msg");
+                return true;
             } else {
-
-                $sql = "UPDATE restaurant_tbl SET name_en='$name_en', name_heb='$name_heb', name_fr='$name_fr', phone='$phone', address_en='$address_en', address_heb='$address_heb', address_fr='$address_fr', email='$email', password='$pass', updated=CURRENT_TIMESTAMP where id='$id'";
-                $res = mysqli_query($this->link, $sql);
-
-                if ($res) {
-                    $msg="success";
-                    header("location: all_restaurants.php?msg=success");
-                    return true;
-                }
+                $msg = "fail_upd";
+                header("location: services.php?msg=$msg");
+                return false;
             }
         }
     }
 }
-$obj = new Restaurant;
-$objRest = $obj->getRest();
-$objRestUpdate = $obj->updateRest();
+$obj = new ServiceEdit;
+$objService = $obj->getService();
+$objUpdateService = $obj->updateService();
 
 ?>
 <!DOCTYPE html>
@@ -94,7 +67,7 @@ $objRestUpdate = $obj->updateRest();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Edit Restaurant</title>
+    <title>Restaurant - Edit Service</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -141,7 +114,7 @@ $objRestUpdate = $obj->updateRest();
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Edit Restaurant</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Edit Service</h1>
 
                     </div>
 
@@ -151,7 +124,7 @@ $objRestUpdate = $obj->updateRest();
                         <div class="col-lg-12">
                             <?php
 
-                            $row = mysqli_fetch_assoc($objRest)
+                            $row = mysqli_fetch_assoc($objService)
 
 
                             ?>
@@ -160,11 +133,11 @@ $objRestUpdate = $obj->updateRest();
                             <div class="card shadow mb-4">
 
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Edit Restaurant Information</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Edit Service Information</h6>
                                 </div>
                                 <div class="card-body">
 
-                                    <?php if (strcmp($objRestUpdate, 'taken') == 0) { ?>
+                                    <?php if (strcmp($objUpdateService, 'taken') == 0) { ?>
                                         <div class="alert alert-warning alert-dismissible">
                                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                                             <strong>Restaurant Name Is Already Taken!</strong>
@@ -173,12 +146,12 @@ $objRestUpdate = $obj->updateRest();
 
                                     <?php } ?>
 
-                                  
+
 
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Restaurant Information
+                                                <h5 class="modal-title" id="exampleModalLabel">Service Information
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -186,61 +159,30 @@ $objRestUpdate = $obj->updateRest();
                                             </div>
                                             <div class="modal-body bg-light">
                                                 <div class="row">
-
                                                     <div class="col-md-4">
-                                                        Restaurant Name English
-                                                        <input type="text" required name="name_en" class="border-0 form-control" value="<?php echo $row["name_en"] ?>" placeholder="Restaurant Name English">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        Restaurant Name Hebrew
-                                                        <input type="text" name="name_heb" class="border-0 form-control" value="<?php echo $row["name_heb"] ?>" placeholder="Restaurant Name Hebrew">
+                                                        Service Name English
+                                                        <input type="text" required name="service_en" value="<?php echo $row["service_en"] ?>" class="border-0 form-control" placeholder="Service Name English">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        Restaurant Name French
-                                                        <input type="text" name="name_fr" class="border-0 form-control" value="<?php echo $row["name_fr"] ?>" placeholder="Restaurant Name French">
+                                                        Service Name Hebrew
+                                                        <input type="text" name="service_heb" value="<?php echo $row["service_heb"] ?>" class="border-0 form-control" placeholder="Service Name Hebrew">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        Service Name French
+                                                        <input type="text" name="service_fr" value="<?php echo $row["service_fr"] ?>" class="border-0 form-control" placeholder="Service Name French">
                                                     </div>
 
-                                                </div>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-md-4 mt-3">
-                                                        Email
-                                                        <input type="email" required name="email" value="<?php echo $row["email"] ?>" class="form-control border-0" placeholder="Restaurant Email">
-                                                    </div>
-                                                    <div class="col-md-4 mt-3">
-                                                        Password
-                                                        <input type="text" required name="password" class="form-control border-0" placeholder="Password">
-                                                    </div>
-
-                                                    <div class="col-md-4 mt-3">
-                                                        Phone
-                                                        <input type="text" required name="phone" value="<?php echo $row["phone"] ?>" class="form-control border-0" placeholder="Phone Number">
-                                                    </div>
 
                                                 </div>
 
-                                                <br>
-                                                <div class="row">
 
-                                                    <div class="col-md-12 mt-3">
-                                                        Address English
-                                                        <input type="text" required name="address_en" value="<?php echo $row["address_en"] ?>" class="form-control border-0" placeholder="Address English">
-                                                    </div>
-                                                    <div class="col-md-12 mt-3">
-                                                        Address Hebrew
-                                                        <input type="text" name="address_heb" value="<?php echo $row["address_heb"] ?>" class="form-control border-0" placeholder="Address Hebrew">
-                                                    </div>
-                                                    <div class="col-md-12 mt-3">
-                                                        Address French
-                                                        <input type="text" name="address_fr" value="<?php echo $row["name_fr"] ?>" class="form-control border-0" placeholder="Address French">
-                                                    </div>
-                                                </div>
 
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                 <button type="submit" name="submit" class="btn btn-primary">Save</button>
                                             </div>
+
                                         </div>
                                     </form>
 

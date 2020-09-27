@@ -1,8 +1,7 @@
 <?php
 session_start();
-if ($_SESSION['name']) {
-} else {
-    header('location:login.php');
+if(!isset( $_SESSION['name'])){
+    header("location: login.php");
 }
 
 include('class/database.php');

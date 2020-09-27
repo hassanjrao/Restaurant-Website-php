@@ -65,6 +65,12 @@ $objRestS2 = $obj->getRestaurants();
             <span>Clients</span></a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="services.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Services</span></a>
+    </li>
+
 
 
 

@@ -30,6 +30,32 @@ class profile extends database
         }
         # code...
     }
+    public function getServices()
+    {
+        $sql = "select * from services_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+    public function getBank()
+    {
+        $rest = $this->profileFunction();
+        $resl = mysqli_fetch_assoc($rest);
+
+        $bank_id = $resl["bank_id"];
+        $sql = "select * from bank_tb where id='$bank_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
     public function updateFunction()
     {
         if (isset($_POST['submit'])) {
@@ -37,12 +63,42 @@ class profile extends database
             $name = $_SESSION['Rname'];
             $phone = $_POST['phone'];
             $speciality = serialize($_POST['specialty']);
+            $services = serialize($_POST['services']);
             $kosher = $_POST['kosher'];
 
-            // $terrace = $_POST['terrace'];
-            // $bar = $_POST['bar'];
-            // $music = $_POST['music'];
-            // $parking = $_POST['parking'];
+
+            if ($kosher == "no") {
+                $kosherSpec = NULL;
+            } else  if ($kosher == "yes") {
+                $kosherSpec = $_POST['kosher-spec'];
+            }
+
+
+
+            $bank_id = $_POST["bank"];
+            $bank = $_POST["bank"];
+            $account_number = $_POST["account_number"];
+            $agency = $_POST["agency"];
+            $b_name = $_POST["b_name"];
+
+            $rest_id = $_SESSION['rest_id'];
+
+            $sql = "select * from bank_tb where rest_id='$rest_id'";
+            $res = mysqli_query($this->link, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                $bank_resl = mysqli_fetch_assoc($res);
+                $bank_id = $bank_resl["id"];
+                $sql = "UPDATE `bank_tb` SET `bank` = '$bank',`account_number` = '$account_number', `agency` = '$agency', `name` = '$b_name' where rest_id = '$rest_id' ";
+                $res = mysqli_query($this->link, $sql);
+            } else {
+                $sql = "INSERT INTO bank_tb (`bank`, `account_number` ,`agency`,`name`,`rest_id`) VALUES ('$bank', '$account_number','$agency','$name','$rest_id')";
+                $res_b = mysqli_query($this->link, $sql);
+
+                if ($res_b) {
+                    $bank_id = mysqli_insert_id($this->link);
+                }
+            }
+
 
             $folder = "rest_img/";
 
@@ -58,60 +114,42 @@ class profile extends database
             $path3 = $folder . $image3;
 
             if ($image !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `image` = '$image' where name_en = '$name' ";
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `image` = '$image',`bank_id` = '$bank_id' where name_en = '$name' ";
                 $res = mysqli_query($this->link, $sql);
                 if ($res) {
                     move_uploaded_file($_FILES['image']['tmp_name'], $path);
-                    header("location: profile.php");
-                    return $res;
-                } else {
-                    header("location: profile.php");
-                    return false;
-                }
+                   
+                } 
             }
 
             if ($image1 !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `gallery1` = '$image1' where name_en = '$name' ";
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `gallery1` = '$image1',`bank_id` = '$bank_id' where name_en = '$name' ";
                 $res = mysqli_query($this->link, $sql);
                 if ($res) {
                     move_uploaded_file($_FILES['image1']['tmp_name'], $path1);
-                    header("location: profile.php");
-                    return $res;
-                } else {
-                    header("location: profile.php");
-                    return false;
-                }
+                    
+                } 
             }
             if ($image2 !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `gallery2` = '$image2' where name_en = '$name' ";
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `gallery2` = '$image2',`bank_id` = '$bank_id' where name_en = '$name' ";
                 $res = mysqli_query($this->link, $sql);
                 if ($res) {
-                    move_uploaded_file($_FILES['image2']['tmp_name'], $path2);
-                    header("location: profile.php");
-                    return $res;
-                } else {
-                    header("location: profile.php");
-                    return false;
-                }
+                    move_uploaded_file($_FILES['image2']['tmp_name'], $path2);}
+                    
             }
 
             if ($image3 !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone', `gallery3` = '$image3' where name_en = '$name' ";
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `gallery3` = '$image3',`bank_id` = '$bank_id' where name_en = '$name' ";
                 $res = mysqli_query($this->link, $sql);
                 if ($res) {
                     move_uploaded_file($_FILES['image3']['tmp_name'], $path3);
-                    header("location: profile.php");
-                    return $res;
-                } else {
-                    header("location: profile.php");
-                    return false;
                 }
             }
 
             if ($image == '' && $image1 == '' && $image2 == '' && $image3 == '') {
 
 
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality', `kosher` = '$kosher', `phone` = '$phone' where name_en = '$name' ";
+                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
                 $res = mysqli_query($this->link, $sql);
                 if ($res) {
 
@@ -123,12 +161,23 @@ class profile extends database
                     return false;
                 }
             }
+
+            if($res){
+                header("location: profile.php");
+                return true;
+            }
+            else{
+                header("location: profile.php");
+                return false;
+            }
         }
     }
 }
 $obj = new profile;
 $objProfile = $obj->profileFunction();
 $objSpec = $obj->getSpec();
+$objService = $obj->getServices();
+$objBank = $obj->getBank();
 $objUpdate = $obj->updateFunction();
 $row = mysqli_fetch_assoc($objProfile);
 ?>
@@ -241,11 +290,58 @@ $row = mysqli_fetch_assoc($objProfile);
                                                         <h1 class="h6 text-gray-900 mb-4">Address:
                                                             <span class="font-weight-bold"><?php echo $row['address_en']; ?></span>
                                                         </h1>
-                                                        <input type="text" placeholder="Phone Number" class="form-control w-50" value="<?php echo $row['phone']; ?>" name="phone">
-                                                        <br>
+
+                                                        <h1 class="h6 text-gray-900 mb-4">Phone:
+                                                            <input type="text" placeholder="Phone Number" class="form-control w-50 mt-3" value="<?php echo $row['phone']; ?>" name="phone">
+
+                                                        </h1>
 
 
-                                                        <input type="text" placeholder="Kosher" class="form-control w-50 mt-4" value="<?php echo $row['kosher']; ?>" name="kosher">
+                                                        <h1 id="kosher-container" class="h6 text-gray-900 mb-4">Kosher:
+
+                                                            <?php
+                                                            if ($row["kosher"] == "yes") {
+
+                                                                $kosher_spec = $row['kosher_spec'];
+                                                            ?>
+                                                                <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
+                                                                    <option selected value="<?php echo $row['kosher']; ?>"><?php echo ucwords($row['kosher']); ?></option>
+                                                                    <option disabled></option>
+                                                                    <option value="no">No</option>
+                                                                    <option value="yes">Yes</option>
+                                                                </select>
+
+
+                                                                <input type="text" class="form-control w-50 mt-3" id="kosher-spec" name="kosher-spec" value="<?php echo $row['kosher_spec']; ?>" placeholder="Kosher specify">
+                                                            <?php
+                                                            } else if ($row["kosher"] == "no") {
+                                                                $kosher_spec = "";
+                                                            ?>
+                                                                <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
+                                                                    <option selected value="<?php echo $row['kosher']; ?>"><?php echo ucwords($row['kosher']); ?></option>
+                                                                    <option disabled></option>
+                                                                    <option value="no">No</option>
+                                                                    <option value="yes">Yes</option>
+                                                                </select>
+
+
+                                                            <?php
+                                                            } else {
+                                                                $kosher_spec = "";
+                                                            ?>
+                                                                <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
+                                                                  
+                                                                    <option value="no">No</option>
+                                                                    <option value="yes">Yes</option>
+                                                                </select>
+
+
+                                                            <?php
+
+                                                            }
+                                                            ?>
+
+                                                        </h1>
 
 
                                                     </div>
@@ -278,26 +374,23 @@ $row = mysqli_fetch_assoc($objProfile);
                                                         <div class="col-lg-6">
 
                                                             <h1 class="h4 mt-4 text-gray-900 mb-4 ">Services</h1>
-                                                            <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                    <input name="terrace" type="checkbox" class="form-check-input" value="Yes">Terrace
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                    <input name="park" type="checkbox" class="form-check-input" value="Yes">Parking
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                    <input name="bar" type="checkbox" class="form-check-input" value="Yes">Bar
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                    <input name="music" type="checkbox" class="form-check-input" value="Yes">Music
-                                                                </label>
-                                                            </div>
+                                                            <select name="services[]" class="form-control w-50" multiple required>
+
+                                                                <?php
+                                                                if ($objService) {
+                                                                    while ($row = mysqli_fetch_assoc($objService)) {
+
+                                                                ?>
+                                                                        <option value="<?php echo $row["service_en"] ?>"><?php echo ucwords($row["service_en"]) ?></option>
+
+
+                                                                <?php
+
+                                                                    }
+                                                                }
+                                                                ?>
+
+                                                            </select>
 
                                                         </div>
 
@@ -330,27 +423,33 @@ $row = mysqli_fetch_assoc($objProfile);
                                                 <section>
                                                     <h1 class="h4 mt-4 text-gray-900 mb-4 ">Bank Information</h1>
                                                     <table class="table table-striped table-dark table-hover">
+                                                        <?php
+                                                        if ($objBank) {
+                                                            $bank_info = mysqli_fetch_assoc($objBank);
+                                                        }
+                                                        ?>
+
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Bank</th>
-                                                                <th scope="col">Jibon</th>
+                                                                <td scope="col"><input type="text" class="form-control" name="bank" value="<?php echo ucwords($bank_info["bank"]) ?>"></td>
 
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
                                                                 <th scope="row">Account Number</th>
-                                                                <td>Mark</td>
+                                                                <td scope="col"><input type="text" class="form-control" name="account_number" value="<?php echo ucwords($bank_info["account_number"]) ?>"></td>
 
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Agency</th>
-                                                                <td>Jacob</td>
+                                                                <td scope="col"><input type="text" class="form-control" name="agency" value="<?php echo ucwords($bank_info["agency"]) ?>"></td>
 
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Name</th>
-                                                                <td>Larry</td>
+                                                                <td scope="col"><input type="text" class="form-control" name="b_name" value="<?php echo ucwords($bank_info["name"]) ?>"></td>
 
                                                             </tr>
                                                         </tbody>
@@ -476,6 +575,39 @@ $row = mysqli_fetch_assoc($objProfile);
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script>
+        function createSpecif() {
+            var value = document.getElementById("kosher").value;
+
+            var container = document.getElementById("kosher-container");
+
+
+
+            if (value == "yes") {
+                var value_k = document.getElementById("kosher-spec");
+
+                console.log(value_k);
+                if (value_k == null) {
+
+
+
+                    var newElem = document.createElement("INPUT");
+                    newElem.setAttribute("type", "text");
+                    newElem.setAttribute("name", "kosher-spec");
+                    newElem.setAttribute("id", "kosher-spec");
+                    newElem.setAttribute("value", "<?php echo $kosher_spec ?>");
+                    newElem.setAttribute("placeholder", "Kosher specify");
+                    newElem.setAttribute("class", "form-control w-50 mt-3");
+
+                    console.log(newElem);
+
+                    container.appendChild(newElem);
+                }
+            } else if (value == "no") {
+                var elem = document.getElementById("kosher-spec");
+                elem.remove();
+            }
+        }
+
         // Add the following code if you want the name of the file appear on select
         $(".custom-file-input").on("change", function() {
             var fileName = $(this).val().split("\\").pop();

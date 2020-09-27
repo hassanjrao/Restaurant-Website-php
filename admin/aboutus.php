@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!isset( $_SESSION['name'])){
+    header("location: login.php");
+}
 include('class/database.php');
 class About extends database
 {

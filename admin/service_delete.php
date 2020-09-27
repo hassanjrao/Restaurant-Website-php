@@ -4,25 +4,25 @@ if(!isset( $_SESSION['name'])){
     header("location: login.php");
 }
 include('class/database.php');
-class DelRestaurant extends database
+class DelService extends database
 {
     protected $link;
-    public function deleteRest()
+    public function deleteService()
     {
         $id=$_GET["id"];
-        $sql = "DELETE from restaurant_tbl where id='$id'";
+        $sql = "DELETE from services_tb where id='$id'";
         $res = mysqli_query($this->link, $sql);
         if ($res) {
             $msg="success_del";
-            header("location: all_restaurants.php?msg=$msg");
+            header("location: services.php?msg=$msg");
             return true;
         } else {
             $msg="fail_del";
-            header("location: all_restaurants.php?msg=$msg");
+            header("location: services.php?msg=$msg");
             return false;
         }
     }
    
 }
-$obj = new DelRestaurant;
-$obj->deleteRest();
+$obj = new DelService;
+$obj->deleteService();
