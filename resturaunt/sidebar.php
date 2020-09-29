@@ -38,6 +38,12 @@
       </li>
 
       <li class="nav-item">
+          <a class="nav-link" href="images.php">
+              <i class="fas fa-fw fa-chart-area"></i>
+              <span>Images</span></a>
+      </li>
+
+      <li class="nav-item">
           <a class="nav-link" href="profile.php">
               <i class="fas fa-fw fa-chart-area"></i>
               <span>Profile</span></a>

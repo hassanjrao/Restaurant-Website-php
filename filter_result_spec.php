@@ -33,6 +33,21 @@ class restaurant extends database
         }
         # code...
     }
+
+    public function getImages($rest_id)
+    {
+
+
+        $sql = "select * from rest_images where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+
 }
 $obj = new restaurant;
 $objFilter = $obj->filter();
@@ -251,15 +266,43 @@ $objSpec = $obj->getSpec();
                                         <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
                                             <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                 <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
-                                                    </div>
+
+                                                    <?php
+                                                    $objImage = $obj->getImages($rest_id);
+
+                                                    if ($objImage) {
+
+                                                        $active = true;
+                                                        while ($row1 = mysqli_fetch_assoc($objImage)) {
+
+                                                            $src = $row1["image"];
+
+
+                                                    ?>
+
+                                                            <div class="carousel-item <?php echo $active == true ? "active" : "" ?>">
+                                                                <img class="d-block w-100 card-img-top" width="305px" height="230px" src="<?php echo "resturaunt/rest_img/$src" ?>" alt="First slide">
+                                                            </div>
+                                                        <?php
+                                                            $active = false;
+                                                        }
+                                                    } else {
+
+
+                                                        ?>
+                                                        <div class="carousel-item active">
+                                                            <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
+                                                        </div>
+
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                                 <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

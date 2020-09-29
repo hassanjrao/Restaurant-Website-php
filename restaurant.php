@@ -115,39 +115,61 @@ class restaurant extends database
     {
         $name = $_GET['name'];
         $rest_id = $_GET["id"];
-        // $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
-        // $res = mysqli_query($this->link, $sql);
-        // if (mysqli_num_rows($res) > 0) {
-            // return $res;
-        // } else {
-        //     return false;
-        // }
+        $sql = "select * from menu_starter_tb  where rest_id = '$rest_id' ";
+
+
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
         # code...
     }
     public function foodFunction2()
     {
-        // $name = $_GET['name'];
-        // $rest_id = $_GET["id"];
-        // $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
-        // $res = mysqli_query($this->link, $sql);
-        // if (mysqli_num_rows($res) > 0) {
-        //     return $res;
-        // } else {
-        //     return false;
-        // }
+        $name = $_GET['name'];
+        $rest_id = $_GET["id"];
+        $sql = "select * from menu_dish_tb  where rest_id = '$rest_id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
         # code...
     }
     public function foodFunction3()
     {
-        // $name = $_GET['name'];
-        // $rest_id = $_GET["id"];
-        // $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
-        // $res = mysqli_query($this->link, $sql);
-        // if (mysqli_num_rows($res) > 0) {
-        //     return $res;
-        // } else {
-        //     return false;
-        // }
+        $name = $_GET['name'];
+        $rest_id = $_GET["id"];
+        $sql = "select * from menu_dessert_tb  where rest_id = '$rest_id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+
+    public function getNote()
+    {
+        $name = $_GET['name'];
+        $rest_id = $_GET["id"];
+
+        $date = isset($_GET["date"]) == true ? $_GET["date"] : NULL;
+
+        $day =  isset($date) == true ? strtolower(date('D', strtotime("$date"))) : strtolower(date("D"));
+
+
+        $sql = "select * from notes_tb  where rest_id = '$rest_id' AND day= '$day' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
         # code...
     }
     public function imageFunction()
@@ -196,6 +218,9 @@ $objFood3 = $obj->foodFunction3();
 $objImage = $obj->imageFunction();
 $objResvTime = $obj->timeReservFunction();
 $objTime = $obj->timeFunction();
+$objNote = $obj->getNote();
+
+
 
 ?>
 
@@ -257,20 +282,20 @@ $objTime = $obj->timeFunction();
                         ?>
 
                                 <div class="item">
-                                <h4 class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</h4>
-                                <h4 class="d-block" style="color: #481639;"><?php echo "$st:00" ?></h4>
+                                    <h4 class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</h4>
+                                    <h4 class="d-block" style="color: #481639;"><?php echo "$st:00" ?></h4>
                                 </div>
 
                                 <div class="item">
-                                <h4 class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</h4>
-                                <h4 class="d-block" style="color: #481639;"><?php echo "$st:30" ?></h4>
+                                    <h4 class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</h4>
+                                    <h4 class="d-block" style="color: #481639;"><?php echo "$st:30" ?></h4>
                                 </div>
 
 
                         <?php }
                         } ?>
 
-                       
+
 
                     </div>
                     <!-- <div class="row">
@@ -298,11 +323,15 @@ $objTime = $obj->timeFunction();
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h5 class="mt-4 d-block"><strong style="color:#EEA11D">NOTE:</strong> This offer is Valid
-                        for
-                        starters, dishes and desserts.
-                        Drinks
-                        not included.</h5>
+                    <h5 class="mt-4 d-block"><strong style="color:#EEA11D">NOTE:</strong>
+
+                        <?php if ($objNote) {
+                            $row=mysqli_fetch_assoc($objNote);
+
+                            echo $row["note_en"];
+                        } ?>
+                       
+                    </h5>
 
                     <?php if ($objRest) {
                         $rel = explode("-", $objRest);
@@ -578,27 +607,37 @@ $objTime = $obj->timeFunction();
                                         <h4 class="font-weight-bold" style="color: #EEA11D;">Starter</h4>
 
                                         <?php if ($objFood) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood)) { ?>
-                                                <p class="mt-3"><strong><?php echo $row['starter_name_en']; ?></strong> </p>
-                                                <hr>
-                                            <?php } ?>
-                                        <?php } ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objFood)) {
+
+                                                if ($row['starter_en'] !== NULL || $row['starter_en'] != "") {
+                                            ?>
+                                                    <p class="mt-3"><strong><?php echo $row['starter_en']; ?></strong> </p>
+                                                    <hr>
+                                        <?php }
+                                            }
+                                        } ?>
+
 
 
                                         <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Dishes</h4>
                                         <?php if ($objFood2) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood2)) { ?>
-                                                <p class="mt-3"><strong><?php echo $row['dish_name_en']; ?></strong> </p>
-                                                <hr>
-                                            <?php } ?>
-                                        <?php } ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objFood2)) {
+                                                if ($row['dish_en'] !== NULL || $row['dish_en'] != "") { ?>
+                                                    <p class="mt-3"><strong><?php echo $row['dish_en']; ?></strong> </p>
+                                                    <hr>
+                                                <?php } ?>
+                                        <?php }
+                                        } ?>
 
                                         <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Desserts</h4>
-                                        <?php if ($objFood3) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood3)) { ?>
-                                                <p class="mt-3"><strong><?php echo $row['dessert_name_en']; ?></strong> </p>
-                                                <hr>
-                                            <?php } ?>
+                                        <?php if ($objFood3) {
+                                        ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objFood3)) {
+                                                if ($row['dessert_en'] !== NULL || $row['dessert_en'] != "") { ?>
+                                                    <p class="mt-3"><strong><?php echo $row['dessert_en']; ?></strong> </p>
+                                                    <hr>
+                                            <?php }
+                                            } ?>
                                         <?php } ?>
 
                                     </div>

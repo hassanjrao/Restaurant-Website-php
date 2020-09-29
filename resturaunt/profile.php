@@ -100,73 +100,25 @@ class profile extends database
             }
 
 
-            $folder = "rest_img/";
-
-            $image = $_FILES['image']['name'];
-            $image1 = $_FILES['image1']['name'];
-            $image2 = $_FILES['image2']['name'];
-            $image3 = $_FILES['image3']['name'];
 
 
-            $path = $folder . $image;
-            $path1 = $folder . $image1;
-            $path2 = $folder . $image2;
-            $path3 = $folder . $image3;
+            $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
+            $res = mysqli_query($this->link, $sql);
+            if ($res) {
 
-            if ($image !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `image` = '$image',`bank_id` = '$bank_id' where name_en = '$name' ";
-                $res = mysqli_query($this->link, $sql);
-                if ($res) {
-                    move_uploaded_file($_FILES['image']['tmp_name'], $path);
-                   
-                } 
-            }
-
-            if ($image1 !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `gallery1` = '$image1',`bank_id` = '$bank_id' where name_en = '$name' ";
-                $res = mysqli_query($this->link, $sql);
-                if ($res) {
-                    move_uploaded_file($_FILES['image1']['tmp_name'], $path1);
-                    
-                } 
-            }
-            if ($image2 !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `gallery2` = '$image2',`bank_id` = '$bank_id' where name_en = '$name' ";
-                $res = mysqli_query($this->link, $sql);
-                if ($res) {
-                    move_uploaded_file($_FILES['image2']['tmp_name'], $path2);}
-                    
-            }
-
-            if ($image3 !== "") {
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone', `gallery3` = '$image3',`bank_id` = '$bank_id' where name_en = '$name' ";
-                $res = mysqli_query($this->link, $sql);
-                if ($res) {
-                    move_uploaded_file($_FILES['image3']['tmp_name'], $path3);
-                }
-            }
-
-            if ($image == '' && $image1 == '' && $image2 == '' && $image3 == '') {
-
-
-                $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
-                $res = mysqli_query($this->link, $sql);
-                if ($res) {
-
-                    header("location: profile.php");
-                    return true;
-                } else {
-
-
-                    return false;
-                }
-            }
-
-            if($res){
                 header("location: profile.php");
                 return true;
+            } else {
+
+
+                return false;
             }
-            else{
+
+
+            if ($res) {
+                header("location: profile.php");
+                return true;
+            } else {
                 header("location: profile.php");
                 return false;
             }
@@ -276,12 +228,8 @@ $row = mysqli_fetch_assoc($objProfile);
                                             <form class="user" method="post" action="profile.php" enctype="multipart/form-data">
 
                                                 <div class="row">
-                                                    <div class="col-md-4 mx-auto">
-                                                        <img class="profileImage mt-4" onclick="triggerClick()" id="profileDisplay" src="rest_img/<?php echo $row['image']; ?>" alt="">
-                                                        <input type="file" accept="image/*" name="image" id="profileImage" value="rest_img/<?php echo $row['image']; ?>" onchange="displayImage(this)" style="display: none;">
-                                                        <!-- <p class="lead text-center">Tap to upload image</p> -->
-                                                    </div>
-                                                    <div class="col-md-8">
+
+                                                    <div class="col-md-12">
                                                         <h1 class="h4 text-gray-900 mb-4 mt-3">Restaurant
                                                             Features</h1>
                                                         <h1 class="h6 text-gray-900 mb-4">Name:
@@ -290,6 +238,10 @@ $row = mysqli_fetch_assoc($objProfile);
                                                         <h1 class="h6 text-gray-900 mb-4">Address:
                                                             <span class="font-weight-bold"><?php echo $row['address_en']; ?></span>
                                                         </h1>
+
+                                                    </div>
+
+                                                    <div class="col-md-6">
 
                                                         <h1 class="h6 text-gray-900 mb-4">Phone:
                                                             <input type="text" placeholder="Phone Number" class="form-control w-50 mt-3" value="<?php echo $row['phone']; ?>" name="phone">
@@ -330,7 +282,7 @@ $row = mysqli_fetch_assoc($objProfile);
                                                                 $kosher_spec = "";
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
-                                                                  
+
                                                                     <option value="no">No</option>
                                                                     <option value="yes">Yes</option>
                                                                 </select>
@@ -342,31 +294,15 @@ $row = mysqli_fetch_assoc($objProfile);
                                                             ?>
 
                                                         </h1>
-
-
                                                     </div>
+
+                                                  
                                                 </div>
 
                                                 <hr>
 
 
-                                                <section class="pt-4 pb-5">
-                                                    <h1 class="h4 mt-4 text-gray-900 mb-4 ">Restaurant Image</h1>
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <img class="profileImageSq mt-4" onclick="triggerClick1()" id="profileDisplay1" src="rest_img/<?php echo $row['gallery1']; ?>" alt="">
-                                                            <input type="file" accept="image/*" name="image1" id="profileImage1" value="rest_img/<?php echo $row['gallery1']; ?>" onchange="displayImage1(this)" style="display: none;">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <img class="profileImageSq mt-4" onclick="triggerClick2()" id="profileDisplay2" src="rest_img/<?php echo $row['gallery2']; ?>" alt="">
-                                                            <input type="file" accept="image/*" name="image2" id="profileImage2" value="rest_img/<?php echo $row['gallery2']; ?>" onchange="displayImage2(this)" style="display: none;">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <img class="profileImageSq mt-4" onclick="triggerClick3()" id="profileDisplay3" src="rest_img/<?php echo $row['gallery3']; ?>" alt="">
-                                                            <input type="file" accept="image/*" name="image3" id="profileImage3" value="rest_img/<?php echo $row['gallery3']; ?>" onchange="displayImage3(this)" style="display: none;">
-                                                        </div>
-                                                    </div>
-                                                </section>
+
 
                                                 <hr>
                                                 <section>

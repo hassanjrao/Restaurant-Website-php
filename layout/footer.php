@@ -51,7 +51,7 @@
                 <div class="col-md-2 icon_sec mt-5">
                     <h6 style="font-family: 'Lato', sans-serif;" class="font-weight-bold text-secondary">Discover
                         Woopyzz</h6>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">About Us</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="about.php">About Us</a>
                     <a style="text-decoration: none;" class="text-secondary d-block" href="#">Our prices</a>
                     <a style="text-decoration: none;" class="text-secondary d-block" href="#">Join us</a>
                     <a style="text-decoration: none; white-space: nowrap" class="text-secondary d-block"
@@ -61,7 +61,7 @@
                 <div class="col-md-2 mt-5">
                     <h6 style="font-family: 'Lato', sans-serif;" class="font-weight-bold text-secondary">Term of use
                     </h6>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">Term of use</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="tos.php">Term of use</a>
                     <a style="text-decoration: none;" class="text-secondary d-block" href="./privacy-policy.php">Privacy Policy</a>
                     <a style="text-decoration: none;" class="text-secondary d-block" href="#">Cookies</a>
 
