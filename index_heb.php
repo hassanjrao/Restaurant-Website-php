@@ -134,7 +134,7 @@ $objCity = $obj->getCities();
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
     <div class="back_img">
         <div class="container">
@@ -478,9 +478,9 @@ $objCity = $obj->getCities();
 
 
                                             <div class="form-check">
-                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["specialty"] ?>" id="defaultCheck1">
+                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["specialty_heb"] ?>" id="defaultCheck1">
                                                 <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
-                                                    <?php echo $row["specialty"] ?>
+                                                    <?php echo $row["specialty_heb"] ?>
                                                 </label>
 
                                             </div>
@@ -507,7 +507,7 @@ $objCity = $obj->getCities();
 
 
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>
