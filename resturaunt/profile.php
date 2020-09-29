@@ -341,7 +341,7 @@ $row = mysqli_fetch_assoc($objProfile);
                                                                     <?php while ($row = mysqli_fetch_assoc($objSpec)) {
 
                                                                     ?>
-                                                                        <option value="<?php echo $row["specialty"] ?>"><?php echo ucwords($row["specialty"]) ?></option>
+                                                                        <option value="<?php echo $row["specialty_en"] ?>"><?php echo ucwords($row["specialty_en"]) ?></option>
                                                                 <?php
                                                                     }
                                                                 }
