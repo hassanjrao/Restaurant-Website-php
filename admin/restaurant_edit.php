@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 
@@ -24,6 +24,39 @@ class Restaurant extends database
         # code...
     }
 
+    public function getCityName($city_id)
+    {
+        $sql = "select * from cities_tb where id='$city_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCityID()
+    {
+        $sql = "select id from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCity()
+    {
+        $sql = "select * from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
     public function updateRest()
     {
 
@@ -45,6 +78,8 @@ class Restaurant extends database
             $password = addslashes($_POST['password']);
             $phone = $_POST['phone'];
 
+            $cities=serialize($_POST["cities"]);
+
             $pass = password_hash($password, PASSWORD_DEFAULT);
 
             if ($name !== $name_en) {
@@ -53,24 +88,25 @@ class Restaurant extends database
                 $resFind = mysqli_query($this->link, $sqlFind);
                 if (mysqli_num_rows($resFind) > 0) {
                     $msg = "taken";
-                    return $msg;
+                    header("location: all_restaurants.php?msg=$msg");
+                    return false;
                 } else {
-                    $sql = "UPDATE restaurant_tbl SET name_en='$name_en', name_heb='$name_heb', name_fr='$name_fr', phone='$phone', address_en='$address_en', address_heb='$address_heb', address_fr='$address_fr', email='$email', password='$pass', updated=CURRENT_TIMESTAMP where id='$id'";
+                    $sql = "UPDATE restaurant_tbl SET name_en='$name_en', name_heb='$name_heb', name_fr='$name_fr', phone='$phone', address_en='$address_en', address_heb='$address_heb', address_fr='$address_fr', cities='$cities' ,email='$email', password='$pass', updated=CURRENT_TIMESTAMP where id='$id'";
                     $res = mysqli_query($this->link, $sql);
 
                     if ($res) {
-                        $msg="success";
+                        $msg = "success";
                         header("location: all_restaurants.php?msg=success");
                         return true;
                     }
                 }
             } else {
 
-                $sql = "UPDATE restaurant_tbl SET name_en='$name_en', name_heb='$name_heb', name_fr='$name_fr', phone='$phone', address_en='$address_en', address_heb='$address_heb', address_fr='$address_fr', email='$email', password='$pass', updated=CURRENT_TIMESTAMP where id='$id'";
+                $sql = "UPDATE restaurant_tbl SET name_en='$name_en', name_heb='$name_heb', name_fr='$name_fr', phone='$phone', address_en='$address_en', address_heb='$address_heb', address_fr='$address_fr', cities='$cities', email='$email', password='$pass', updated=CURRENT_TIMESTAMP where id='$id'";
                 $res = mysqli_query($this->link, $sql);
 
                 if ($res) {
-                    $msg="success";
+                    $msg = "success";
                     header("location: all_restaurants.php?msg=success");
                     return true;
                 }
@@ -80,6 +116,8 @@ class Restaurant extends database
 }
 $obj = new Restaurant;
 $objRest = $obj->getRest();
+$objCity = $obj->getCity();
+$objCityID = $obj->getCityID();
 $objRestUpdate = $obj->updateRest();
 
 ?>
@@ -173,7 +211,7 @@ $objRestUpdate = $obj->updateRest();
 
                                     <?php } ?>
 
-                                  
+
 
                                     <form action="" method="post">
                                         <div class="modal-content">
@@ -234,6 +272,80 @@ $objRestUpdate = $obj->updateRest();
                                                         Address French
                                                         <input type="text" name="address_fr" value="<?php echo $row["name_fr"] ?>" class="form-control border-0" placeholder="Address French">
                                                     </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <?php
+                                                    if ($objCity) {
+                                                        $i = 0;
+                                                        $city_arr2 = [];
+                                                        while ($city_row = mysqli_fetch_assoc($objCity)) {
+
+                                                            $city_arr2[$i++] = $city_row["id"];
+                                                        }
+                                                        $city_arr = unserialize($row["cities"]);
+                                                       
+
+                                                        if ($city_arr) {
+
+                                                            $remain_cities = array_diff($city_arr2, $city_arr);
+                                                        } else {
+                                                            $remain_cities = $city_arr2;
+                                                        }
+
+                                                      
+
+                                                      
+                                                    }
+
+                                                    ?>
+
+                                                    <div class="col-md-6 mt-3">
+                                                        <select class="form-control" name="cities[]" multiple required>
+                                                            <option slected disabled>Select Cities</option>
+
+                                                            <?php
+
+                                                            $newObj = new Restaurant;
+
+                                                            if ($city_arr) {
+
+                                                                foreach ($city_arr as $city_id) {
+                                                                    $row = mysqli_fetch_assoc($newObj->getCityName($city_id));
+
+
+                                                                    $city = $row["city"]
+                                                            ?>
+                                                                    <option selected value="<?php echo $city_id ?>"><?php echo ucwords($city) ?></option>
+
+                                                                <?php
+                                                                }
+                                                            }
+                                                            if (!empty($remain_cities)) {
+
+                                                                foreach ($remain_cities as $id) {
+                                                                    # code...
+
+                                                                    $row = mysqli_fetch_assoc($newObj->getCityName($id));
+                                                                    $city = $row["city"];
+
+                                                                ?>
+                                                                    <option value="<?php echo $id ?>"><?php echo ucwords($city) ?></option>
+
+                                                                <?php
+                                                                }
+                                                            }
+                                                            if ($city_arr == false && empty($remain_cities)) {
+                                                                ?>
+                                                                <option disabled>No City Found</option>
+                                                            <?php
+                                                            }
+
+                                                            ?>
+
+                                                        </select>
+                                                    </div>
+
                                                 </div>
 
                                             </div>

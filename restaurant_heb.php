@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-
-if($_SESSION["lan"]=="heb"){
-    header("location: restaurant_heb.php");
+if($_SESSION["lan"]=="en"){
+    header("location: restaurant.php");
 }
 else if($_SESSION["lan"]=="fr"){
     header("location: restaurant_fr.php");
@@ -105,7 +104,7 @@ class restaurant extends database
                 if ($res) {
                     echo "Added";
                     $_SESSION['code'] = $code;
-                    header('location:profile.php');
+                    header('location:profile_heb.php');
                     return $res;
                 } else {
                     echo "Not added";
@@ -313,12 +312,12 @@ $objNote = $obj->getNote();
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h5 class="mt-4 d-block"><strong style="color:#EEA11D">NOTE:</strong>
+                    <h5 class="mt-4 d-block"><strong style="color:#EEA11D">הערה:</strong>
 
                         <?php if ($objNote) {
                             $row=mysqli_fetch_assoc($objNote);
 
-                            echo $row["note_en"];
+                            echo $row["note_heb"];
                         } ?>
                        
                     </h5>
@@ -344,7 +343,7 @@ $objNote = $obj->getNote();
             <form action="" method="post">
                 <div class="row">
                     <div class="col-md-3 mt-2">
-                        <h5><span class="font-weight-bold">Select</span> Details</h5>
+                        <h5><span class="font-weight-bold">בחר פרטי הזמנה</span></h5>
 
                         <div class=" input-group input-focus bg-light mt-3">
                             <div class="input-group-prepend">
@@ -352,30 +351,30 @@ $objNote = $obj->getNote();
                             </div>
                             <select name="person" id="" class="form-control bg-light border-0" required>
 
-                                <option value="<?php echo $people == NULL ? "" : "$people" ?>" selected class=""><?php echo $people == NULL ? "People" : "$people People" ?></option>
+                                <option value="<?php echo $people == NULL ? "" : "$people" ?>" selected class=""><?php echo $people == NULL ? "סועדים" : "$people סועדים" ?></option>
                                 <option value="<?php echo NULL ?>"></option>
 
 
-                                <option value="1">1 people</option>
-                                <option value="2">2 people</option>
-                                <option value="3">3 people</option>
-                                <option value="4">4 people</option>
-                                <option value="5">5 people</option>
-                                <option value="6">6 people</option>
-                                <option value="7">7 people</option>
-                                <option value="8">8 people</option>
-                                <option value="9">9 people</option>
-                                <option value="10">10 people</option>
-                                <option value="11">11 people</option>
-                                <option value="12">12 people</option>
-                                <option value="13">13 people</option>
-                                <option value="14">14 people</option>
-                                <option value="15">15 people</option>
-                                <option value="16">16 people</option>
-                                <option value="17">17 people</option>
-                                <option value="18">18 people</option>
-                                <option value="19">19 people</option>
-                                <option value="20">20 people</option>
+                                <option value="1">1 סועדים</option>
+                                <option value="2">2 סועדים</option>
+                                <option value="3">3 סועדים</option>
+                                <option value="4">4 סועדים</option>
+                                <option value="5">5 סועדים</option>
+                                <option value="6">6 סועדים</option>
+                                <option value="7">7 סועדים</option>
+                                <option value="8">8 סועדים</option>
+                                <option value="9">9 סועדים</option>
+                                <option value="10">10 סועדים</option>
+                                <option value="11">11 סועדים</option>
+                                <option value="12">12 סועדים</option>
+                                <option value="13">13 סועדים</option>
+                                <option value="14">14 סועדים</option>
+                                <option value="15">15 סועדים</option>
+                                <option value="16">16 סועדים</option>
+                                <option value="17">17 סועדים</option>
+                                <option value="18">18 סועדים</option>
+                                <option value="19">19 סועדים</option>
+                                <option value="20">20 סועדים</option>
                             </select>
 
                         </div>
@@ -384,7 +383,7 @@ $objNote = $obj->getNote();
                                 <span class="input-group-text border-0 bg-light "><i class="far fa-clock fa-2x"></i></span>
                             </div>
                             <select name="time" id="" class="form-control bg-light border-0" required>
-                                <option value="" selected disabled class="">Time</option>
+                                <option value="" selected disabled class="">זמן</option>
 
 
 
@@ -498,7 +497,7 @@ $objNote = $obj->getNote();
 
                                 ?>
 
-                                <option value="<?php echo $s_time == NULL ? "" : "$s_time" ?>" selected class=""><?php echo $s_time == NULL ? "Time" : "$s_time" ?></option>
+                                <option value="<?php echo $s_time == NULL ? "" : "$s_time" ?>" selected class=""><?php echo $s_time == NULL ? "זמן" : "$s_time" ?></option>
                                 <option value="<?php echo NULL ?>"></option>
 
 
@@ -553,7 +552,7 @@ $objNote = $obj->getNote();
                             <div class="input-group-prepend">
                                 <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt fa-2x"></i></span>
                             </div>
-                            <input placeholder="Select a date" name="date" type="text" value="<?php echo $date == NULL ? "" : "$date" ?>" class="form-control bg-light border-0" id="datepicker">
+                            <input placeholder="תאריך" name="date" type="text" value="<?php echo $date == NULL ? "" : "$date" ?>" class="form-control bg-light border-0" id="datepicker">
                         </div>
 
                     </div>
@@ -565,28 +564,29 @@ $objNote = $obj->getNote();
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                            Menu
+                                        תפריט
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                            Photos
+                                        תמונות
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                            Review
+                                        חוות דעת
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                            About
+                                        אודות המסעדה
+
                                         </a>
                                     </p>
                                 </div>
@@ -599,9 +599,9 @@ $objNote = $obj->getNote();
                                         <?php if ($objFood) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood)) {
 
-                                                if ($row['starter_en'] !== NULL || $row['starter_en'] != "") {
+                                                if ($row['starter_heb'] !== NULL || $row['starter_heb'] != "") {
                                             ?>
-                                                    <p class="mt-3"><strong><?php echo $row['starter_en']; ?></strong> </p>
+                                                    <p class="mt-3"><strong><?php echo $row['starter_heb']; ?></strong> </p>
                                                     <hr>
                                         <?php }
                                             }
@@ -612,8 +612,8 @@ $objNote = $obj->getNote();
                                         <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Dishes</h4>
                                         <?php if ($objFood2) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood2)) {
-                                                if ($row['dish_en'] !== NULL || $row['dish_en'] != "") { ?>
-                                                    <p class="mt-3"><strong><?php echo $row['dish_en']; ?></strong> </p>
+                                                if ($row['dish_heb'] !== NULL || $row['dish_heb'] != "") { ?>
+                                                    <p class="mt-3"><strong><?php echo $row['dish_heb']; ?></strong> </p>
                                                     <hr>
                                                 <?php } ?>
                                         <?php }
@@ -623,8 +623,8 @@ $objNote = $obj->getNote();
                                         <?php if ($objFood3) {
                                         ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood3)) {
-                                                if ($row['dessert_en'] !== NULL || $row['dessert_en'] != "") { ?>
-                                                    <p class="mt-3"><strong><?php echo $row['dessert_en']; ?></strong> </p>
+                                                if ($row['dessert_heb'] !== NULL || $row['dessert_heb'] != "") { ?>
+                                                    <p class="mt-3"><strong><?php echo $row['dessert_heb']; ?></strong> </p>
                                                     <hr>
                                             <?php }
                                             } ?>
@@ -738,7 +738,7 @@ $objNote = $obj->getNote();
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" name="submit" class="w-25 mt-4 log_btn btn btn-lg font-weight-bold">Next</button>
+                        <button type="submit" name="submit" class="w-25 mt-4 log_btn btn btn-lg font-weight-bold">הבא</button>
                     </div>
 
             </form>

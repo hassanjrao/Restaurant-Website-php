@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 include('class/database.php');
@@ -29,6 +29,8 @@ class restaurant extends database
             $address_heb = addslashes($_POST['address_heb']);
             $address_fr = addslashes($_POST['address_fr']);
 
+            $cities = serialize($_POST["cities"]);
+
 
             $email = addslashes($_POST['email']);
             $password = addslashes($_POST['password']);
@@ -47,7 +49,7 @@ class restaurant extends database
                 $msg = "taken";
                 return $msg;
             } else {
-                $sql = "INSERT INTO `restaurant_tbl` (`id`, `name_en`, `name_heb`, `name_fr`,  `speciality`, `kosher`, `phone`, `address_en`, `address_heb`, `address_fr`, `image`, `gallery1`, `gallery2`, `gallery3`, `email`, `password`, `created`, `updated`) VALUES (NULL, '$name_en', '$name_heb', '$name_fr', '', '', '$phone', '$address_en', '$address_heb', '$address_fr', '$image', '$gallery1', '$gallery2', '$gallery3', '$email', '$pass', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                $sql = "INSERT INTO `restaurant_tbl` (`name_en`, `name_heb`, `name_fr`, `phone`, `address_en`, `address_heb`, `address_fr`, `cities` , `email`, `password`, `created`, `updated`) VALUES ( '$name_en', '$name_heb', '$name_fr', '$phone', '$address_en', '$address_heb', '$address_fr', '$cities', '$email', '$pass', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
                 $res = mysqli_query($this->link, $sql);
                 if ($res) {
                     $sql2 = "CREATE TABLE $name_en (
@@ -79,7 +81,7 @@ class restaurant extends database
                         )";
                     $res2 = mysqli_query($this->link, $sql2);
 
-                    var_dump($name_en);
+                
 
 
                     $sqlPay = "CREATE TABLE $payment (
@@ -102,24 +104,49 @@ class restaurant extends database
 
                         $resPay2 = mysqli_query($this->link, $sqlPay2);
 
+                       
+
                         if ($res3) {
-                            header('location:all_restaurants.php');
+                             header('location:all_restaurants.php');
                             return $res3;
                         }
                         header('location:all_restaurants.php');
                         return $res2;
                     }
                 } else {
+                  
                     return false;
                 }
             }
         }
         # code...
     }
+
+    public function getCity()
+    {
+        $sql = "select * from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCityName($city_id){
+        $sql = "select * from cities_tb where id='$city_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
 }
 $obj = new restaurant;
 $objRest = $obj->restaurantFunction();
 $objCreate = $obj->createRestaurant();
+$objCity = $obj->getCity();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -241,6 +268,34 @@ $objCreate = $obj->createRestaurant();
                                                     </div>
                                                 </div>
 
+                                                <div class="row">
+
+                                                    <div class="col-md-6 mt-3">
+                                                        <select class="form-control" name="cities[]" multiple required>
+                                                            <option slected disabled>Select Cities</option>
+
+                                                            <?php
+                                                            if ($objCity) {
+
+                                                                while ($row = mysqli_fetch_assoc($objCity)) {
+
+                                                            ?>
+                                                                    <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
+                                                                <?php
+                                                                }
+                                                            } else {
+                                                                ?>
+                                                                <option disabled>No City Found</option>
+                                                            <?php
+                                                            }
+
+                                                            ?>
+
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -307,6 +362,7 @@ $objCreate = $obj->createRestaurant();
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Address</th>
+                                            <th>Cities</th>
                                             <th>Created</th>
                                             <th>Edit/Delete</th>
 
@@ -317,6 +373,7 @@ $objCreate = $obj->createRestaurant();
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Address</th>
+                                            <th>Cities</th>
                                             <th>Created</th>
                                             <th>Edit/Delete</th>
 
@@ -328,11 +385,32 @@ $objCreate = $obj->createRestaurant();
 
                                                 $id = $row['id'];
                                                 $name = $row['name_en'];
+
+
+
+                                                $city_arr = unserialize($row["cities"]);
+
+                                             
+
                                             ?>
                                                 <tr>
                                                     <td><?php echo $row['id']; ?></td>
                                                     <td><?php echo $row['name_en']; ?></td>
                                                     <td><?php echo $row['address_en']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        if ($city_arr != NULL) {
+                                                            $newObj=new restaurant;
+                                                            foreach ($city_arr as $city_id) {
+
+                                                                $city_res=mysqli_fetch_assoc($newObj->getCityName($city_id));
+
+                                                                echo $city_res["city"].",";
+                                                                
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td><?php echo $row['created']; ?></td>
                                                     <td><a href="<?php echo "restaurant_edit.php?id=$id&name=$name"; ?>" class="btn btn-primary btn-sm">Edit</a>
                                                         <a href="<?php echo "restaurant_delete.php?id=$id&name=$name"; ?>" class="btn btn-danger btn-sm">Delete</a></td>

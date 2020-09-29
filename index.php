@@ -1,17 +1,19 @@
 <?php
 session_start();
+
 if (isset($_GET["lan"])) {
     if ($_GET["lan"] == "en") {
-        $_SESSION["lan"] == "en";
+        $_SESSION["lan"] = "en";
         header("location: index.php");
     } else if ($_GET["lan"] == "heb") {
-        $_SESSION["lan"] == "heb";
+        $_SESSION["lan"] = "heb";
         header("location: index_heb.php");
     } else if ($_GET["lan"] == "fr") {
-        $_SESSION["lan"] == "fr";
+        $_SESSION["lan"] = "fr";
         header("location: index_fr.php");
     }
 }
+
 include('class/database.php');
 class restaurant extends database
 {

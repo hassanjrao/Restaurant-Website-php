@@ -43,6 +43,23 @@ class restaurant extends database
         # code...
     }
 
+    public function getImages($rest_id)
+    {
+
+
+        $sql = "select * from rest_images where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+
+
+
+    }
+
     public function getDiscount()
     {
         $rest = $this->restaurantFunction();
@@ -78,7 +95,8 @@ $objCity = $obj->getCities();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home HEB</title>
+    <title>דף הבית
+    </title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -121,13 +139,14 @@ $objCity = $obj->getCities();
     <div class="back_img">
         <div class="container">
             <div class="caption pt-5">
-                <h3 class="font-weight-bold">Faster, Cheaper And Easier Way To Book <br>A Restaurant In Israel</h3>
+                <h3 class="font-weight-bold">הדרך המהירה, הזולה והקלה ביותר להזמין מסעדה בישראל
+                </h3>
                 <!-- <p>Faster, cheaper and easier way to book a restaurant in Israel</p> -->
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8">
                             <form action="" method="post">
-                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="Restaurants ou cuisines">
+                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="חיפוש מסעדה או סוג מטבח">
                                 <div id="searchSuggestion">
 
                                 </div>
@@ -144,7 +163,7 @@ $objCity = $obj->getCities();
                                     </div>
 
                                     <select name="time" class="form-control border-0 bg-light ">
-                                        <option value="" selected disabled class="">Time</option>
+                                        <option value="" selected disabled class="">זמן</option>
 
                                         <option value="09:00-09:30">09:00-9:30</option>
                                         <option value="09:30-10:00">09:30-10:00</option>
@@ -182,27 +201,27 @@ $objCity = $obj->getCities();
                                         <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
                                     </div>
                                     <select name="people" class="form-control border-0 bg-light ">
-                                        <option value="" selected disabled class="">Person</option>
-                                        <option value="1">1 people</option>
-                                        <option value="2">2 people</option>
-                                        <option value="3">3 people</option>
-                                        <option value="4">4 people</option>
-                                        <option value="5">5 people</option>
-                                        <option value="6">6 people</option>
-                                        <option value="7">7 people</option>
-                                        <option value="8">8 people</option>
-                                        <option value="9">9 people</option>
-                                        <option value="10">10 people</option>
-                                        <option value="11">11 people</option>
-                                        <option value="12">12 people</option>
-                                        <option value="13">13 people</option>
-                                        <option value="14">14 people</option>
-                                        <option value="15">15 people</option>
-                                        <option value="16">16 people</option>
-                                        <option value="17">17 people</option>
-                                        <option value="18">18 people</option>
-                                        <option value="19">19 people</option>
-                                        <option value="20">20 people</option>
+                                        <option value="" selected disabled class="">מספר סועדים</option>
+                                        <option value="1">1 אנשים</option>
+                                        <option value="2">2 אנשים</option>
+                                        <option value="3">3 אנשים</option>
+                                        <option value="4">4 אנשים</option>
+                                        <option value="5">5 אנשים</option>
+                                        <option value="6">6 אנשים</option>
+                                        <option value="7">7 אנשים</option>
+                                        <option value="8">8 אנשים</option>
+                                        <option value="9">9 אנשים</option>
+                                        <option value="10">10 אנשים</option>
+                                        <option value="11">11 אנשים</option>
+                                        <option value="12">12 אנשים</option>
+                                        <option value="13">13 אנשים</option>
+                                        <option value="14">14 אנשים</option>
+                                        <option value="15">15 אנשים</option>
+                                        <option value="16">16 אנשים</option>
+                                        <option value="17">17 אנשים</option>
+                                        <option value="18">18 אנשים</option>
+                                        <option value="19">19 אנשים</option>
+                                        <option value="20">20 אנשים</option>
                                     </select>
                                 </div>
                             </div>
@@ -211,7 +230,7 @@ $objCity = $obj->getCities();
                                     <div class="input-group-prepend">
                                         <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt"></i></span>
                                     </div>
-                                    <input placeholder="Select a date" name="filter-date" type="text" class="form-control bg-light border-0" id="datepicker">
+                                    <input placeholder="תאריך" name="filter-date" type="text" class="form-control bg-light border-0" id="datepicker">
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -229,7 +248,7 @@ $objCity = $obj->getCities();
 
                                             ?>
                                                 <option value="" selected disabled>Location</option>
-                                                <option  value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
+                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
 
                                         <?php
                                             }
@@ -244,7 +263,7 @@ $objCity = $obj->getCities();
                         </div>
                         <div class="row">
                             <div class="col-md-7 col-10">
-                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Search</button>
+                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">חיפוש</button>
                             </div>
                             <div class="col-md-1 col-2">
                                 <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
@@ -260,7 +279,7 @@ $objCity = $obj->getCities();
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">New In</span> Woopyz</h3>
+            <!-- <h3 class="text-center"><span class="font-weight-bold">New In</span> Woopyz</h3> -->
             <div class="row">
 
 
@@ -277,39 +296,69 @@ $objCity = $obj->getCities();
                 ?>
                     <?php while ($row = mysqli_fetch_assoc($objRestaurant)) {
 
+                        $rest_id = $row["id"];
+
                     ?>
 
                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                             <div class="card mb-3">
-                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                     <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
-                                            </div>
+
+                                            <?php
+                                            $objImage = $obj->getImages($rest_id);
+
+                                            if ($objImage) {
+
+                                                $active = true;
+                                                while ($row1 = mysqli_fetch_assoc($objImage)) {
+
+                                                    $src = $row1["image"];
+
+
+                                            ?>
+
+                                                    <div class="carousel-item <?php echo $active == true ? "active" : "" ?>">
+                                                        <img class="d-block w-100 card-img-top" width="305px" height="230px" src="<?php echo "resturaunt/rest_img/$src" ?>" alt="First slide">
+                                                    </div>
+                                                <?php
+                                                    $active = false;
+                                                }
+                                            } else {
+
+
+                                                ?>
+                                                <div class="carousel-item active">
+                                                    <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
+                                                </div>
+
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
                                         <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Previous</span>
+                                            <span class="sr-only">הקודם</span>
                                         </a>
                                         <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Next</span>
+                                            <span class="sr-only">הבא</span>
                                         </a>
                                     </div>
                                 </a>
                                 <div class="card-body">
-                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                    <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                             </div>
 
                                             <div class="col-md-6">
@@ -322,7 +371,7 @@ $objCity = $obj->getCities();
                                         </div>
                                     </a>
 
-                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                     </small>
 
 
@@ -407,7 +456,7 @@ $objCity = $obj->getCities();
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><strong>Filter</strong> By</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><strong>סנן לפי</strong></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -444,46 +493,12 @@ $objCity = $obj->getCities();
                             </div>
                         </div>
                         <hr>
-                        <!-- <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="modal-title" id="exampleModalLabel"><strong>Sort</strong> By</h5>
-                            <div class="form-check mt-3">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck11">
-                                <label class="form-check-label ml-3" for="defaultCheck11" style="font-size: 19px;">
-                                    Location
-                                </label>
 
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck12">
-                                <label class="form-check-label ml-3" for="defaultCheck12" style="font-size: 19px;">
-                                    Rating
-                                </label>
-
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck13">
-                                <label class="form-check-label ml-3" for="defaultCheck13" style="font-size: 19px;">
-                                    Price
-                                </label>
-
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck14">
-                                <label class="form-check-label ml-3" for="defaultCheck14" style="font-size: 19px;">
-                                    Discounts
-                                </label>
-
-                            </div>
-                        </div>
-                        <div class="col-md-6"></div>
-                    </div> -->
                     </div>
 
                     <div class="modal-footer text-center">
 
-                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
-                            Filters</button>
+                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">סינון תוצאות</button>
                     </div>
                 </form>
             </div>
