@@ -17,7 +17,7 @@ $google_client->setClientId('283916112555-00mhima8spdbsv1t2dmule7h4flac4sa.apps.
 $google_client->setClientSecret('qO8TCCXhncLw-QolVRWvfmGZ');
 
 //Set the OAuth 2.0 Redirect URI
-$google_client->setRedirectUri('http://localhost/woopyzz/g-callback.php');
+$google_client->setRedirectUri('https://apollo.woopyzz.com/g-callback.php');
 
 /// to get the email and profile 
 $google_client->addScope('email');
@@ -27,13 +27,7 @@ $google_client->addScope('profile');
 
 // facebook
 
-// Call Facebook API
 
-$facebook = new \Facebook\Facebook([
-    'app_id'      => '799817377458281',
-    'app_secret'     => '6c1be575e7f535374078accab0e1be87',
-    'default_graph_version'  => 'v2.0'
-]);
 
 ?>
 <!-- Close your php here  -->

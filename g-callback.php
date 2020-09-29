@@ -35,10 +35,9 @@ $_SESSION["email"] = $email;
 $_SESSION["img"] = $img;
 
 
-
 $hostname = "localhost";
-$username = "root";
-$password = "";
+$username = "apollo";
+$password = "B9q6q*8r";
 $dbname = "woopyzz";
 
 

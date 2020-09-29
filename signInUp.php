@@ -1,21 +1,23 @@
 <?php
 session_start();
-
 if (isset($_SESSION["access_token"])) {
     header("location: profile.php");
     exit();
 }
-else if (isset($_SESSION["facebook_access_token"])) {
+if (isset($_SESSION["facebook_access_token"])) {
     header("location: profile.php");
     exit();
 }
-else if (isset($_SESSION["email"])) {
-    header("location: profile.php");
-}
-
 include('class/database.php');
 //Include Configuration File
 include('config.php');
+
+$facebook = new \Facebook\Facebook([
+    'app_id'      => '799817377458281',
+    'app_secret'     => '6c1be575e7f535374078accab0e1be87',
+    'default_graph_version'  => 'v2.0'
+]);
+
 
 $loginURL = $google_client->createAuthUrl();
 $facebook_helper = $facebook->getRedirectLoginHelper();
@@ -121,6 +123,7 @@ $objSignIn = $obj->signInFunction();
 <body class="bg-light">
     <?php include('layout/navbar.php'); ?>
 
+    <?php //include('layout/hero_section.php'); ?>
     <section>
         <div class="container bg-white pr-4 pl-4 log_section pb-5">
 
@@ -150,8 +153,9 @@ $objSignIn = $obj->signInFunction();
                         <input type="email" name="emailLogIn" class="form-control p-4  border-0 bg-light" placeholder="Enter your email address" required>
                         <input type="password" class="form-control mt-4 p-4 border-0 bg-light" name="passwordLogIn" placeholder="Enter your password" required>
                         <button type="submit" name="signIn" class="btn btn-block font-weight-bold log_btn btn-lg mt-4">LOGIN</button>
-                       
-                        <a href="<?php echo $facebook_login_url ?>" class="btn btn-block btn-primary font-weight-bold btn-lg mt-4">Sign Up With
+                        
+
+                       <a href="<?php echo $facebook_login_url ?>" class="btn btn-block btn-primary font-weight-bold btn-lg mt-4">Sign Up With
                             Facebook</a>
 
                         <?php

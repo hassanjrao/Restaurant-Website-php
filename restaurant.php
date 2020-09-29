@@ -115,39 +115,39 @@ class restaurant extends database
     {
         $name = $_GET['name'];
         $rest_id = $_GET["id"];
-        $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
-        } else {
-            return false;
-        }
+        // $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
+        // $res = mysqli_query($this->link, $sql);
+        // if (mysqli_num_rows($res) > 0) {
+            // return $res;
+        // } else {
+        //     return false;
+        // }
         # code...
     }
     public function foodFunction2()
     {
-        $name = $_GET['name'];
-        $rest_id = $_GET["id"];
-        $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
-        } else {
-            return false;
-        }
+        // $name = $_GET['name'];
+        // $rest_id = $_GET["id"];
+        // $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
+        // $res = mysqli_query($this->link, $sql);
+        // if (mysqli_num_rows($res) > 0) {
+        //     return $res;
+        // } else {
+        //     return false;
+        // }
         # code...
     }
     public function foodFunction3()
     {
-        $name = $_GET['name'];
-        $rest_id = $_GET["id"];
-        $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
-        } else {
-            return false;
-        }
+        // $name = $_GET['name'];
+        // $rest_id = $_GET["id"];
+        // $sql = "select * from menu_tb  where rest_id = '$rest_id' ";
+        // $res = mysqli_query($this->link, $sql);
+        // if (mysqli_num_rows($res) > 0) {
+        //     return $res;
+        // } else {
+        //     return false;
+        // }
         # code...
     }
     public function imageFunction()

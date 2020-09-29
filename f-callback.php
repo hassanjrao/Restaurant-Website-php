@@ -64,10 +64,10 @@ if (isset($accessToken)) {
 
         // Create connection
 
-        $hostname = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "woopyzz";
+       $hostname = "localhost";
+$username = "apollo";
+$password = "B9q6q*8r";
+$dbname = "woopyzz";
 
         $conn = new mysqli($hostname, $username, $password, $dbname);
 

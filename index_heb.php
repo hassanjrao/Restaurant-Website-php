@@ -1,19 +1,6 @@
 <?php
 session_start();
-if(isset($_GET["lan"])){
-    if($_GET["lan"]=="en") {
-        $_SESSION["lan"]=="en";
-        header("location: index.php");
-    }
-    else if($_GET["lan"]=="heb") {
-        $_SESSION["lan"]=="heb";
-        header("location: index_heb.php");
-    }
-    else if($_GET["lan"]=="fr") {
-        $_SESSION["lan"]=="fr";
-        header("location: index_fr.php");
-    }    
-}
+
 include('class/database.php');
 class restaurant extends database
 {
@@ -91,7 +78,7 @@ $objCity = $obj->getCities();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Home HEB</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

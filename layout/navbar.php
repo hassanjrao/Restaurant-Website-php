@@ -1,4 +1,3 @@
-
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
@@ -9,13 +8,13 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                  
-                    <li class="nav-item back_nav p-1">
+
+                    <li class="ml-4 nav-item back_nav p-1">
 
                         <?php
 
                         if (isset($_SESSION["access_token"]) || isset($_SESSION["facebook_access_token"]) || isset($_SESSION["email"])) {
-                           
+
 
                         ?>
 
@@ -32,6 +31,17 @@
 
                         ?>
 
+                    </li>
+
+                    <li class="ml-4 nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Language
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="index.php?lan=en">English</a>
+                            <a class="dropdown-item" href="index.php?lan=heb">Hebrew</a>
+                            <a class="dropdown-item" href="index.php?lan=fr">French</a>
+                        </div>
                     </li>
 
 
