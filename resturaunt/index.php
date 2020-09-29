@@ -77,7 +77,7 @@ $objPhoto = $obj->photoFunction();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Restaurant Profile</h1>
+                    <h1 class="h3 mb-4 text-gray-800">DashBoard</h1>
                     <div class="row">
                         <?php if ($objPhoto) { ?>
                         <?php while ($row = mysqli_fetch_assoc($objPhoto)) { ?>
