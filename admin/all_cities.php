@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 include('class/database.php');
@@ -22,28 +22,21 @@ class City extends database
     public function createCity()
     {
         if (isset($_POST['submit'])) {
-            $city = strtolower($_POST['city']);
+            $city_en = strtolower($_POST['city_en']);
+            $city_heb = strtolower($_POST['city_heb']);
+            $city_fr = strtolower($_POST['city_fr']);
 
+            $sql = "INSERT INTO cities_tb (`city_en`,`city_heb`,`city_fr`, `created`) VALUES ('$city_en','$city_heb','$city_fr', CURRENT_TIMESTAMP)";
+            $res = mysqli_query($this->link, $sql);
 
-            $sqlFind = "select * from cities_tb where city = '$city' ";
-            $resFind = mysqli_query($this->link, $sqlFind);
-            if (mysqli_num_rows($resFind) > 0) {
-                $msg = "taken";
+            if ($res) {
+                $msg = "success_add";
                 header("location: all_cities.php?msg=$msg");
                 return true;
             } else {
-                $sql = "INSERT INTO cities_tb (`city`, `created`) VALUES ('$city', CURRENT_TIMESTAMP)";
-                $res = mysqli_query($this->link, $sql);
-
-                if ($res) {
-                    $msg = "success_add";
-                    header("location: all_cities.php?msg=$msg");
-                    return true;
-                } else {
-                    $msg = "fail_add";
-                    header("location: all_cities.php?msg=$msg");
-                    return false;
-                }
+                $msg = "fail_add";
+                header("location: all_cities.php?msg=$msg");
+                return false;
             }
         }
         # code...
@@ -134,8 +127,14 @@ $objCreate = $obj->createCity();
                                             </div>
                                             <div class="modal-body bg-light">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <input type="text" required name="city" class="border-0 form-control" placeholder="City Name">
+                                                    <div class="col-md-4">
+                                                        <input type="text" required name="city_en" class="border-0 form-control" placeholder="City Name English">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" required name="city_heb" class="border-0 form-control" placeholder="City Name French">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" required name="city_fr" class="border-0 form-control" placeholder="City Name French">
                                                     </div>
 
                                                 </div>
@@ -152,7 +151,7 @@ $objCreate = $obj->createCity();
                         </div>
                         <div class="card-body">
 
-                        <?php
+                            <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'taken') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
@@ -224,7 +223,9 @@ $objCreate = $obj->createCity();
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Name</th>
+                                            <th>City English</th>
+                                            <th>City Hebrew</th>
+                                            <th>City French</th>
                                             <th>Created</th>
                                             <th>Delete</th>
 
@@ -233,22 +234,28 @@ $objCreate = $obj->createCity();
                                     <tfoot>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Name</th>
+                                            <th>City English</th>
+                                            <th>City Hebrew</th>
+                                            <th>City French</th>
                                             <th>Created</th>
                                             <th>Delete</th>
 
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php if ($objCity) { ?>
+                                        <?php if ($objCity) { 
+                                            $a=1;
+                                            ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                                 $id = $row['id'];
 
                                             ?>
                                                 <tr>
-                                                    <td><?php echo $row['id']; ?></td>
-                                                    <td><?php echo $row['city']; ?></td>
+                                                    <td><?php echo $a++; ?></td>
+                                                    <td><?php echo $row['city_en']; ?></td>
+                                                    <td><?php echo $row['city_heb']; ?></td>
+                                                    <td><?php echo $row['city_fr']; ?></td>
                                                     <td><?php echo $row['created']; ?></td>
                                                     <td><a href="<?php echo "city_delete.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a></td>
 

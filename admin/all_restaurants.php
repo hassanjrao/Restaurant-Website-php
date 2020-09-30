@@ -280,7 +280,7 @@ $objCity = $obj->getCity();
                                                                 while ($row = mysqli_fetch_assoc($objCity)) {
 
                                                             ?>
-                                                                    <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
+                                                                    <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_en"]) ?></option>
                                                                 <?php
                                                                 }
                                                             } else {
@@ -405,7 +405,7 @@ $objCity = $obj->getCity();
 
                                                                 $city_res=mysqli_fetch_assoc($newObj->getCityName($city_id));
 
-                                                                echo $city_res["city"].",";
+                                                                echo $city_res["city_en"].",";
                                                                 
                                                             }
                                                         }

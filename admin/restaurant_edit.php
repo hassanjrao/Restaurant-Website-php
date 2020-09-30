@@ -314,7 +314,7 @@ $objRestUpdate = $obj->updateRest();
                                                                     $row = mysqli_fetch_assoc($newObj->getCityName($city_id));
 
 
-                                                                    $city = $row["city"]
+                                                                    $city = $row["city_en"]
                                                             ?>
                                                                     <option selected value="<?php echo $city_id ?>"><?php echo ucwords($city) ?></option>
 
@@ -327,7 +327,7 @@ $objRestUpdate = $obj->updateRest();
                                                                     # code...
 
                                                                     $row = mysqli_fetch_assoc($newObj->getCityName($id));
-                                                                    $city = $row["city"];
+                                                                    $city = $row["city_en"];
 
                                                                 ?>
                                                                     <option value="<?php echo $id ?>"><?php echo ucwords($city) ?></option>

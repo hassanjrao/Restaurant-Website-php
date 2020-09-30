@@ -30,9 +30,62 @@ class profile extends database
         }
         # code...
     }
+    public function getSpecName($id)
+    {
+        $sql = "select * from specialty where id='$id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+    public function getCityName($city_id)
+    {
+        $sql = "select * from cities_tb where id='$city_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCityID()
+    {
+        $sql = "select id from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCity()
+    {
+        $sql = "select * from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
     public function getServices()
     {
         $sql = "select * from services_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+    public function getServiceName($id)
+    {
+        $sql = "select * from services_tb where id='$id'";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -65,6 +118,8 @@ class profile extends database
             $speciality = serialize($_POST['specialty']);
             $services = serialize($_POST['services']);
             $kosher = $_POST['kosher'];
+
+            $cities = serialize($_POST["cities"]);
 
 
             if ($kosher == "no") {
@@ -102,7 +157,7 @@ class profile extends database
 
 
 
-            $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
+            $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `cities`='$cities' ,`kosher` = '$kosher',`kosher_spec`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
             $res = mysqli_query($this->link, $sql);
             if ($res) {
 
@@ -132,6 +187,10 @@ $objService = $obj->getServices();
 $objBank = $obj->getBank();
 $objUpdate = $obj->updateFunction();
 $row = mysqli_fetch_assoc($objProfile);
+
+
+$objCity = $obj->getCity();
+$objCityID = $obj->getCityID();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -229,7 +288,7 @@ $row = mysqli_fetch_assoc($objProfile);
 
                                                 <div class="row">
 
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <h1 class="h4 text-gray-900 mb-4 mt-3">Restaurant
                                                             Features</h1>
                                                         <h1 class="h6 text-gray-900 mb-4">Name:
@@ -239,15 +298,17 @@ $row = mysqli_fetch_assoc($objProfile);
                                                             <span class="font-weight-bold"><?php echo $row['address_en']; ?></span>
                                                         </h1>
 
-                                                    </div>
 
-                                                    <div class="col-md-6">
+
 
                                                         <h1 class="h6 text-gray-900 mb-4">Phone:
                                                             <input type="text" placeholder="Phone Number" class="form-control w-50 mt-3" value="<?php echo $row['phone']; ?>" name="phone">
 
                                                         </h1>
 
+                                                    </div>
+
+                                                    <div class="col-md-6">
 
                                                         <h1 id="kosher-container" class="h6 text-gray-900 mb-4">Kosher:
 
@@ -294,12 +355,84 @@ $row = mysqli_fetch_assoc($objProfile);
                                                             ?>
 
                                                         </h1>
+
+                                                        <h1 class="h6 text-gray-900 mb-4">Cities:
+
+                                                            <?php
+
+                                                            if ($objCity) {
+                                                                $i = 0;
+                                                                $city_arr2 = [];
+                                                                while ($city_row = mysqli_fetch_assoc($objCity)) {
+
+                                                                    $city_arr2[$i++] = $city_row["id"];
+                                                                }
+                                                                $city_arr = unserialize($row["cities"]);
+
+
+                                                                if ($city_arr) {
+
+                                                                    $remain_cities = array_diff($city_arr2, $city_arr);
+                                                                } else {
+                                                                    $remain_cities = $city_arr2;
+                                                                }
+                                                            }
+
+
+                                                            ?>
+
+                                                            <select class="form-control" name="cities[]" multiple required>
+                                                                <option slected disabled>Select Cities</option>
+
+                                                                <?php
+
+                                                                $newObj = new Profile;
+
+                                                                if ($city_arr) {
+
+                                                                    foreach ($city_arr as $city_id) {
+                                                                        $row = mysqli_fetch_assoc($newObj->getCityName($city_id));
+
+
+                                                                        $city = $row["city_en"]
+                                                                ?>
+                                                                        <option selected value="<?php echo $city_id ?>"><?php echo ucwords($city) ?></option>
+
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                                if (!empty($remain_cities)) {
+
+                                                                    foreach ($remain_cities as $id) {
+                                                                        # code...
+
+                                                                        $row = mysqli_fetch_assoc($newObj->getCityName($id));
+                                                                        $city = $row["city_en"];
+
+                                                                    ?>
+                                                                        <option value="<?php echo $id ?>"><?php echo ucwords($city) ?></option>
+
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                                if ($city_arr == false && empty($remain_cities)) {
+                                                                    ?>
+                                                                    <!-- <option disabled>No City Found</option> -->
+                                                                <?php
+                                                                }
+
+                                                                ?>
+
+                                                            </select>
+
+                                                        </h1>
+
                                                     </div>
 
-                                                  
+
                                                 </div>
 
-                                                <hr>
+
 
 
 
@@ -310,21 +443,75 @@ $row = mysqli_fetch_assoc($objProfile);
                                                         <div class="col-lg-6">
 
                                                             <h1 class="h4 mt-4 text-gray-900 mb-4 ">Services</h1>
+
+                                                            <?php
+
+                                                            $prof = mysqli_fetch_assoc($obj->profileFunction());
+
+                                                            if ($objService) {
+                                                                $i = 0;
+                                                                $ser_arr2 = [];
+                                                                while ($ser_row = mysqli_fetch_assoc($objService)) {
+
+                                                                    $ser_arr2[$i++] = $ser_row["id"];
+                                                                }
+                                                                $ser_arr = unserialize($prof["services"]);
+
+
+                                                                if ($ser_arr) {
+
+                                                                    $remain_ser = array_diff($ser_arr2, $ser_arr);
+                                                                } else {
+                                                                    $remain_ser = $ser_arr2;
+                                                                }
+                                                            }
+
+                                                            ?>
                                                             <select name="services[]" class="form-control w-50" multiple required>
 
-                                                                <?php
-                                                                if ($objService) {
-                                                                    while ($row = mysqli_fetch_assoc($objService)) {
+                                                                <option slected disabled>Select Services</option>
 
+                                                                <?php
+
+                                                                $newObj = new Profile;
+
+
+
+                                                                if ($ser_arr) {
+
+                                                                    foreach ($ser_arr as $ser_id) {
+                                                                        $row = mysqli_fetch_assoc($newObj->getServiceName($ser_id));
+
+
+                                                                        $ser = $row["service_en"]
                                                                 ?>
-                                                                        <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["service_en"]) ?></option>
+                                                                        <option selected value="<?php echo $ser_id ?>"><?php echo ucwords($ser) ?></option>
 
-
-                                                                <?php
-
+                                                                    <?php
                                                                     }
                                                                 }
+                                                                if (!empty($remain_ser)) {
+
+                                                                    foreach ($remain_ser as $id) {
+                                                                        # code...
+
+                                                                        $row = mysqli_fetch_assoc($newObj->getServiceName($id));
+                                                                        $ser = $row["service_en"];
+
+                                                                    ?>
+                                                                        <option value="<?php echo $id ?>"><?php echo ucwords($ser) ?>as</option>
+
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                                if ($city_ser == false && empty($remain_ser)) {
+                                                                    ?>
+                                                                    <!-- <option disabled>No City Found</option> -->
+                                                                <?php
+                                                                }
+
                                                                 ?>
+
 
                                                             </select>
 
@@ -334,19 +521,70 @@ $row = mysqli_fetch_assoc($objProfile);
 
 
                                                             <h1 class="h4 mt-4 text-gray-900 mb-4 ">Specialty:</h1>
+
+                                                            <?php
+
+                                                            $prof = mysqli_fetch_assoc($obj->profileFunction());
+
+                                                            if ($objSpec) {
+                                                                $i = 0;
+                                                                $spec_arr2 = [];
+                                                                while ($ser_row = mysqli_fetch_assoc($objSpec)) {
+
+                                                                    $spec_arr2[$i++] = $ser_row["id"];
+                                                                }
+                                                                $spec_arr = unserialize($prof["speciality"]);
+
+
+                                                                if ($spec_arr) {
+
+                                                                    $remain_spec = array_diff($spec_arr2, $spec_arr);
+                                                                } else {
+                                                                    $remain_spec = $spec_arr2;
+                                                                }
+                                                            }
+
+                                                            ?>
                                                             <select name="specialty[]" class="form-control w-50" multiple required>
                                                                 <?php
 
-                                                                if ($objSpec) { ?>
-                                                                    <?php while ($row = mysqli_fetch_assoc($objSpec)) {
+                                                                $newObj = new Profile;
+
+                                                                if ($spec_arr) {
+
+                                                                    foreach ($spec_arr as $spec_id) {
+                                                                        $row = mysqli_fetch_assoc($newObj->getSpecName($spec_id));
+
+
+                                                                        $spec = $row["specialty_en"]
+                                                                ?>
+                                                                        <option selected value="<?php echo $spec_id ?>"><?php echo ucwords($spec) ?></option>
+
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                                if (!empty($remain_spec)) {
+
+                                                                    foreach ($remain_spec as $id) {
+                                                                        # code...
+
+                                                                        $row = mysqli_fetch_assoc($newObj->getSpecName($id));
+                                                                        $spec = $row["specialty_en"];
 
                                                                     ?>
-                                                                        <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["specialty_en"]) ?></option>
-                                                                <?php
+                                                                        <option value="<?php echo $id ?>"><?php echo ucwords($spec) ?></option>
+
+                                                                    <?php
                                                                     }
+                                                                }
+                                                                if ($spec_ser == false && empty($remain_spec)) {
+                                                                    ?>
+                                                                    <!-- <option disabled>No Specialty Found</option> -->
+                                                                <?php
                                                                 }
 
                                                                 ?>
+
 
                                                             </select>
 
