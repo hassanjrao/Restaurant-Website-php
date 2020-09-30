@@ -321,7 +321,7 @@ $objCityID = $obj->getCityID();
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo ucwords($row['kosher']); ?></option>
                                                                     <option disabled></option>
                                                                     <option value="no">No</option>
-                                                                    <option value="yes">Yes</option>
+                                                                    <option value="yes">If Yes, then specify in the below box</option>
                                                                 </select>
 
 
@@ -334,7 +334,7 @@ $objCityID = $obj->getCityID();
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo ucwords($row['kosher']); ?></option>
                                                                     <option disabled></option>
                                                                     <option value="no">No</option>
-                                                                    <option value="yes">Yes</option>
+                                                                    <option value="yes">If Yes, then specify in the below box</option>
                                                                 </select>
 
 
