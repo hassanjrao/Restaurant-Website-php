@@ -213,49 +213,53 @@ $objDate = $obj->getDate();
 
                     if ($objDate) {
                         if (count($objDate) > 0) {
+                            
                             foreach ($objDate as $ind => $date) {
 
+                                if ($date != "") {
 
-                                $ndate = date_create("$date");
-                                $nd = date_format($ndate, "d/m/Y");
+                                    $ndate = date_create("$date");
+                                    $nd = date_format($ndate, "d/m/Y");
+
+                                   
 
 
 
                     ?>
 
-                                <div class="accordion shadow" id="accordionExample">
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link" style="text-decoration: none;" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $ind ?>" aria-expanded="true" aria-controls="collapseOne">
-                                                    <strong>Date:</strong> <?php echo $nd ?>
+                                    <div class="accordion shadow" id="accordionExample">
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne">
+                                                <h2 class="mb-0">
+                                                    <button class="btn btn-link" style="text-decoration: none;" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $ind ?>" aria-expanded="true" aria-controls="collapseOne">
+                                                        <strong>Date:</strong> <?php echo $nd ?>
+
+                                                        <?php
+
+                                                        $newObj = new reservation;
+
+                                                        $total = $newObj->countRes($date);
+
+                                                        echo "<span display='font-weight:900'>(" . $total . ")</span>";
+
+                                                        ?>
+
+                                                    </button>
 
                                                     <?php
-
-                                                    $newObj = new reservation;
-
-                                                    $total = $newObj->countRes($date);
-
-                                                    echo "<span display='font-weight:900'>(" . $total . ")</span>";
+                                                    if ($newObj->confirmPeople($date)) {
+                                                        echo '<i class=" text-danger pl-5 fas fa-times-circle"></i>';
+                                                    } else {
+                                                        echo '<i class=" text-success pl-5 fas fa-check-circle"></i>';
+                                                    }
 
                                                     ?>
 
-                                                </button>
+                                                </h2>
+                                            </div>
 
-                                                <?php
-                                                if ($newObj->confirmPeople($date)) {
-                                                    echo '<i class=" text-danger pl-5 fas fa-times-circle"></i>';
-                                                } else {
-                                                    echo '<i class=" text-success pl-5 fas fa-check-circle"></i>';
-                                                }
+                                            <div id="collapseOne<?php echo $ind ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 
-                                                ?>
-
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapseOne<?php echo $ind ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                          
                                                 <?php
 
 
@@ -269,158 +273,159 @@ $objDate = $obj->getDate();
                                                     while ($row = mysqli_fetch_assoc($objDetail)) {
 
                                                 ?>
-                                                  <form action="confirm.php" method="POST">
+                                                        <form action="confirm.php" method="POST">
 
-                                                        <div class="card-body">
-                                                            <div class="row">
+                                                            <div class="card-body">
+                                                                <div class="row">
 
-                                                                <div class="col-md-12">
+                                                                    <div class="col-md-12">
 
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Restaurant Name:- <span class="h6 text-gray-900 mb-4 font-weight-bold"><?php echo ucwords($row["rest_name"]); ?></span>
-                                                                    </h1>
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Restaurant Name:- <span class="h6 text-gray-900 mb-4 font-weight-bold"><?php echo ucwords($row["rest_name"]); ?></span>
+                                                                        </h1>
 
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Name:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['fname']; ?>
-                                                                        <?php echo $row['lname']; ?>
-                                                                    </h1>
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Code:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['code']; ?>
-                                                                    </h1>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Name:-
+                                                                        </h1>
+                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                            <?php echo $row['fname']; ?>
+                                                                            <?php echo $row['lname']; ?>
+                                                                        </h1>
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Code:-
+                                                                        </h1>
+                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                            <?php echo $row['code']; ?>
+                                                                        </h1>
 
 
+
+
+                                                                        <?php if ($row['confirm_people'] == NULL) {
+
+                                                                        ?>
+                                                                            <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirm Person:-
+                                                                            </h1>
+                                                                            <input type="number" placeholder="Confirm Person" class="form-control text-gray-900 mb-4 font-weight-bold" name="confirm_people" value=<?php echo intval($row['people']); ?>>
+                                                                            <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
+
+                                                                        <?php
+                                                                        } else {
+                                                                        ?>
+
+                                                                            <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirmed Person:-
+                                                                            </h1>
+                                                                            <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                                <?php echo $row['confirm_people']; ?>
+                                                                            </h1>
+
+                                                                        <?php
+
+                                                                        }
+                                                                        ?>
+
+
+                                                                        <!-- <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                               </h1> -->
+
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Email:-
+                                                                        </h1>
+                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                            <?php echo $row['email']; ?>
+
+                                                                        </h1>
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Phone:-
+                                                                        </h1>
+                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                            <?php echo $row['phone']; ?></h1>
+
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Created
+                                                                            Reservation:-
+                                                                        </h1>
+                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                            <?php echo $row['created']; ?>
+                                                                        </h1>
+
+                                                                    </div>
+                                                                    <div class="col-md-4 text-center">
+                                                                        <h1 class="h6 text-secondary mb-2 font-weight-bold">Hour:-
+                                                                        </h1>
+                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
+                                                                            <?php echo $row['time']; ?>
+                                                                        </h1>
+
+                                                                        <br>
+                                                                        <h1 class="h6 text-secondary mb-2 font-weight-bold">Discount
+                                                                        </h1>
+
+                                                                        <?php
+                                                                        $time = $row["time"];
+                                                                        $date = $row["date"];
+                                                                        $day = strtolower(date('D', strtotime("$date")));
+
+                                                                        $newObj = new reservation;
+
+                                                                        $objDiscount = $newObj->getDiscount($time, $row["rest_name"]);
+
+                                                                        if ($objDiscount) {
+
+                                                                            $result = mysqli_fetch_assoc($objDiscount);
+
+                                                                        ?>
+                                                                            <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold"><?php echo $result["$day"] != NULL ? $result["$day"] : "0"; ?>%</button>
+
+                                                                        <?php
+                                                                        } else {
+                                                                        ?>
+                                                                            <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold">0%</button>
+
+                                                                        <?php
+                                                                        }
+
+                                                                        ?>
+
+
+                                                                    </div>
 
 
                                                                     <?php if ($row['confirm_people'] == NULL) {
 
                                                                     ?>
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirm Person:-
-                                                                        </h1>
-                                                                        <input type="number" placeholder="Confirm Person" class="form-control text-gray-900 mb-4 font-weight-bold" name="confirm_people" value=<?php echo intval($row['people']); ?>>
-                                                                        <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
+                                                                        <div class="col-md-12">
+                                                                            <input type="submit" class="btn btn-success" name="btn-submit" value="Confirm Person">
 
-                                                                    <?php
-                                                                    } else {
-                                                                    ?>
-
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirmed Person:-
-                                                                        </h1>
-                                                                        <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                            <?php echo $row['confirm_people']; ?>
-                                                                        </h1>
-
-                                                                    <?php
-
-                                                                    }
-                                                                    ?>
-
-
-                                                                    <!-- <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                               </h1> -->
-
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Email:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['email']; ?>
-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Phone:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['phone']; ?></h1>
-
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Created
-                                                                        Reservation:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['created']; ?>
-                                                                    </h1>
-
-                                                                </div>
-                                                                <div class="col-md-4 text-center">
-                                                                    <h1 class="h6 text-secondary mb-2 font-weight-bold">Hour:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['time']; ?>
-                                                                    </h1>
-
-                                                                    <br>
-                                                                    <h1 class="h6 text-secondary mb-2 font-weight-bold">Discount
-                                                                    </h1>
-
-                                                                    <?php
-                                                                    $time = $row["time"];
-                                                                    $date = $row["date"];
-                                                                    $day = strtolower(date('D', strtotime("$date")));
-
-                                                                    $newObj = new reservation;
-
-                                                                    $objDiscount = $newObj->getDiscount($time, $row["rest_name"]);
-
-                                                                    if ($objDiscount) {
-
-                                                                        $result = mysqli_fetch_assoc($objDiscount);
-
-                                                                    ?>
-                                                                        <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold"><?php echo $result["$day"] != NULL ? $result["$day"] : "0"; ?>%</button>
-
-                                                                    <?php
-                                                                    } else {
-                                                                    ?>
-                                                                        <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold">0%</button>
-
+                                                                        </div>
                                                                     <?php
                                                                     }
-
                                                                     ?>
 
 
+
+
                                                                 </div>
-
-
-                                                                <?php if ($row['confirm_people'] == NULL) {
-
-                                                                ?>
-                                                                    <div class="col-md-12">
-                                                                        <input type="submit" class="btn btn-success" name="btn-submit" value="Confirm Person">
-
-                                                                    </div>
-                                                                <?php
-                                                                }
-                                                                ?>
-
-
-
 
                                                             </div>
 
-                                                        </div>
+                                                        </form>
+                                                        <hr>
 
-                                            </form>
-                                            <hr>
-
-                                    <?php
+                                                <?php
                                                     }
                                                 }
 
-                                    ?>
+                                                ?>
+
+                                            </div>
 
                                         </div>
 
                                     </div>
 
-                                </div>
-
 
 
                         <?php }
+                            }
                         }
                     } else { ?>
                         <p>No Reservation</p>

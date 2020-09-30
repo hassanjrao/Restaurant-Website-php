@@ -499,7 +499,7 @@ $objCityID = $obj->getCityID();
                                                                         $ser = $row["service_en"];
 
                                                                     ?>
-                                                                        <option value="<?php echo $id ?>"><?php echo ucwords($ser) ?>as</option>
+                                                                        <option value="<?php echo $id ?>"><?php echo ucwords($ser) ?></option>
 
                                                                     <?php
                                                                     }

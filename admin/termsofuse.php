@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 include('class/database.php');
@@ -21,15 +21,15 @@ class TermsOfUse extends database
     }
     public function createAbout()
     {
-        if (isset($_POST['submit'])) {
-            $termsofuse = $_POST['termsofuse'];
+        if (isset($_POST['submit_en'])) {
+            $termsofuse = $_POST['tos_en'];
 
 
             $results = $this->getTerms();
 
             if ($results) {
                 $id = "1";
-                $sql = "UPDATE termsofuse_tb SET termsofuse='$termsofuse',created=CURRENT_TIMESTAMP where id='$id'";
+                $sql = "UPDATE termsofuse_tb SET tos_en='$termsofuse',created=CURRENT_TIMESTAMP where id='$id'";
                 $res = mysqli_query($this->link, $sql);
 
                 if ($res) {
@@ -43,7 +43,82 @@ class TermsOfUse extends database
                 }
             } else {
 
-                $sql = "INSERT INTO termsofuse_tb (`termsofuse`, `created`) VALUES ('$termsofuse', CURRENT_TIMESTAMP)";
+                $sql = "INSERT INTO termsofuse_tb (`tos_en`, `created`) VALUES ('$termsofuse', CURRENT_TIMESTAMP)";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_add";
+                    header("location: termsofuse.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_add";
+                    header("location: termsofuse.php?msg=$msg");
+                    return false;
+                }
+            }
+        }
+
+        if (isset($_POST['submit_heb'])) {
+            $termsofuse = $_POST['tos_heb'];
+
+
+            $results = $this->getTerms();
+
+            if ($results) {
+                $id = "1";
+                $sql = "UPDATE termsofuse_tb SET tos_heb='$termsofuse',created=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: termsofuse.php?msg=success_upd");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: termsofuse.php?msg=fail_upd");
+                    return false;
+                }
+            } else {
+
+                $sql = "INSERT INTO termsofuse_tb (`tos_heb`, `created`) VALUES ('$termsofuse', CURRENT_TIMESTAMP)";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_add";
+                    header("location: termsofuse.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_add";
+                    header("location: termsofuse.php?msg=$msg");
+                    return false;
+                }
+            }
+        }
+
+
+        if (isset($_POST['submit_fr'])) {
+            $termsofuse = $_POST['tos_fr'];
+
+
+            $results = $this->getTerms();
+
+            if ($results) {
+                $id = "1";
+                $sql = "UPDATE termsofuse_tb SET tos_fr='$termsofuse',created=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: termsofuse.php?msg=success_upd");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: termsofuse.php?msg=fail_upd");
+                    return false;
+                }
+            } else {
+
+                $sql = "INSERT INTO termsofuse_tb (`tos_fr`, `created`) VALUES ('$termsofuse', CURRENT_TIMESTAMP)";
                 $res = mysqli_query($this->link, $sql);
 
                 if ($res) {
@@ -63,6 +138,8 @@ class TermsOfUse extends database
 
 $obj = new TermsOfUse;
 $objTerms = $obj->getTerms();
+$objTermHeb = $obj->getTerms();
+$objTermFr = $obj->getTerms();
 $objCreate = $obj->createAbout();
 ?>
 <!DOCTYPE html>
@@ -191,6 +268,7 @@ $objCreate = $obj->createAbout();
                             } ?>
 
 
+                            <h3>TOS English</h3>
 
                             <form method="POST" action="">
 
@@ -198,17 +276,17 @@ $objCreate = $obj->createAbout();
                                 if ($objTerms) {
 
                                     $row = mysqli_fetch_assoc($objTerms);
-                                    $termsofuse = $row["termsofuse"];
+                                    $termsofuse = $row["tos_en"];
 
                                 ?>
 
-                                    <textarea rows="17" cols="50" placeholder="Enter text" name="termsofuse"><?php echo $termsofuse ?></textarea>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="tos_en"><?php echo $termsofuse ?></textarea>
 
                                 <?php
                                 } else {
 
                                 ?>
-                                    <textarea rows="17" cols="50" placeholder="Enter text" name="termsofuse"></textarea>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="tos_en"></textarea>
                                 <?php
 
                                 }
@@ -217,9 +295,76 @@ $objCreate = $obj->createAbout();
 
 
                                 <br><br>
-                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" name="submit_en" class="btn btn-primary">Submit</button>
 
                             </form>
+
+                            <hr>
+                            <br>
+                            <h3>TOS Hebrew</h3>
+                            <form method="POST" action="">
+
+                                <?php
+                                if ($objTermHeb) {
+
+                                    $row = mysqli_fetch_assoc($objTermHeb);
+                                    $termsofuse = $row["tos_heb"];
+
+                                ?>
+
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="tos_heb"><?php echo $termsofuse ?></textarea>
+
+                                <?php
+                                } else {
+
+                                ?>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="tos_heb"></textarea>
+                                <?php
+
+                                }
+
+                                ?>
+
+
+                                <br><br>
+                                <button type="submit" name="submit_heb" class="btn btn-primary">Submit</button>
+
+                            </form>
+
+                            <hr>
+                            <br>
+                            <h3>TOS French</h3>
+
+                            <form method="POST" action="">
+
+                                <?php
+                                if ($objTermFr) {
+
+                                    $row = mysqli_fetch_assoc($objTermFr);
+                                    $termsofuse = $row["tos_fr"];
+
+                                ?>
+
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="tos_fr"><?php echo $termsofuse ?></textarea>
+
+                                <?php
+                                } else {
+
+                                ?>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="tos_fr"></textarea>
+                                <?php
+
+                                }
+
+                                ?>
+
+
+                                <br><br>
+                                <button type="submit" name="submit_fr" class="btn btn-primary">Submit</button>
+
+                            </form>
+
+
 
 
                         </div>

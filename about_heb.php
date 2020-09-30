@@ -73,13 +73,13 @@ $objAbout = $obj->getAbout();
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
-    
+   
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">About us</h3>
+            <h3 class="text-center"><span class="font-weight-bold">מי אנחנו</h3>
 
             <div class="row">
 
@@ -87,7 +87,7 @@ $objAbout = $obj->getAbout();
 
                 $row=mysqli_fetch_assoc($objAbout);
 
-                $about=$row["about_en"];
+                $about=$row["about_heb"];
             } ?>
 
                 <div class="col-lg-12">
@@ -104,7 +104,7 @@ $objAbout = $obj->getAbout();
 
 
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>

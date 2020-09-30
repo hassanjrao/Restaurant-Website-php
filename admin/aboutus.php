@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 include('class/database.php');
@@ -21,15 +21,15 @@ class About extends database
     }
     public function createAbout()
     {
-        if (isset($_POST['submit'])) {
-            $about = $_POST['aboutus'];
+        if (isset($_POST['submit_en'])) {
+            $about = $_POST['about_en'];
 
 
             $results = $this->getAbout();
 
             if ($results) {
                 $id = "1";
-                $sql = "UPDATE about_tb SET about='$about',created=CURRENT_TIMESTAMP where id='$id'";
+                $sql = "UPDATE about_tb SET about_en='$about',created=CURRENT_TIMESTAMP where id='$id'";
                 $res = mysqli_query($this->link, $sql);
 
                 if ($res) {
@@ -43,7 +43,80 @@ class About extends database
                 }
             } else {
 
-                $sql = "INSERT INTO about_tb (`about`, `created`) VALUES ('$about', CURRENT_TIMESTAMP)";
+                $sql = "INSERT INTO about_tb (`about_en`, `created`) VALUES ('$about', CURRENT_TIMESTAMP)";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_add";
+                    header("location: aboutus.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_add";
+                    header("location: aboutus.php?msg=$msg");
+                    return false;
+                }
+            }
+        }
+        else  if (isset($_POST['submit_heb'])) {
+            $about = $_POST['about_heb'];
+
+
+            $results = $this->getAbout();
+
+            if ($results) {
+                $id = "1";
+                $sql = "UPDATE about_tb SET about_heb='$about',created=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: aboutus.php?msg=success_upd");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: aboutus.php?msg=fail_upd");
+                    return false;
+                }
+            } else {
+
+                $sql = "INSERT INTO about_tb (`about_heb`, `created`) VALUES ('$about', CURRENT_TIMESTAMP)";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_add";
+                    header("location: aboutus.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_add";
+                    header("location: aboutus.php?msg=$msg");
+                    return false;
+                }
+            }
+        }
+
+        else  if (isset($_POST['submit_fr'])) {
+            $about = $_POST['about_fr'];
+
+
+            $results = $this->getAbout();
+
+            if ($results) {
+                $id = "1";
+                $sql = "UPDATE about_tb SET about_fr='$about',created=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: aboutus.php?msg=success_upd");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: aboutus.php?msg=fail_upd");
+                    return false;
+                }
+            } else {
+
+                $sql = "INSERT INTO about_tb (`about_fr`, `created`) VALUES ('$about', CURRENT_TIMESTAMP)";
                 $res = mysqli_query($this->link, $sql);
 
                 if ($res) {
@@ -63,6 +136,8 @@ class About extends database
 
 $obj = new About;
 $objAbout = $obj->getAbout();
+$objAboutHeb = $obj->getAbout();
+$objAboutFr = $obj->getAbout();
 $objCreate = $obj->createAbout();
 ?>
 <!DOCTYPE html>
@@ -191,24 +266,24 @@ $objCreate = $obj->createAbout();
                             } ?>
 
 
-
+                            <h3>About English</h3>
                             <form method="POST" action="">
 
                                 <?php
                                 if ($objAbout) {
 
                                     $row = mysqli_fetch_assoc($objAbout);
-                                    $about = $row["about"];
+                                    $about = $row["about_en"];
 
                                 ?>
 
-                                    <textarea rows="17" cols="50" placeholder="Enter text" name="aboutus"><?php echo $about ?></textarea>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="about_en"><?php echo $about ?></textarea>
 
                                 <?php
                                 } else {
 
                                 ?>
-                                    <textarea rows="17" cols="50" placeholder="Enter text" name="aboutus"></textarea>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="about_en"></textarea>
                                 <?php
 
                                 }
@@ -217,7 +292,70 @@ $objCreate = $obj->createAbout();
 
 
                                 <br><br>
-                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" name="submit_en" class="btn btn-primary">Submit</button>
+
+                            </form>
+                            <hr>
+                            <br>
+
+                            <h3>About Hebrew</h3>
+                            <form method="POST" action="">
+
+                                <?php
+                                if ($objAboutHeb) {
+
+                                    $row = mysqli_fetch_assoc($objAboutHeb);
+                                    $about = $row["about_heb"];
+
+                                ?>
+
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="about_heb"><?php echo $about ?></textarea>
+
+                                <?php
+                                } else {
+
+                                ?>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="about_heb"></textarea>
+                                <?php
+
+                                }
+
+                                ?>
+
+
+                                <br><br>
+                                <button type="submit" name="submit_heb" class="btn btn-primary">Submit</button>
+
+                            </form>
+                            <hr>
+                            <br>
+                            <h3>About French</h3>
+                            <form method="POST" action="">
+
+                                <?php
+                                if ($objAboutFr) {
+
+                                    $row = mysqli_fetch_assoc($objAboutFr);
+                                    $about = $row["about_fr"];
+
+                                ?>
+
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="about_fr"><?php echo $about ?></textarea>
+
+                                <?php
+                                } else {
+
+                                ?>
+                                    <textarea rows="17" cols="50" placeholder="Enter text" name="about_fr"></textarea>
+                                <?php
+
+                                }
+
+                                ?>
+
+
+                                <br><br>
+                                <button type="submit" name="submit_fr" class="btn btn-primary">Submit</button>
 
                             </form>
 

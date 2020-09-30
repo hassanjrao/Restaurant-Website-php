@@ -2,16 +2,16 @@
 session_start();
 
 include('class/database.php');
-class About extends database
+class TOS extends database
 {
     public $link;
 
 
 
 
-    public function getAbout()
+    public function getTOS()
     {
-        $sql = "select * from about_tb";
+        $sql = "select * from termsofuse_tb";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -21,9 +21,9 @@ class About extends database
         # code...
     }
 }
-$obj = new About;
+$obj = new TOS;
 
-$objAbout = $obj->getAbout();
+$objTOS = $obj->getTOS();
 
 
 
@@ -35,7 +35,7 @@ $objAbout = $obj->getAbout();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About us</title>
+    <title>Terms of use</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -73,26 +73,26 @@ $objAbout = $obj->getAbout();
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
     
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">About us</h3>
+            <h3 class="text-center"><span class="font-weight-bold">תקנון האתר</h3>
 
             <div class="row">
 
-            <?php if($objAbout){
+            <?php if($objTOS){
 
-                $row=mysqli_fetch_assoc($objAbout);
+                $row=mysqli_fetch_assoc($objTOS);
 
-                $about=$row["about_en"];
+                $tos=$row["tos_heb"];
             } ?>
 
                 <div class="col-lg-12">
 
-                <?php echo $about ?>
+                <?php echo $tos ?>
                 </div>
 
             </div>
@@ -104,7 +104,7 @@ $objAbout = $obj->getAbout();
 
 
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>

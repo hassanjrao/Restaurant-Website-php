@@ -97,33 +97,12 @@ $objRestS2 = $obj->getRestaurants();
         </div>
     </li>
 
-
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilitie" aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Reservation</span>
-        </a>
-        <div id="collapseUtilitie" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Select Resturaunt:</h6>
-
-
-
-
-                <?php if ($objRestS2) { ?>
-                    <?php while ($row = mysqli_fetch_assoc($objRestS2)) { ?>
-
-
-                        <a class="collapse-item" href="reservation.php?name=<?php echo $row['name_en']; ?>"><?php echo $row['name_en']; ?></a>
-
-                    <?php } ?>
-                <?php } ?>
-
-
-            </div>
-        </div>
+        <a class="nav-link" href="reservation.php">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Reservation</span></a>
     </li>
-
+   
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pages" aria-expanded="true" aria-controls="collapseUtilities">

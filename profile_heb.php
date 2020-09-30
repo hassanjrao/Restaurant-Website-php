@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-if($_SESSION["lan"]=="en"){
-    header("location: restaurant.php");
-}
-else if($_SESSION["lan"]=="fr"){
-    header("location: restaurant_fr.php");
-}
 
 if (!isset($_SESSION["email"])) {
     header("location: signInUp_heb.php");
@@ -75,7 +69,7 @@ class profile extends database
             $res = mysqli_query($this->link, $sql);
             if ($res) {
                 move_uploaded_file($_FILES['image']['tmp_name'], $target);
-                header('location:profile.php');
+                header('location:profile_heb.php');
                 return $res;
             } else {
                 echo "Not added";
@@ -118,7 +112,7 @@ $rowCount = mysqli_fetch_assoc($objReserve);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>פרופיל</title>
     <?php include('layout/style.php'); ?>
     <style>
         .profileImage {
@@ -160,12 +154,12 @@ $rowCount = mysqli_fetch_assoc($objReserve);
             <div class="row">
                 <div class="col-md-2">
                     <h3 class="float-left font-weight-bold" style="color: #481639">כללי</h3>
-                    <a href="profile.php" class="active font-weight-bold text-dark pt-5 d-block mt-5" style="text-decoration: none;">פרופיל</a>
+                    <a href="profile_heb.php" class="active font-weight-bold text-dark pt-5 d-block mt-5" style="text-decoration: none;">פרופיל</a>
                     <hr>
-                    <a href="resetpass.php" class=" font-weight-normal text-dark  d-block" style="text-decoration: none;">שחכת סיסמא?</a>
+                    <a href="resetpass_heb.php" class=" font-weight-normal text-dark  d-block" style="text-decoration: none;">שחכת סיסמא?</a>
                     <hr>
                     <a href="myreservation_heb.php" class=" font-weight-normal text-dark  d-block" style="text-decoration: none;">ההזמנות שלי
-<?php if ($objReserve) { ?>
+                        <?php if ($objReserve) { ?>
                             <span class="badge badge-dark ml-2"><?php echo $rowCount['total']; ?></span>
                         <?php } else { ?>
                             <span class="badge badge-dark ml-2">0</span>

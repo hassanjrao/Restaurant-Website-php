@@ -9,11 +9,11 @@ class reservation extends database
     public $link;
     public function reservationFunction()
     {
-        $name = $_GET['name'];
+        
         $sql = "SELECT *
         FROM user_tbl
         INNER JOIN reservation_tbl
-        ON user_tbl.email = reservation_tbl.email where reservation_tbl.rest_name = '$name' AND reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
+        ON user_tbl.email = reservation_tbl.email where reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -26,8 +26,8 @@ class reservation extends database
 
     public function getDate()
     {
-        $rest_name = $_GET["name"];
-        $sql = "SELECT * FROM reservation_tbl  where rest_name='$rest_name' AND user_confirm=1 order by id desc";
+        
+        $sql = "SELECT * FROM reservation_tbl  where user_confirm=1 order by id desc";
         $res = mysqli_query($this->link, $sql);
 
         $i = 0;
@@ -175,11 +175,11 @@ $objDate = $obj->getDate();
 
                                             <?php
 
-                                            $rest_name = $_GET["name"];
+                                        
                                             $sql = "SELECT *
                                                 FROM user_tbl
                                                 INNER JOIN reservation_tbl
-                                                ON user_tbl.email = reservation_tbl.email where reservation_tbl.rest_name = '$rest_name' AND reservation_tbl.date = '$date' AND reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
+                                                ON user_tbl.email = reservation_tbl.email where reservation_tbl.date = '$date' AND reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
                                             $res = mysqli_query($objLink, $sql);
 
 

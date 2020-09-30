@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-if ($_SESSION["lan"] == "en") {
-    header("location: restaurant.php");
-} else if ($_SESSION["lan"] == "fr") {
-    header("location: restaurant_fr.php");
-}
+
 include('class/database.php');
 $rest_name = $_GET['name'];
 $_SESSION['rname'] = $rest_name;

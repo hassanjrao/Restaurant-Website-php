@@ -130,7 +130,7 @@ $objCreate = $obj->saveFunction();
                                             <div class="modal-body bg-light">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <input type="text" name="specialty_en" class="border-0 form-control" placeholder="Filter Name English">
+                                                        <input type="text" name="specialty_en" required class="border-0 form-control" placeholder="Filter Name English">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <input type="text" name="specialty_heb" class="border-0 form-control" placeholder="Filter Name Hebrew">

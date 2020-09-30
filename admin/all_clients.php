@@ -202,7 +202,7 @@ $objCreate = $obj->createCity();
                                             <th>Country</th>
                                             <th>State</th>
                                             <th>City</th>
-                                            <th>Image</th>
+                                           
                                             <th>Created</th>
 
                                         </tr>
@@ -216,7 +216,7 @@ $objCreate = $obj->createCity();
                                             <th>Country</th>
                                             <th>State</th>
                                             <th>City</th>
-                                            <th>Image</th>
+
                                             <th>Created</th>
 
                                         </tr>
@@ -236,7 +236,6 @@ $objCreate = $obj->createCity();
                                                     <td><?php echo $row['country']; ?></td>
                                                     <td><?php echo $row['state']; ?></td>
                                                     <td><?php echo $row['city']; ?></td>
-                                                    <td><img width="150px" height="150px" src="../user_img/<?php echo $row['image']; ?>"></td>
                                                     <td><?php echo $row['created']; ?></td>
                                                    
                                                 </tr>
