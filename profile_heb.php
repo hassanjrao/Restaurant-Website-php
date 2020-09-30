@@ -9,7 +9,7 @@ else if($_SESSION["lan"]=="fr"){
 }
 
 if (!isset($_SESSION["email"])) {
-    header("location: signInUp.php");
+    header("location: signInUp_heb.php");
 }
 
 include('class/database.php');
@@ -152,7 +152,7 @@ $rowCount = mysqli_fetch_assoc($objReserve);
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
 
     <section>
@@ -249,7 +249,7 @@ $rowCount = mysqli_fetch_assoc($objReserve);
         </div>
     </section>
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>

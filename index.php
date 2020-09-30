@@ -486,7 +486,7 @@ $objCity = $obj->getCities();
 
 
                                             <div class="form-check">
-                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["specialty_en"] ?>" id="defaultCheck1">
+                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
                                                 <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
                                                     <?php echo $row["specialty_en"] ?>
                                                 </label>

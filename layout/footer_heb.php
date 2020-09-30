@@ -25,7 +25,7 @@
                 <div class="col-md-3 mt-5">
                   
                     <a style="text-decoration: none;" class="text-secondary d-block" href="tos.php">תקנון האתר</a>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="./privacy-policy.php">Privacy Policy</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="./privacy-policy.php">מדיניות פרטיות</a>
                     
                 </div>
                 <div class="col-md-3 mt-5 d-block mx-auto align-content-center align-items-center">

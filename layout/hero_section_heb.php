@@ -11,8 +11,8 @@
 
                     $rowRestInfo = mysqli_fetch_assoc($objGetRest);
 
-                    $restName = $rowRestInfo["name_en"];
-                    $restAdd = $rowRestInfo["address_en"];
+                    $restName = $rowRestInfo["name_heb"];
+                    $restAdd = $rowRestInfo["address_heb"];
                 ?>
 
                     <img src="./resturaunt/rest_img/<?php echo $restImage ?>" class="w-25 text-center" alt="">

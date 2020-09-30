@@ -14,7 +14,7 @@
 <body class="bg-light">
     <?php include('layout/navbar.php'); ?>
 
-    <?php include('layout/hero_section.php'); ?>
+    <?php //include('layout/hero_section.php'); ?>
 
     <form action="" method="post">
         <section>

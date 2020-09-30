@@ -1,10 +1,9 @@
 <?php
 session_start();
 
-if($_SESSION["lan"]=="en"){
+if ($_SESSION["lan"] == "en") {
     header("location: restaurant.php");
-}
-else if($_SESSION["lan"]=="fr"){
+} else if ($_SESSION["lan"] == "fr") {
     header("location: restaurant_fr.php");
 }
 include('class/database.php');
@@ -160,6 +159,36 @@ class restaurant extends database
         # code...
     }
 
+    public function getImages()
+    {
+        $name = $_GET['name'];
+        $rest_id = $_GET["id"];
+        $sql = "select * from rest_images  where rest_id = '$rest_id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+
+    public function getRestaurant()
+    {
+        $name = $_GET['name'];
+        $rest_id = $_GET["id"];
+        $sql = "select * from restaurant_tbl  where id = '$rest_id' ";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+
+
+
     public function getNote()
     {
         $name = $_GET['name'];
@@ -222,10 +251,12 @@ $objRest = $obj->restaurantFunction();
 $objFood = $obj->foodFunction();
 $objFood2 = $obj->foodFunction2();
 $objFood3 = $obj->foodFunction3();
-$objImage = $obj->imageFunction();
+// $objImage = $obj->imageFunction();
 $objResvTime = $obj->timeReservFunction();
 $objTime = $obj->timeFunction();
 $objNote = $obj->getNote();
+$objImage = $obj->getImages();
+$objGetRest = $obj->getRestaurant();
 
 
 
@@ -237,7 +268,7 @@ $objNote = $obj->getNote();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant</title>
+    <title>מִסעָדָה</title>
     <?php include('layout/style.php'); ?>
     <style>
         body {
@@ -254,9 +285,9 @@ $objNote = $obj->getNote();
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
-    <?php include('layout/hero_section.php'); ?>
+    <?php include('layout/hero_section_heb.php'); ?>
 
     <section>
         <div class="container">
@@ -305,7 +336,7 @@ $objNote = $obj->getNote();
 
 
                     </div>
-                   
+
                 </div>
                 <div class="col-md-2"></div>
 
@@ -315,11 +346,11 @@ $objNote = $obj->getNote();
                     <h5 class="mt-4 d-block"><strong style="color:#EEA11D">הערה:</strong>
 
                         <?php if ($objNote) {
-                            $row=mysqli_fetch_assoc($objNote);
+                            $row = mysqli_fetch_assoc($objNote);
 
                             echo $row["note_heb"];
                         } ?>
-                       
+
                     </h5>
 
                     <?php if ($objRest) {
@@ -564,28 +595,28 @@ $objNote = $obj->getNote();
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                        תפריט
+                                            תפריט
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                        תמונות
+                                            תמונות
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                        חוות דעת
+                                            חוות דעת
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                        אודות המסעדה
+                                            אודות המסעדה
 
                                         </a>
                                     </p>
@@ -637,27 +668,31 @@ $objNote = $obj->getNote();
                                         <div class="container">
                                             <div class="row">
 
-                                                <div class="col-md-4">
-                                                    <a href="images/sushi-373588_1920.jpg" class="image-link thumbnail">
-                                                        <img src="images/sushi-373588_1920.jpg" alt="">
-                                                    </a>
+                                                <?php
+                                                $obj2 = new restaurant;
+                                                if ($obj2->getImages()) {
 
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <a href="images/sushi-373588_1920.jpg" class="image-link thumbnail">
-                                                        <img src="images/sushi-373588_1920.jpg" alt="">
-                                                    </a>
+                                                    $obj2Images = $obj2->getImages();
+                                                    while ($row_images = mysqli_fetch_assoc($obj2Images)) {
 
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <a href="images/sushi-373588_1920.jpg" class="image-link thumbnail">
-                                                        <img src="images/sushi-373588_1920.jpg" alt="">
-                                                    </a>
+                                                        $restImg = $row_images["image"];
 
-                                                </div>
+                                                ?>
+                                                        <div class="col-md-4">
+                                                            <a href="./resturaunt/rest_img/<?php echo $restImg ?>" class="image-link thumbnail">
+                                                                <img width="150px" height="150px" src="./resturaunt/rest_img/<?php echo $restImg ?>" alt="">
+                                                            </a>
 
+                                                        </div>
+                                                <?php
+                                                    }
+                                                }
+
+
+                                                ?>
 
                                             </div>
+
 
                                         </div>
                                     </div>
@@ -705,31 +740,30 @@ $objNote = $obj->getNote();
                                 <div class="collapse" id="collapseExample4">
                                     <div class="bg-white border-0 p-5">
                                         <div class="container">
+
+
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                    <?php
+                                                    $obj2 = new restaurant;
+                                                    $obj2Rest = $obj2->getRestaurant();
+                                                    if ($obj2Rest) {
 
-                                                    <p class=" text-justify">A quality and relaxing rural country
-                                                        pub, run by award winning
-                                                        owners, in the beautiful Berkshire village of Peasemore just a
-                                                        short drive from the A34 and junctions 13 and 14 of the M4. The
-                                                        building and decor are charming and rustic, with elegant modern
-                                                        touches. Relax by the cozy log burner perfect for winter
-                                                        evenings or enjoy outdoor seating overlooking open country
-                                                        fields or in a pretty courtyard filled with flowers in the
-                                                        summer months. A daily menu, all freshly prepared in the pub
-                                                        kitchen, includes fresh fish, pies, steaks and chef's daily
-                                                        specials with main course prices ranging from £11.50 - £19.50.
-                                                        As all dishes are prepared in the pub kitchen, they are able to
-                                                        cater for most dietary needs, with most sauces, soups and gravy
-                                                        all created gluten free. The Fox also offers gluten free bread
-                                                        and gluten free Yorkshire puddings on a Sunday.</p>
 
-                                                    <h4 class="mt-4">Address</h4>
-                                                    <p>Tokyo, Japan</p>
-                                                    <h4 class="mt-4">Environment</h4>
-                                                    <p>Music, Bar, Terrace, Parking</p>
-                                                    <h4 class="mt-4">Opening Hour</h4>
-                                                    <p>9:00 AM</p>
+                                                        while ($row_about = mysqli_fetch_assoc($obj2Rest)) {
+
+                                                            $restAbout = $row_about["about_heb"];
+
+                                                    ?>
+
+                                                            <p class=" text-justify"><?php echo $restAbout ?></p>
+                                                    <?php
+                                                        }
+                                                    }
+
+
+                                                    ?>
+
                                                 </div>
 
                                             </div>
@@ -748,7 +782,7 @@ $objNote = $obj->getNote();
         </div>
     </section>
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>

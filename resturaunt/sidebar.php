@@ -48,6 +48,11 @@
               <i class="fas fa-fw fa-chart-area"></i>
               <span>Profile</span></a>
       </li>
+      <li class="nav-item">
+          <a class="nav-link" href="about.php">
+              <i class="fas fa-fw fa-chart-area"></i>
+              <span>About</span></a>
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pages" aria-expanded="true" aria-controls="collapseUtilities">

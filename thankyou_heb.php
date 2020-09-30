@@ -12,9 +12,9 @@
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
-    <?php include('layout/hero_section.php'); ?>
+    <?php //include('layout/hero_section.php'); ?>
 
     <form action="" method="post">
         <section>
@@ -26,7 +26,7 @@
         </section>
     </form>
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>

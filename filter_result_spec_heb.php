@@ -1,7 +1,7 @@
 <?php
 include('class/database.php');
 if (!isset($_POST["specialty"])) {
-    header("location: index.php");
+    header("location: index_heb.php");
 }
 class restaurant extends database
 {
@@ -98,18 +98,19 @@ $objSpec = $obj->getSpec();
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
     <div class="back_img">
         <div class="container">
             <div class="caption pt-5">
-                <h3 class="font-weight-bold">Faster, Cheaper And Easier Way To Book <br>A Restaurant In Israel</h3>
+                <h3 class="font-weight-bold">הדרך המהירה, הזולה והקלה ביותר להזמין מסעדה בישראל
+                </h3>
                 <!-- <p>Faster, cheaper and easier way to book a restaurant in Israel</p> -->
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8">
                             <form action="" method="post">
-                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="Restaurants ou cuisines">
+                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="חיפוש מסעדה או סוג מטבח">
                                 <div id="searchSuggestion">
 
                                 </div>
@@ -117,111 +118,125 @@ $objSpec = $obj->getSpec();
                         </div>
                         <div class="col-md-2"></div>
                     </div>
-                    <div class="row pt-4">
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="far fa-clock"></i></span>
+                    <form method="POST" action="filter_results.php">
+                        <div class="row pt-4">
+                            <div class="col-md-2">
+                                <div class="input-group input-focus bg-light shadow">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-0 bg-light "><i class="far fa-clock"></i></span>
+                                    </div>
+
+                                    <select name="time" class="form-control border-0 bg-light ">
+                                        <option value="" selected disabled class="">זמן</option>
+
+                                        <option value="09:00-09:30">09:00-9:30</option>
+                                        <option value="09:30-10:00">09:30-10:00</option>
+                                        <option value="10:00-10:30">10:00-10:30</option>
+                                        <option value="10:30-11:00">10:30-11:00</option>
+                                        <option value="11:00-11:30">11:00-11:30</option>
+                                        <option value="11:30-12:00">11:30-12:00</option>
+                                        <option value="12:00-13:30">12:00-13:30</option>
+                                        <option value="13:30-14:00">13:30-14:00</option>
+                                        <option value="14:00-14:30">14:00-14:30</option>
+                                        <option value="14:30-15:00">14:30-15:00</option>
+                                        <option value="15:00-15:30">15:00-15:30</option>
+                                        <option value="15:30-16:00">15:30-16:00</option>
+                                        <option value="16:00-16:30">16:00-16:30</option>
+                                        <option value="16:30-17:00">16:30-17:00</option>
+                                        <option value="17:00-17:30">17:00-17:30</option>
+                                        <option value="17:30-18:00">17:30-18:00</option>
+                                        <option value="18:00-18:30">18:00-18:30</option>
+                                        <option value="18:30-19:00">18:30-19:00</option>
+                                        <option value="19:00-19:30">19:00-19:30</option>
+                                        <option value="19:30-20:00">19:30-20:00</option>
+                                        <option value="20:00-20:30">20:00-20:30</option>
+                                        <option value="20:30-21:00">20:30-21:00</option>
+                                        <option value="21:00-21:30">21:00-21:30</option>
+                                        <option value="21:30-22:00">21:30-22:00</option>
+                                        <option value="22:00-22:30">22:00-22:30</option>
+                                        <option value="22:30-23:00">22:30-23:00</option>
+
+                                    </select>
                                 </div>
-                                <select class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled class="">Time</option>
-                                    <option value="9:00-9:30">9:00-9:30</option>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group input-focus bg-light shadow">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
+                                    </div>
+                                    <select name="people" class="form-control border-0 bg-light ">
+                                        <option value="" selected disabled class="">מספר סועדים</option>
+                                        <option value="1">1 אנשים</option>
+                                        <option value="2">2 אנשים</option>
+                                        <option value="3">3 אנשים</option>
+                                        <option value="4">4 אנשים</option>
+                                        <option value="5">5 אנשים</option>
+                                        <option value="6">6 אנשים</option>
+                                        <option value="7">7 אנשים</option>
+                                        <option value="8">8 אנשים</option>
+                                        <option value="9">9 אנשים</option>
+                                        <option value="10">10 אנשים</option>
+                                        <option value="11">11 אנשים</option>
+                                        <option value="12">12 אנשים</option>
+                                        <option value="13">13 אנשים</option>
+                                        <option value="14">14 אנשים</option>
+                                        <option value="15">15 אנשים</option>
+                                        <option value="16">16 אנשים</option>
+                                        <option value="17">17 אנשים</option>
+                                        <option value="18">18 אנשים</option>
+                                        <option value="19">19 אנשים</option>
+                                        <option value="20">20 אנשים</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group input-focus bg-light shadow">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input placeholder="תאריך" name="filter-date" type="text" class="form-control bg-light border-0" id="datepicker">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group input-focus bg-light shadow">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-0 bg-light "><i class="fas fa-map-marker-alt"></i></span>
+                                    </div>
 
 
-                                    <option value="9:30-10:00">9:30-10:00</option>
-                                    <option value="10:00-10:30">10:00-10:30</option>
-                                    <option value="10:30-11:00">10:30-11:00</option>
-                                    <option value="11:00-11:30">11:00-11:30</option>
-                                    <option value="11:30-12:00">11:30-12:00</option>
-                                    <option value="12:00-13:30">12:00-13:30</option>
-                                    <option value="13:30-14:00">13:30-14:00</option>
-                                    <option value="14:00-14:30">14:00-14:30</option>
-                                    <option value="14:30-15:00">14:30-15:00</option>
-                                    <option value="15:00-15:30">15:00-15:30</option>
-                                    <option value="15:30-16:00">15:30-16:00</option>
-                                    <option value="16:00-16:30">16:00-16:30</option>
-                                    <option value="16:30-17:00">16:30-17:00</option>
-                                    <option value="17:00-17:30">17:00-17:30</option>
-                                    <option value="17:30-18:00">17:30-18:00</option>
-                                    <option value="18:00-18:30">18:00-18:30</option>
-                                    <option value="18:30-19:00">18:30-19:00</option>
-                                    <option value="19:00-19:30">19:00-19:30</option>
-                                    <option value="19:30-20:00">19:30-20:00</option>
-                                    <option value="20:00-20:30">20:00-20:30</option>
-                                    <option value="20:30-21:00">20:30-21:00</option>
-                                    <option value="21:00-21:30">21:00-21:30</option>
-                                    <option value="21:30-22:00">21:30-22:00</option>
-                                    <option value="22:00-22:30">22:00-22:30</option>
-                                    <option value="22:30-23:00">22:30-23:00</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
-                                </div>
-                                <select class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled class="">Person</option>
-                                    <option value="1">1 people</option>
-                                    <option value="2">2 people</option>
-                                    <option value="3">3 people</option>
-                                    <option value="4">4 people</option>
-                                    <option value="5">5 people</option>
-                                    <option value="6">6 people</option>
-                                    <option value="7">7 people</option>
-                                    <option value="8">8 people</option>
-                                    <option value="9">9 people</option>
-                                    <option value="10">10 people</option>
-                                    <option value="11">11 people</option>
-                                    <option value="12">12 people</option>
-                                    <option value="13">13 people</option>
-                                    <option value="14">14 people</option>
-                                    <option value="15">15 people</option>
-                                    <option value="16">16 people</option>
-                                    <option value="17">17 people</option>
-                                    <option value="18">18 people</option>
-                                    <option value="19">19 people</option>
-                                    <option value="20">20 people</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt"></i></span>
-                                </div>
-                                <input placeholder="Select a date" type="text" class="form-control bg-light border-0" id="datepicker">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="fas fa-map-marker-alt"></i></span>
-                                </div>
+                                    <select name="location" class="form-control border-0 bg-light ">
 
+                                        <?php
+                                        if ($objCity) { ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
-                                <select class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled>Location</option>
-                                    <option value="Tel Aviv">Tel Aviv</option>
-                                </select>
+                                            ?>
+                                                <option value="" selected disabled>עיר</option>
+                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
+
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-10">
+                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">חיפוש</button>
+                            </div>
+                            <div class="col-md-1 col-2">
+                                <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
                             </div>
                         </div>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-7 col-10">
-                            <button type="submit" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Search</button>
-                        </div>
-                        <div class="col-md-1 col-2">
-                            <button class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
             </div>
-
         </div>
     </div>
 
@@ -263,7 +278,7 @@ $objSpec = $obj->getSpec();
                 ?>
                                 <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                     <div class="card mb-3">
-                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
+                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id'];?>" style="text-decoration: none;">
                                             <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                 <div class="carousel-inner">
 
@@ -306,20 +321,20 @@ $objSpec = $obj->getSpec();
                                                 </div>
                                                 <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    <span class="sr-only">Previous</span>
+                                                    <span class="sr-only">הקודם</span>
                                                 </a>
                                                 <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    <span class="sr-only">Next</span>
+                                                    <span class="sr-only">הבא</span>
                                                 </a>
                                             </div>
                                         </a>
                                         <div class="card-body">
-                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
+                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id'];?>" style="text-decoration: none;">
                                                 <div class="row">
 
                                                     <div class="col-md-6">
-                                                        <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                        <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -332,7 +347,7 @@ $objSpec = $obj->getSpec();
                                                 </div>
                                             </a>
 
-                                            <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                            <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                             </small>
 
 
@@ -428,7 +443,7 @@ $objSpec = $obj->getSpec();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="filter_result_spec.php" method="POST">
+                <form action="filter_result_spec_heb.php" method="POST">
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
@@ -447,7 +462,7 @@ $objSpec = $obj->getSpec();
                                             <div class="form-check">
                                                 <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
                                                 <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
-                                                    <?php echo $row["specialty_en"] ?>
+                                                    <?php echo $row["specialty_heb"] ?>
                                                 </label>
 
                                             </div>
@@ -508,7 +523,7 @@ $objSpec = $obj->getSpec();
 
 
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_heb.php'); ?>
 
 
     <?php include('layout/script.php') ?>

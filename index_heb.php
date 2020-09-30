@@ -154,7 +154,7 @@ $objCity = $obj->getCities();
                         </div>
                         <div class="col-md-2"></div>
                     </div>
-                    <form method="POST" action="filter_results.php">
+                    <form method="POST" action="filter_results_heb.php">
                         <div class="row pt-4">
                             <div class="col-md-2">
                                 <div class="input-group input-focus bg-light shadow">
@@ -247,7 +247,7 @@ $objCity = $obj->getCities();
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                                <option value="" selected disabled>Location</option>
+                                                <option value="" selected disabled>עיר</option>
                                                 <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
 
                                         <?php
@@ -461,7 +461,7 @@ $objCity = $obj->getCities();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="filter_result_spec.php" method="POST">
+                <form action="filter_result_spec_heb.php" method="POST">
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
@@ -478,7 +478,7 @@ $objCity = $obj->getCities();
 
 
                                             <div class="form-check">
-                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["specialty_heb"] ?>" id="defaultCheck1">
+                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
                                                 <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
                                                     <?php echo $row["specialty_heb"] ?>
                                                 </label>

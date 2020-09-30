@@ -167,13 +167,14 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
     <div class="back_img">
         <div class="container">
             <div class="caption pt-5">
-                <h3 class="font-weight-bold">Faster, Cheaper And Easier Way To Book <br>A Restaurant In Israel</h3>
+                <h3 class="font-weight-bold">הדרך המהירה, הזולה והקלה ביותר להזמין מסעדה בישראל
+                </h3>
                 <!-- <p>Faster, cheaper and easier way to book a restaurant in Israel</p> -->
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8">
                             <form action="" method="post">
-                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="Restaurants ou cuisines">
+                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="חיפוש מסעדה או סוג מטבח">
                                 <div id="searchSuggestion">
 
                                 </div>
@@ -190,9 +191,8 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                     </div>
 
                                     <select name="time" class="form-control border-0 bg-light ">
+                                        <option value="" selected disabled class="">זמן</option>
 
-                                        <option value="<?php echo $time == NULL ? "" : "$time" ?>" selected class=""><?php echo $time == NULL ? "Time" : "$time" ?></option>
-                                        <option value="<?php echo NULL ?>"></option>
                                         <option value="09:00-09:30">09:00-9:30</option>
                                         <option value="09:30-10:00">09:30-10:00</option>
                                         <option value="10:00-10:30">10:00-10:30</option>
@@ -229,28 +229,27 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                         <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
                                     </div>
                                     <select name="people" class="form-control border-0 bg-light ">
-                                        <option value="<?php echo $people == NULL ? "" : "$people" ?>" selected class=""><?php echo $people == NULL ? "Person" : "$people" ?></option>
-                                        <option value="<?php echo NULL ?>"></option>
-                                        <option value="1">1 people</option>
-                                        <option value="2">2 people</option>
-                                        <option value="3">3 people</option>
-                                        <option value="4">4 people</option>
-                                        <option value="5">5 people</option>
-                                        <option value="6">6 people</option>
-                                        <option value="7">7 people</option>
-                                        <option value="8">8 people</option>
-                                        <option value="9">9 people</option>
-                                        <option value="10">10 people</option>
-                                        <option value="11">11 people</option>
-                                        <option value="12">12 people</option>
-                                        <option value="13">13 people</option>
-                                        <option value="14">14 people</option>
-                                        <option value="15">15 people</option>
-                                        <option value="16">16 people</option>
-                                        <option value="17">17 people</option>
-                                        <option value="18">18 people</option>
-                                        <option value="19">19 people</option>
-                                        <option value="20">20 people</option>
+                                        <option value="" selected disabled class="">מספר סועדים</option>
+                                        <option value="1">1 אנשים</option>
+                                        <option value="2">2 אנשים</option>
+                                        <option value="3">3 אנשים</option>
+                                        <option value="4">4 אנשים</option>
+                                        <option value="5">5 אנשים</option>
+                                        <option value="6">6 אנשים</option>
+                                        <option value="7">7 אנשים</option>
+                                        <option value="8">8 אנשים</option>
+                                        <option value="9">9 אנשים</option>
+                                        <option value="10">10 אנשים</option>
+                                        <option value="11">11 אנשים</option>
+                                        <option value="12">12 אנשים</option>
+                                        <option value="13">13 אנשים</option>
+                                        <option value="14">14 אנשים</option>
+                                        <option value="15">15 אנשים</option>
+                                        <option value="16">16 אנשים</option>
+                                        <option value="17">17 אנשים</option>
+                                        <option value="18">18 אנשים</option>
+                                        <option value="19">19 אנשים</option>
+                                        <option value="20">20 אנשים</option>
                                     </select>
                                 </div>
                             </div>
@@ -259,7 +258,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                     <div class="input-group-prepend">
                                         <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt"></i></span>
                                     </div>
-                                    <input placeholder="Select a date" name="filter-date" value="<?php echo $date == NULL ? "" : "$date" ?>" type="text" class="form-control bg-light border-0" id="datepicker">
+                                    <input placeholder="תאריך" name="filter-date" type="text" class="form-control bg-light border-0" id="datepicker">
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -269,15 +268,14 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                     </div>
 
 
-                                    <select class="form-control border-0 bg-light " name="location">
+                                    <select name="location" class="form-control border-0 bg-light ">
 
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                                <option value="<?php echo $location == NULL ? "" : "$location" ?>" selected><?php echo $city["city"] == NULL ? "" : ucwords($city['city']) ?></option>
-                                                <option value="<?php echo NULL ?>"></option>
+                                                <option value="" selected disabled>עיר</option>
                                                 <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
 
                                         <?php
@@ -293,13 +291,13 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                         </div>
                         <div class="row">
                             <div class="col-md-7 col-10">
-                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Search</button>
+                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">חיפוש</button>
                             </div>
-
+                            <div class="col-md-1 col-2">
+                                <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
+                            </div>
+                        </div>
                     </form>
-                    <div class="col-md-1 col-2">
-                        <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
-                    </div>
                 </div>
 
             </div>
@@ -417,7 +415,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                 <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                     <div class="card mb-3">
 
-                                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>&people=<?php echo $people; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
+                                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>&people=<?php echo $people; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
                                                             <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                 <div class="carousel-inner">
 
@@ -460,21 +458,21 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                 </div>
                                                                 <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                    <span class="sr-only">Previous</span>
+                                                                    <span class="sr-only">הקודם</span>
                                                                 </a>
                                                                 <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                    <span class="sr-only">Next</span>
+                                                                    <span class="sr-only">הבא</span>
                                                                 </a>
                                                             </div>
                                                         </a>
 
                                                         <div class="card-body">
-                                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
+                                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
                                                                 <div class="row">
 
                                                                     <div class="col-md-6">
-                                                                        <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                        <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                     </div>
 
                                                                     <div class="col-md-6">
@@ -487,7 +485,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                 </div>
                                                             </a>
 
-                                                            <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                            <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                             </small>
 
 
@@ -645,7 +643,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                             <div class="card mb-3">
-                                                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
+                                                                <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
                                                                     <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                         <div class="carousel-inner">
 
@@ -688,20 +686,20 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                         </div>
                                                                         <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                            <span class="sr-only">Previous</span>
+                                                                            <span class="sr-only">הקודם</span>
                                                                         </a>
                                                                         <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                            <span class="sr-only">Next</span>
+                                                                            <span class="sr-only">הבא</span>
                                                                         </a>
                                                                     </div>
                                                                 </a>
                                                                 <div class="card-body">
-                                                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
+                                                                    <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
                                                                         <div class="row">
 
                                                                             <div class="col-md-6">
-                                                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                             </div>
 
                                                                             <div class="col-md-6">
@@ -714,7 +712,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                         </div>
                                                                     </a>
 
-                                                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                     </small>
 
 
@@ -962,7 +960,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                         <div class="card mb-3">
-                                                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
+                                                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
                                                                                 <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                     <div class="carousel-inner">
 
@@ -1005,20 +1003,20 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                     </div>
                                                                                     <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                                        <span class="sr-only">Previous</span>
+                                                                                        <span class="sr-only">הקודם</span>
                                                                                     </a>
                                                                                     <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                                        <span class="sr-only">Next</span>
+                                                                                        <span class="sr-only">הבא</span>
                                                                                     </a>
                                                                                 </div>
                                                                             </a>
                                                                             <div class="card-body">
-                                                                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
+                                                                                <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
                                                                                     <div class="row">
 
                                                                                         <div class="col-md-6">
-                                                                                            <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                            <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                                         </div>
 
                                                                                         <div class="col-md-6">
@@ -1031,7 +1029,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                     </div>
                                                                                 </a>
 
-                                                                                <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                                <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                                 </small>
 
 
@@ -1128,7 +1126,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                             <div class="card mb-3">
-                                                                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>" style="text-decoration: none;">
+                                                                                <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>" style="text-decoration: none;">
                                                                                     <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                         <div class="carousel-inner">
 
@@ -1171,20 +1169,20 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                         </div>
                                                                                         <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                                            <span class="sr-only">Previous</span>
+                                                                                            <span class="sr-only">הקודם</span>
                                                                                         </a>
                                                                                         <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                                            <span class="sr-only">Next</span>
+                                                                                            <span class="sr-only">הבא</span>
                                                                                         </a>
                                                                                     </div>
                                                                                 </a>
                                                                                 <div class="card-body">
-                                                                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>" style="text-decoration: none;">
+                                                                                    <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>" style="text-decoration: none;">
                                                                                         <div class="row">
 
                                                                                             <div class="col-md-6">
-                                                                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                                             </div>
 
                                                                                             <div class="col-md-6">
@@ -1197,7 +1195,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                         </div>
                                                                                     </a>
 
-                                                                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                                     </small>
 
 
@@ -1354,7 +1352,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                                                 <div class="card mb-3">
-                                                                                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>&people=<?php echo $people; ?>" style="text-decoration: none;">
+                                                                                                    <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>&people=<?php echo $people; ?>" style="text-decoration: none;">
                                                                                                         <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                                             <div class="carousel-inner">
 
@@ -1397,20 +1395,20 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                             </div>
                                                                                                             <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                                                                <span class="sr-only">Previous</span>
+                                                                                                                <span class="sr-only">הקודם</span>
                                                                                                             </a>
                                                                                                             <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                                                                <span class="sr-only">Next</span>
+                                                                                                                <span class="sr-only">הבא</span>
                                                                                                             </a>
                                                                                                         </div>
                                                                                                     </a>
                                                                                                     <div class="card-body">
-                                                                                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                                                                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                                                                                             <div class="row">
 
                                                                                                                 <div class="col-md-6">
-                                                                                                                    <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                                                    <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                                                                 </div>
 
                                                                                                                 <div class="col-md-6">
@@ -1423,7 +1421,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                             </div>
                                                                                                         </a>
 
-                                                                                                        <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                                                        <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                                                         </small>
 
 
@@ -1676,7 +1674,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                                                             <div class="card mb-3">
-                                                                                                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
+                                                                                                                <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
                                                                                                                     <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                                                         <div class="carousel-inner">
 
@@ -1719,20 +1717,21 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                         </div>
                                                                                                                         <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                                                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                                                                            <span class="sr-only">Previous</span>
+                                                                                                                            <span class="sr-only">הקודם</span>
                                                                                                                         </a>
                                                                                                                         <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                                                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                                                                            <span class="sr-only">Next</span>
+                                                                                                                            <span class="sr-only">הבא</span>
                                                                                                                         </a>
+
                                                                                                                     </div>
                                                                                                                 </a>
                                                                                                                 <div class="card-body">
-                                                                                                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
+                                                                                                                    <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&time=<?php echo $time; ?>" style="text-decoration: none;">
                                                                                                                         <div class="row">
 
                                                                                                                             <div class="col-md-6">
-                                                                                                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                                                                             </div>
 
                                                                                                                             <div class="col-md-6">
@@ -1745,7 +1744,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                         </div>
                                                                                                                     </a>
 
-                                                                                                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                                                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                                                                     </small>
 
 
@@ -1850,7 +1849,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                                             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                                                                 <div class="card mb-3">
-                                                                                                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
+                                                                                                                    <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
                                                                                                                         <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                                                             <div class="carousel-inner">
 
@@ -1893,20 +1892,20 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                             </div>
                                                                                                                             <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                                                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                                                                                <span class="sr-only">Previous</span>
+                                                                                                                                <span class="sr-only">הקודם</span>
                                                                                                                             </a>
                                                                                                                             <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                                                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                                                                                <span class="sr-only">Next</span>
+                                                                                                                                <span class="sr-only">הבא</span>
                                                                                                                             </a>
                                                                                                                         </div>
                                                                                                                     </a>
                                                                                                                     <div class="card-body">
-                                                                                                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
+                                                                                                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&people=<?php echo $people; ?>&date=<?php echo $date; ?>" style="text-decoration: none;">
                                                                                                                             <div class="row">
 
                                                                                                                                 <div class="col-md-6">
-                                                                                                                                    <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                                                                    <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                                                                                 </div>
 
                                                                                                                                 <div class="col-md-6">
@@ -1919,7 +1918,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                             </div>
                                                                                                                         </a>
 
-                                                                                                                        <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                                                                        <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                                                                         </small>
 
 
@@ -1993,7 +1992,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                                                         <div class="card mb-3">
-                                                                                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&id=<?php echo $location; ?>" style="text-decoration: none;">
+                                                                                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&id=<?php echo $location; ?>" style="text-decoration: none;">
                                                                                                                 <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                                                     <div class="carousel-inner">
 
@@ -2036,20 +2035,20 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                     </div>
                                                                                                                     <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
                                                                                                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                                                                        <span class="sr-only">Previous</span>
+                                                                                                                        <span class="sr-only">הקודם</span>
                                                                                                                     </a>
                                                                                                                     <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
                                                                                                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                                                                        <span class="sr-only">Next</span>
+                                                                                                                        <span class="sr-only">הבא</span>
                                                                                                                     </a>
                                                                                                                 </div>
                                                                                                             </a>
                                                                                                             <div class="card-body">
-                                                                                                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                                                                                                <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                                                                                                     <div class="row">
 
                                                                                                                         <div class="col-md-6">
-                                                                                                                            <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+                                                                                                                            <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
                                                                                                                         </div>
 
                                                                                                                         <div class="col-md-6">
@@ -2062,7 +2061,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                     </div>
                                                                                                                 </a>
 
-                                                                                                                <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                                                                                                <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
                                                                                                                 </small>
 
 
@@ -2154,12 +2153,12 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><strong>Filter</strong> By</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><strong>סנן לפי</strong></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="filter_result_spec.php" method="POST">
+                <form action="filter_result_spec_heb.php" method="POST">
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
@@ -2178,7 +2177,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                             <div class="form-check">
                                                 <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
                                                 <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
-                                                    <?php echo $row["specialty_en"] ?>
+                                                    <?php echo $row["specialty_heb"] ?>
                                                 </label>
 
                                             </div>
@@ -2229,8 +2228,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                     <div class="modal-footer text-center">
 
-                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
-                            Filters</button>
+                    <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">סינון תוצאות</button>
                     </div>
                 </form>
             </div>

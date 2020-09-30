@@ -23,9 +23,12 @@ class Specialty extends database
     {
         if (isset($_POST['submit'])) {
 
-            $spec = $_POST["specialty"];
+            $spec_en = $_POST["specialty_en"];
+            $spec_heb = $_POST["specialty_heb"];
+            $spec_fr = $_POST["specialty_fr"];
 
-            $sql = "INSERT INTO `specialty` (`specialty`) VALUES ('$spec')";
+
+            $sql = "INSERT INTO `specialty` (`specialty_en`,`specialty_heb`,`specialty_fr`) VALUES ('$spec_en','$spec_heb','$spec_fr')";
             $res = mysqli_query($this->link, $sql);
 
             if ($res) {
@@ -126,9 +129,17 @@ $objCreate = $obj->saveFunction();
                                             </div>
                                             <div class="modal-body bg-light">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <input type="text" name="specialty" class="border-0 form-control" placeholder="Filter name">
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="specialty_en" class="border-0 form-control" placeholder="Filter Name English">
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="specialty_heb" class="border-0 form-control" placeholder="Filter Name Hebrew">
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="specialty_fr" class="border-0 form-control" placeholder="Filter Name French">
+                                                    </div>
+
 
                                                 </div>
 
@@ -204,7 +215,9 @@ $objCreate = $obj->saveFunction();
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Filter</th>
+                                            <th>Filter English</th>
+                                            <th>Filter Hebrew</th>
+                                            <th>Filter French</th>
                                             <th>Delete</th>
 
 
@@ -213,18 +226,22 @@ $objCreate = $obj->saveFunction();
                                     <tfoot>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Filter</th>
+                                            <th>Filter English</th>
+                                            <th>Filter Hebrew</th>
+                                            <th>Filter French</th>
                                             <th>Delete</th>
 
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php if ($objSpec) { ?>
+                                        <?php if ($objSpec) {
+                                            $a=1; ?>
                                             <?php while ($row = mysqli_fetch_assoc($objSpec)) { ?>
                                                 <tr>
-                                                    <td><?php echo $row['id']; ?></td>
-                                                    <td><?php echo $row['specialty']; ?></td>
-
+                                                    <td><?php echo $a++ ?></td>
+                                                    <td><?php echo $row['specialty_en']; ?></td>
+                                                    <td><?php echo $row['specialty_heb']; ?></td>
+                                                    <td><?php echo $row['specialty_fr']; ?></td>
                                                     <td><a href="delete_specialty.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
 
                                                 </tr>
