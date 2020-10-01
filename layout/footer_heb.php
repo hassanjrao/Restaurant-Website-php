@@ -20,19 +20,19 @@
                 </div>
                 <div class="col-md-3 icon_sec mt-5">
                     <a style="text-decoration: none;" class="text-secondary d-block" href="about_heb.php">מי אנחנו</a>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">הצטרפו אלינו</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="join_us_heb.php">הצטרפו אלינו</a>
                 </div>
                 <div class="col-md-3 mt-5">
                   
                     <a style="text-decoration: none;" class="text-secondary d-block" href="tos_heb.php">תקנון האתר</a>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="./privacy-policy.php">מדיניות פרטיות</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="privacy-policy-heb.php">מדיניות פרטיות</a>
                     
                 </div>
                 <div class="col-md-3 mt-5 d-block mx-auto align-content-center align-items-center">
                     <!-- <h6 style="font-family: 'Lato', sans-serif;" class="font-weight-bold text-secondary">Information
                     </h6>-->
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">צור קשר</a> 
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">שאלות נפוצות</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="contact_us_heb.php">צור קשר</a> 
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="faq_heb.php">שאלות נפוצות</a>
                  
                 </div>
               

@@ -1,10 +1,27 @@
 <?php
 session_start();
+
+
 if (!isset($_SESSION['Rname'])) {
     header('location:restaurant_login.php');
 }
+
+if (isset($_GET["lan"])) {
+    if ($_GET["lan"] == "en") {
+        $_SESSION["lan"] = "en";
+        header("location: index.php");
+    } else if ($_GET["lan"] == "heb") {
+        $_SESSION["lan"] = "heb";
+        header("location: index_heb.php");
+    } else if ($_GET["lan"] == "fr") {
+        $_SESSION["lan"] = "fr";
+        header("location: index_fr.php");
+    }
+}
+
+
 include('class/database.php');
-class photo extends database
+class DashBoard extends database
 {
     protected $link;
     public function photoFunction()
@@ -19,9 +36,100 @@ class photo extends database
         }
         # code...
     }
+
+    public function count($table)
+    {
+
+
+        $sql = "SELECT * FROM $table";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
+
+    public function countNotes()
+    {
+        $rest_id = $_SESSION['rest_id'];
+
+        $sql = "SELECT * FROM notes_tb where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
+
+    public function countImages()
+    {
+        $rest_id = $_SESSION['rest_id'];
+
+        $sql = "SELECT * FROM rest_images where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
+
+    public function countStarters()
+    {
+        $rest_id = $_SESSION['rest_id'];
+
+        $sql = "SELECT * FROM menu_starter_tb where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
+
+    public function countDishes()
+    {
+        $rest_id = $_SESSION['rest_id'];
+
+        $sql = "SELECT * FROM menu_dish_tb where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
+
+    public function countDesserts()
+    {
+        $rest_id = $_SESSION['rest_id'];
+
+        $sql = "SELECT * FROM menu_dessert_tb where rest_id='$rest_id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
+
+    public function countReservations()
+    {
+
+        $name = $_SESSION['Rname'];
+
+        $sql = "SELECT * FROM reservation_tbl where rest_name='$name'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return mysqli_num_rows($res);
+        } else {
+            return 0;
+        }
+    }
 }
-$obj = new photo;
-$objPhoto = $obj->photoFunction();
+$obj = new DashBoard;
 
 ?>
 
@@ -40,16 +148,14 @@ $objPhoto = $obj->photoFunction();
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <style>
-    img {
-        width: 100%;
-    }
+        img {
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -78,14 +184,113 @@ $objPhoto = $obj->photoFunction();
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">DashBoard</h1>
+
+
+
+
                     <div class="row">
-                        <?php if ($objPhoto) { ?>
-                        <?php while ($row = mysqli_fetch_assoc($objPhoto)) { ?>
-                        <div class="col-md-4">
-                            <?php echo '<img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '">'; ?>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
+                                                Notes</div>
+
+
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $obj->countNotes(); ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="far fa-clipboard fa-2x text-gray-300"></i>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <?php } ?>
-                        <?php } ?>
+
+
+                        <!-- ------------ -->
+
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
+                                                Images</div>
+
+
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $obj->countImages(); ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+
+                                            <i class="far fa-images fa-2x text-gray-300"></i>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ---------------------------- -->
+
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
+                                                Menu</div>
+
+
+                                            <div class="mb-0 font-weight-bold text-gray-800">Starters: <?php echo $obj->countStarters(); ?>
+                                            </div>
+                                            <div class="mb-0 font-weight-bold text-gray-800">Dishes: <?php echo $obj->countDishes(); ?>
+                                            </div>
+                                            <div class=" mb-0  font-weight-bold text-gray-800">Desserts: <?php echo $obj->countDesserts(); ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bars fa-2x text-gray-300"></i>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- ----------------------------------------------- -->
+
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
+                                                Reservations</div>
+
+
+                                            <div class="mb-0 font-weight-bold text-gray-800"> <?php echo $obj->countReservations(); ?>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-cart-arrow-down fa-2x text-gray-300"></i>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -116,8 +321,7 @@ $objPhoto = $obj->photoFunction();
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

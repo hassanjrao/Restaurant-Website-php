@@ -116,6 +116,9 @@ $objRestS2 = $obj->getRestaurants();
 
                 <a class="collapse-item" href="aboutus.php">About us</a>
                 <a class="collapse-item" href="termsofuse.php">Terms of use</a>
+                <a class="collapse-item" href="join.php">Join us</a>
+                <a class="collapse-item" href="contact.php">Contact us</a>
+                <a class="collapse-item" href="faq.php">FAQ</a>
 
 
             </div>

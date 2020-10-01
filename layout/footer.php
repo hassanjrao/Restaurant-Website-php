@@ -22,19 +22,19 @@
                    
                     <a style="text-decoration: none;" class="text-secondary d-block" href="about.php">About Us</a>
                    
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">Join us</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="join_us.php">Join us</a>
                    
                 </div>
                 <div class="col-md-3 mt-5">
                   
                     <a style="text-decoration: none;" class="text-secondary d-block" href="tos.php">Term of use</a>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="./privacy-policy.php">Privacy Policy</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="privacy-policy.php">Privacy Policy</a>
                    
                 </div>
                 <div class="col-md-3 mt-5 d-block mx-auto align-content-center align-items-center">
                    
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">Contact us</a>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="#">FAQ</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="contact_us.php">Contact us</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="faq.php">FAQ</a>
                    
                 </div>
                
