@@ -1,28 +1,18 @@
 <?php
-session_start();
-
-if (isset($_GET["lan"])) {
-    if ($_GET["lan"] == "en") {
-        $_SESSION["lan"] = "en";
-        header("location: index.php");
-    } else if ($_GET["lan"] == "heb") {
-        $_SESSION["lan"] = "heb";
-        header("location: index_heb.php");
-    } else if ($_GET["lan"] == "fr") {
-        $_SESSION["lan"] = "fr";
-        header("location: index_fr.php");
-    }
-}
-
 include('class/database.php');
+if (!isset($_POST["specialty"])) {
+    header("location: index.php");
+}
 class restaurant extends database
 {
     public $link;
 
 
-    public function restaurantFunction()
+    public function filter()
     {
-        $sql = "SELECT * FROM `restaurant_tbl` order by id desc LIMIT 6";
+
+
+        $sql = "SELECT id,speciality FROM `restaurant_tbl`";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -56,11 +46,7 @@ class restaurant extends database
             return false;
         }
         # code...
-
-
-
     }
-
     public function getCities()
     {
         $sql = "select * from cities_tb";
@@ -72,33 +58,11 @@ class restaurant extends database
         }
         # code...
     }
-
-    public function getDiscount()
-    {
-        $rest = $this->restaurantFunction();
-
-        if ($rest) {
-            while ($row = mysqli_fetch_assoc($rest)) {
-                $r_id = $row["id"];
-                $r_name = $row["name_en"];
-
-                $sql = "select * from $r_name";
-                $res = mysqli_query($this->link, $sql);
-                if (mysqli_num_rows($res) > 0) {
-                    return $res;
-                } else {
-                    return false;
-                }
-            }
-        }
-    }
 }
 $obj = new restaurant;
-$objRestaurant = $obj->restaurantFunction();
+$objFilter = $obj->filter();
 $objSpec = $obj->getSpec();
 $objCity = $obj->getCities();
-
-
 
 ?>
 
@@ -108,7 +72,7 @@ $objCity = $obj->getCities();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Filtrer les résultats</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -146,12 +110,12 @@ $objCity = $obj->getCities();
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_fr.php'); ?>
 
     <div class="back_img">
         <div class="container">
             <div class="caption pt-5">
-                <h3 class="font-weight-bold">Faster, Cheaper And Easier Way To Book <br>A Restaurant In Israel</h3>
+                <h3 class="font-weight-bold">Un moyen plus rapide, plus économe et plus simple de réserver un restaurant en Israel</h3>
                 <!-- <p>Faster, cheaper and easier way to book a restaurant in Israel</p> -->
                 <div class="form-group">
                     <div class="row">
@@ -165,7 +129,7 @@ $objCity = $obj->getCities();
                         </div>
                         <div class="col-md-2"></div>
                     </div>
-                    <form method="POST" action="filter_results.php">
+                    <form method="POST" action="filter_results_fr.php">
                         <div class="row pt-4">
                             <div class="col-md-2">
                                 <div class="input-group input-focus bg-light shadow">
@@ -174,7 +138,7 @@ $objCity = $obj->getCities();
                                     </div>
 
                                     <select name="time" class="form-control border-0 bg-light ">
-                                        <option value="" selected disabled class="">Time</option>
+                                        <option value="" selected disabled class="">Heure</option>
 
                                         <option value="09:00-09:30">09:00-9:30</option>
                                         <option value="09:30-10:00">09:30-10:00</option>
@@ -212,27 +176,27 @@ $objCity = $obj->getCities();
                                         <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
                                     </div>
                                     <select name="people" class="form-control border-0 bg-light ">
-                                        <option value="" selected disabled class="">Person</option>
-                                        <option value="1">1 people</option>
-                                        <option value="2">2 people</option>
-                                        <option value="3">3 people</option>
-                                        <option value="4">4 people</option>
-                                        <option value="5">5 people</option>
-                                        <option value="6">6 people</option>
-                                        <option value="7">7 people</option>
-                                        <option value="8">8 people</option>
-                                        <option value="9">9 people</option>
-                                        <option value="10">10 people</option>
-                                        <option value="11">11 people</option>
-                                        <option value="12">12 people</option>
-                                        <option value="13">13 people</option>
-                                        <option value="14">14 people</option>
-                                        <option value="15">15 people</option>
-                                        <option value="16">16 people</option>
-                                        <option value="17">17 people</option>
-                                        <option value="18">18 people</option>
-                                        <option value="19">19 people</option>
-                                        <option value="20">20 people</option>
+                                        <option value="" selected disabled class="">Personne</option>
+                                        <option value="1">1 personne</option>
+                                        <option value="2">2 personne</option>
+                                        <option value="3">3 personne</option>
+                                        <option value="4">4 personne</option>
+                                        <option value="5">5 personne</option>
+                                        <option value="6">6 personne</option>
+                                        <option value="7">7 personne</option>
+                                        <option value="8">8 personne</option>
+                                        <option value="9">9 personne</option>
+                                        <option value="10">10 personne</option>
+                                        <option value="11">11 personne</option>
+                                        <option value="12">12 personne</option>
+                                        <option value="13">13 personne</option>
+                                        <option value="14">14 personne</option>
+                                        <option value="15">15 personne</option>
+                                        <option value="16">16 personne</option>
+                                        <option value="17">17 personne</option>
+                                        <option value="18">18 personne</option>
+                                        <option value="19">19 personne</option>
+                                        <option value="20">20 personne</option>
                                     </select>
                                 </div>
                             </div>
@@ -252,14 +216,14 @@ $objCity = $obj->getCities();
 
 
                                     <select name="location[]" class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled>Location</option>
+                                        <option value="" selected disabled>emplacement</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                               
-                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_en"]) ?></option>
+
+                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_fr"]) ?></option>
 
                                         <?php
                                             }
@@ -274,7 +238,7 @@ $objCity = $obj->getCities();
                         </div>
                         <div class="row">
                             <div class="col-md-7 col-10">
-                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Search</button>
+                                <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Rechercher</button>
                             </div>
                             <div class="col-md-1 col-2">
                                 <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
@@ -290,167 +254,189 @@ $objCity = $obj->getCities();
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">New In</span> Woopyz</h3>
+            <h3 class="text-center"><span class="font-weight-bold">Filtrer les résultats</h3>
             <div class="row">
 
 
 
-                <?php if ($objRestaurant) {
+                <?php
 
-
-
+                if ($objFilter) {
                     $day = strtolower(date("D"));
+                    while ($row1 = mysqli_fetch_assoc($objFilter)) {
+                        $flag = false;
 
 
-                    while ($row = mysqli_fetch_assoc($objRestaurant)) {
+                        $rest_id = $row1["id"];
 
-                        $rest_id = $row["id"];
+
+
+                        if (is_array(unserialize($row1["speciality"]))) {
+
+                            foreach ($_POST["specialty"] as  $sp) {
+                                if (in_array($sp, unserialize($row1["speciality"]))) {
+                                    $flag = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if ($flag == true) {
+                            $sql2 = "SELECT * FROM `restaurant_tbl` where id='$rest_id'";
+                            $res2 = mysqli_query($obj->link, $sql2);
+
+                            while ($row = mysqli_fetch_assoc($res2)) {
 
                 ?>
+                                <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
+                                    <div class="card mb-3">
+                                        <a href="restaurant_fr.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
+                                            <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
 
-                        <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
-                            <div class="card mb-3">
-                                <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
-                                    <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
+                                                    <?php
+                                                    $objImage = $obj->getImages($rest_id);
 
-                                            <?php
-                                            $objImage = $obj->getImages($rest_id);
+                                                    if ($objImage) {
 
-                                            if ($objImage) {
+                                                        $active = true;
+                                                        while ($row1 = mysqli_fetch_assoc($objImage)) {
 
-                                                $active = true;
-                                                while ($row1 = mysqli_fetch_assoc($objImage)) {
-
-                                                    $src = $row1["image"];
+                                                            $src = $row1["image"];
 
 
-                                            ?>
+                                                    ?>
 
-                                                    <div class="carousel-item <?php echo $active == true ? "active" : "" ?>">
-                                                        <img class="d-block w-100 card-img-top" width="305px" height="230px" src="<?php echo "resturaunt/rest_img/$src" ?>" alt="First slide">
+                                                            <div class="carousel-item <?php echo $active == true ? "active" : "" ?>">
+                                                                <img class="d-block w-100 card-img-top" width="305px" height="230px" src="<?php echo "resturaunt/rest_img/$src" ?>" alt="First slide">
+                                                            </div>
+                                                        <?php
+                                                            $active = false;
+                                                        }
+                                                    } else {
+
+
+                                                        ?>
+                                                        <div class="carousel-item active">
+                                                            <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
+                                                        </div>
+
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Précédent</span>
+                                                </a>
+                                                <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Suivant</span>
+                                                </a>
+                                            </div>
+                                        </a>
+                                        <div class="card-body">
+                                            <a href="restaurant_fr.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                        <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_fr']; ?></h6>
                                                     </div>
-                                                <?php
-                                                    $active = false;
-                                                }
-                                            } else {
 
-
-                                                ?>
-                                                <div class="carousel-item active">
-                                                    <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
+                                                    <div class="col-md-6">
+                                                        <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                        <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                        <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                        <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                        <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
-                                                </div>
+                                            </a>
 
-                                            <?php
-                                            }
-                                            ?>
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </div>
-                                </a>
-                                <div class="card-body">
-                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
-                                        <div class="row">
+                                            <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
+                                            </small>
 
-                                            <div class="col-md-6">
-                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_en']; ?></h6>
+
+                                            <div class="container">
+                                                <hr class="font-weight-bold">
+                                            </div>
+                                            <div class="container text-center">
+
+                                                <div class="owl-carousel owl-theme">
+
+                                                    <?php
+
+                                                    $r_id = $row["id"];
+                                                    $r_name = $row["name_en"];
+
+
+
+
+                                                    $sql = "select * from $r_name";
+                                                    $res = mysqli_query($obj->link, $sql);
+                                                    if (mysqli_num_rows($res) > 0) {
+                                                        while ($row1 = mysqli_fetch_assoc($res)) {
+
+                                                            $time = explode("-", $row1["time"]);
+
+                                                            $start_time = $time[0];
+                                                            $s_t = explode(":", $start_time);
+
+                                                            $st = $s_t[0];
+
+                                                            $end_time = $time[1];
+                                                            $e_t = explode(":", $end_time);
+
+                                                            $et = $e_t[0];
+
+
+                                                    ?>
+
+                                                            <div class="item">
+                                                                <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
+                                                                <small class="d-block" style="color: #481639;"><?php echo "$st:00" ?></small>
+                                                            </div>
+
+                                                            <div class="item">
+                                                                <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
+                                                                <small class="d-block" style="color: #481639;"><?php echo "$st:30" ?></small>
+                                                            </div>
+
+
+
+                                                    <?php
+                                                        }
+                                                    }
+
+
+                                                    ?>
+
+
+                                                </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <i class="fas fa-star" style="color:#EEA11D"></i>
-                                                <i class="fas fa-star" style="color:#EEA11D"></i>
-                                                <i class="fas fa-star" style="color:#EEA11D"></i>
-                                                <i class="fas fa-star" style="color:#EEA11D"></i>
-                                                <i class="fas fa-star" style="color:#EEA11D"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
-                                    </small>
-
-
-                                    <div class="container">
-                                        <hr class="font-weight-bold">
-                                    </div>
-                                    <div class="container text-center">
-
-
-                                        <div class="owl-carousel owl-theme">
-
-                                            <?php
-
-                                            $r_id = $row["id"];
-                                            $r_name = $row["name_en"];
-
-
-
-
-                                            $sql = "select * from $r_name";
-                                            $res = mysqli_query($obj->link, $sql);
-                                            if (mysqli_num_rows($res) > 0) {
-                                                while ($row1 = mysqli_fetch_assoc($res)) {
-
-                                                    $time = explode("-", $row1["time"]);
-
-                                                    $start_time = $time[0];
-                                                    $s_t = explode(":", $start_time);
-
-                                                    $st = $s_t[0];
-
-                                                    $end_time = $time[1];
-                                                    $e_t = explode(":", $end_time);
-
-                                                    $et = $e_t[0];
-
-
-                                            ?>
-
-                                                    <div class="item">
-                                                        <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
-                                                        <small class="d-block" style="color: #481639;"><?php echo "$st:00" ?></small>
-                                                    </div>
-
-                                                    <div class="item">
-                                                        <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
-                                                        <small class="d-block" style="color: #481639;"><?php echo "$st:30" ?></small>
-                                                    </div>
-
-
-
-                                            <?php
-                                                }
-                                            }
-
-
-                                            ?>
-
 
                                         </div>
+
                                     </div>
-
-
                                 </div>
 
-                            </div>
-                        </div>
+                <?php
+                            }
+                        }
+                    }
+                }
 
-                    <?php } ?>
-                <?php } ?>
 
+
+
+                ?>
 
 
 
@@ -464,7 +450,7 @@ $objCity = $obj->getCities();
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><strong>Filter</strong> By</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><strong>Filtrer</strong></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -488,7 +474,7 @@ $objCity = $obj->getCities();
                                             <div class="form-check">
                                                 <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
                                                 <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
-                                                    <?php echo $row["specialty_en"] ?>
+                                                    <?php echo $row["specialty_fr"] ?>
                                                 </label>
 
                                             </div>
@@ -501,13 +487,12 @@ $objCity = $obj->getCities();
                             </div>
                         </div>
                         <hr>
-
+                       
                     </div>
 
                     <div class="modal-footer text-center">
 
-                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
-                            Filters</button>
+                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Appliquer les filtres</button>
                     </div>
                 </form>
             </div>
@@ -516,7 +501,7 @@ $objCity = $obj->getCities();
 
 
 
-    <?php include('layout/footer.php'); ?>
+    <?php include('layout/footer_fr.php'); ?>
 
 
     <?php include('layout/script.php') ?>

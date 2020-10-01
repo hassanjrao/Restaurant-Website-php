@@ -99,7 +99,7 @@ class reservation extends database
                 $fname = $resl_u["fname"];
                 $lname = $resl_u["lname"];
 
-                $discount=$resl0[$day];
+                $discount = $resl0[$day];
 
 
                 $sql_res = "SELECT * from `restaurant_tbl` where name_en = '$rest_name' ";
@@ -221,7 +221,7 @@ class reservation extends database
     public function featureFunction()
     {
         $name = $_SESSION['rname'];
-        $sql = "select * from restaurant_feature where rest_name = '$name' LIMIT 1";
+        $sql = "select * from restaurant_tbl where name_en = '$name'";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -229,6 +229,17 @@ class reservation extends database
             return false;
         }
         # code...
+    }
+
+    public function getService($id)
+    {
+        $sql = "select * from services_tb where id = '$id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
     }
 
     public function contactFunction()
@@ -260,7 +271,6 @@ $obj = new reservation;
 $objConfirm = $obj->confirmFunction();
 $objCancel = $obj->cancelFunction();
 $objFeature = $obj->featureFunction();
-$show = mysqli_fetch_assoc($objFeature);
 
 $objContact = $obj->contactFunction();
 $objInfo = $obj->infoFunction();
@@ -283,7 +293,7 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
 <body class="bg-light">
     <?php include('layout/navbar.php'); ?>
 
-    <?php include('layout/hero_section.php'); ?>
+
 
     <form action="" method="post">
         <section>
@@ -292,20 +302,48 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
 
                 <div class="container">
                     <div class="row pt-5">
-                        <div class="col-md-4">
-                            <h4 class="font-weight-bold"><?php echo $_SESSION['rname']; ?></h4>
-                            <small class="d-block mb-4 text-secondary"><span><i class="fas fa-map-marker-alt mr-2"></i></span><?php echo $_SESSION['address']; ?></small>
+                    <div class="col-md-4">
+                            <?php
+                            if($objFeature){
+                                $row = mysqli_fetch_assoc($objFeature);
+
+                                $r_name=$row["name_en"];
+
+                                $r_add=$row["address_en"];
+                            }
+                             ?>
+                            <h4 class="font-weight-bold"><?php echo $r_name; ?></h4>
+                            <small class="d-block mb-4 text-secondary"><span><i class="fas fa-map-marker-alt mr-2"></i></span><?php echo $r_add ?></small>
                             <i class="fas fa-star fa-2x star"></i>
                             <i class="fas fa-star fa-2x"></i>
                             <i class="fas fa-star fa-2x"></i>
                             <i class="fas fa-star fa-2x"></i>
                             <i class="fas fa-star fa-2x"></i>
-                            <p class="mt-3">Bar | <span class="font-weight-bold"><?php echo $show['bar']; ?></span></p>
-                            <p class="mt-3">Music | <span class="font-weight-bold"><?php echo $show['music']; ?></span>
-                            </p>
-                            <p class="mt-3">Parking | <span class="font-weight-bold"><?php echo $show['park']; ?></span>
-                            </p>
-                            <p class="mt-3">Terrace | <span class="font-weight-bold"><?php echo $show['terrace']; ?></span></p>
+
+                            <?php
+
+                            if ($obj->featureFunction()) {
+
+                                $row = mysqli_fetch_assoc($obj->featureFunction());
+
+                                $services_arr = unserialize($row["services"]);
+
+                                foreach ($services_arr as $service) {
+
+                                    if ($obj->getService($service)) {
+
+                                        $row = mysqli_fetch_assoc($obj->getService($service));
+
+                            ?>
+                                        <p class="mt-3"><?php echo $row["service_en"]; ?></p>
+                            <?php
+
+                                    }
+                                }
+                            }
+
+                            ?>
+
                         </div>
                         <div class="col-md-4 mx-auto">
                             <?php if ($objCancel) { ?>

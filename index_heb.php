@@ -240,15 +240,15 @@ $objCity = $obj->getCities();
                                     </div>
 
 
-                                    <select name="location" class="form-control border-0 bg-light ">
-
+                                    <select name="location[]" class="form-control border-0 bg-light ">
+                                    <option value="" selected disabled>עיר</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                                <option value="" selected disabled>עיר</option>
-                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
+                                               
+                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_heb"]) ?></option>
 
                                         <?php
                                             }

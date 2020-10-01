@@ -185,7 +185,7 @@ class reservation extends database
                     if (mail($to, $subject, $txt, $headers)) {
 
                         unset($_SESSION["code"]);
-                        header('location:thankyou_heb.php');
+                        header('location:thankyou_fr.php');
                         return $res;
                     }
                 } else {
@@ -210,7 +210,7 @@ class reservation extends database
             if ($res) {
                 $msg = "Deleted";
                 unset($_SESSION['code']);
-                header("location: index_heb.php");
+                header("location: index_fr.php");
             } else {
                 $msg = "Not Deleted";
                 return $msg;
@@ -292,26 +292,24 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar_heb.php'); ?>
+    <?php include('layout/navbar_fr.php'); ?>
 
-    <?php //include('layout/hero_section.php'); 
-    ?>
 
     <form action="" method="post">
         <section>
             <div class="container bg-white pr-4 pl-4 log_section pb-5 reserve_section">
-                <h5 class=" text-center pt-5 font-weight-bold"><?php echo "תודה על ההזמנה! " . ucfirst($rowCont["fname"]) . " " . ucfirst($rowCont["lname"]) . " ל " . $_SESSION["people"] . " סועדים עַל " . $_SESSION["date"];  ?></h5>
+                <h5 class=" text-center pt-5 font-weight-bold"><?php echo "Merci pour votre réservation " . ucfirst($rowCont["fname"]) . " " . ucfirst($rowCont["lname"]) . " pour " . $_SESSION["people"] . " personnes sur " . $_SESSION["date"];  ?></h5>
 
                 <div class="container">
                     <div class="row pt-5">
-                    <div class="col-md-4">
+                        <div class="col-md-4">
                             <?php
                             if($objFeature){
                                 $row = mysqli_fetch_assoc($objFeature);
 
-                                $r_name=$row["name_heb"];
+                                $r_name=$row["name_fr"];
 
-                                $r_add=$row["address_heb"];
+                                $r_add=$row["address_fr"];
                             }
                              ?>
                             <h4 class="font-weight-bold"><?php echo $r_name; ?></h4>
@@ -337,7 +335,7 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
                                         $row = mysqli_fetch_assoc($obj->getService($service));
 
                             ?>
-                                        <p class="mt-3"><?php echo $row["service_heb"]; ?></p>
+                                        <p class="mt-3"><?php echo $row["service_fr"]; ?></p>
                             <?php
 
                                     }
@@ -366,12 +364,12 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
                             <img src="images/google-maps.jpg" alt="">
                         </div>
                         <div class="col-md-4 p-5 bg-light">
-                            <h4 class="font-weight-bold text-center">קוד הזמנה</h4>
+                            <h4 class="font-weight-bold text-center">Code de réservation</h4>
                             <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>">
                             <?php if (isset($_SESSION['code'])) { ?>
                                 <input type="text" name="code" class="form-control border-0 bg-white mt-5" placeholder="Enter Code" value="<?php echo $_SESSION['code']; ?>" readonly>
                             <?php } else { ?>
-                                <input type="text" name="code" class="form-control border-0 bg-white mt-5" placeholder="קוד הזמנה" value="" readonly required>
+                                <input type="text" name="code" class="form-control border-0 bg-white mt-5" placeholder="Code de réservation" value="" readonly required>
                             <?php } ?>
                         </div>
                     </div>
@@ -380,18 +378,18 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
             <div class="container reserve_section_btn">
                 <div class="row">
                     <div class="col-md-6 pt-3">
-                        <button type="submit" name="cancel" class="btn btn-block btn-lg font-weight-bold">בטל הזמנה</button>
+                        <button type="submit" name="cancel" class="btn btn-block btn-lg font-weight-bold">Annuler ma réservation </button>
 
                     </div>
                     <div class="col-md-6 pt-3">
-                        <button type="submit" name="confirm" class="btn color_btn btn-block btn-lg font-weight-bold">אשר הזמנה</button>
+                        <button type="submit" name="confirm" class="btn color_btn btn-block btn-lg font-weight-bold">Confirmer ma réservation</button>
                     </div>
                 </div>
             </div>
         </section>
     </form>
 
-    <?php include('layout/footer_heb.php'); ?>
+    <?php include('layout/footer_fr.php'); ?>
 
 
     <?php include('layout/script.php') ?>

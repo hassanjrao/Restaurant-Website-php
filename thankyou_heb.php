@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservation</title>
+    <title>תודה</title>
     <?php include('layout/style.php'); ?>
 
 </head>
@@ -14,7 +14,6 @@
 <body class="bg-light">
     <?php include('layout/navbar_heb.php'); ?>
 
-    <?php //include('layout/hero_section.php'); ?>
 
     <form action="" method="post">
         <section>

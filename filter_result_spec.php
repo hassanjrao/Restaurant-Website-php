@@ -47,10 +47,22 @@ class restaurant extends database
         }
         # code...
     }
+    public function getCities()
+    {
+        $sql = "select * from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
 }
 $obj = new restaurant;
 $objFilter = $obj->filter();
 $objSpec = $obj->getSpec();
+$objCity = $obj->getCities();
 
 ?>
 
@@ -201,9 +213,21 @@ $objSpec = $obj->getSpec();
                                 </div>
 
 
-                                <select class="form-control border-0 bg-light ">
+                                <select class="form-control border-0 bg-light " name="location[]">
                                     <option value="" selected disabled>Location</option>
-                                    <option value="Tel Aviv">Tel Aviv</option>
+                                    <?php
+                                    if ($objCity) { ?>
+                                        <?php while ($row = mysqli_fetch_assoc($objCity)) {
+
+                                        ?>
+
+                                            <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_en"]) ?></option>
+
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+
                                 </select>
                             </div>
                         </div>

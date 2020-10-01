@@ -47,10 +47,23 @@ class restaurant extends database
         }
         # code...
     }
+
+    public function getCities()
+    {
+        $sql = "select * from cities_tb";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
 }
 $obj = new restaurant;
 $objFilter = $obj->filter();
 $objSpec = $obj->getSpec();
+$objCity = $obj->getCities();
 
 ?>
 
@@ -204,15 +217,15 @@ $objSpec = $obj->getSpec();
                                     </div>
 
 
-                                    <select name="location" class="form-control border-0 bg-light ">
-
+                                    <select class="form-control border-0 bg-light " name="location[]">
+                                        <option value="" selected disabled>Location</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                                <option value="" selected disabled>עיר</option>
-                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city"]) ?></option>
+
+                                                <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_heb"]) ?></option>
 
                                         <?php
                                             }
@@ -278,7 +291,7 @@ $objSpec = $obj->getSpec();
                 ?>
                                 <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                     <div class="card mb-3">
-                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id'];?>" style="text-decoration: none;">
+                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>" style="text-decoration: none;">
                                             <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                 <div class="carousel-inner">
 
@@ -330,7 +343,7 @@ $objSpec = $obj->getSpec();
                                             </div>
                                         </a>
                                         <div class="card-body">
-                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id'];?>" style="text-decoration: none;">
+                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>" style="text-decoration: none;">
                                                 <div class="row">
 
                                                     <div class="col-md-6">
