@@ -19,32 +19,9 @@ class City extends database
         }
         # code...
     }
-    public function createCity()
-    {
-        if (isset($_POST['submit'])) {
-            $city_en = strtolower($_POST['city_en']);
-            $city_heb = strtolower($_POST['city_heb']);
-            $city_fr = strtolower($_POST['city_fr']);
-
-            $sql = "INSERT INTO cities_tb (`city_en`,`city_heb`,`city_fr`, `created`) VALUES ('$city_en','$city_heb','$city_fr', CURRENT_TIMESTAMP)";
-            $res = mysqli_query($this->link, $sql);
-
-            if ($res) {
-                $msg = "success_add";
-                header("location: all_cities.php?msg=$msg");
-                return true;
-            } else {
-                $msg = "fail_add";
-                header("location: all_cities.php?msg=$msg");
-                return false;
-            }
-        }
-        # code...
-    }
 }
 $obj = new City;
 $objCity = $obj->getCities();
-$objCreate = $obj->createCity();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +93,7 @@ $objCreate = $obj->createCity();
                                 City</button>
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
-                                    <form action="" method="post">
+                                    <form>
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">City
@@ -128,13 +105,13 @@ $objCreate = $obj->createCity();
                                             <div class="modal-body bg-light">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <input type="text" required name="city_en" class="border-0 form-control" placeholder="City Name English">
+                                                        <input type="text" required id="city_en" name="city_en" class="border-0 form-control" placeholder="City Name English">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="text" required name="city_heb" class="border-0 form-control" placeholder="City Name French">
+                                                        <input type="text" required id="city_heb" name="city_heb" class="border-0 form-control" placeholder="City Name French">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="text" required name="city_fr" class="border-0 form-control" placeholder="City Name French">
+                                                        <input type="text" required id="city_fr" name="city_fr" class="border-0 form-control" placeholder="City Name French">
                                                     </div>
 
                                                 </div>
@@ -142,7 +119,7 @@ $objCreate = $obj->createCity();
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" onclick="sendData()" name="submit" class="btn btn-primary">Save</button>
                                             </div>
                                         </div>
                                     </form>
@@ -243,9 +220,9 @@ $objCreate = $obj->createCity();
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php if ($objCity) { 
-                                            $a=1;
-                                            ?>
+                                        <?php if ($objCity) {
+                                            $a = 1;
+                                        ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                                 $id = $row['id'];
@@ -330,6 +307,78 @@ $objCreate = $obj->createCity();
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
+
+
+    <script>
+        function sendData() {
+
+
+            city_en = document.getElementById("city_en").value;
+            city_heb = document.getElementById("city_heb").value;
+            city_fr = document.getElementById("city_fr").value;
+
+
+            console.log(city_en);
+            console.log(city_heb);
+            console.log(city_fr);
+
+
+            $.ajax({
+
+                url: 'https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=F8AWLo4qe51rnLMUknCs8HPYGwl7Q7p_5TNVahy0a8s&gen=9&searchtext=' + city_en,
+
+                type: 'GET',
+
+                data: city_en,
+
+                success: function(result) {
+
+
+                    var longt = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Longitude"];
+
+                    var latit = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Latitude"];
+
+                    console.log("lat" + latit);
+
+                    console.log("long" + longt);
+
+
+                    $.ajax({
+
+
+                        url: "city_create.php",
+
+                        type: 'POST',
+
+                        data: {
+                            city_en: city_en,
+                            city_heb: city_heb,
+                            city_fr: city_fr,
+                            lat: latit,
+                            lon: longt
+                        },
+
+                        success: function(status) {
+
+                            console.log(status);
+
+                            if(status=="success_add"){
+                                window.location.replace("all_cities.php?msg=success_add");
+                            }
+                            else if(status=="fail_add"){
+                                window.location.replace("all_cities.php?msg=fail_add");
+                            }
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        }
+    </script>
 
 </body>
 

@@ -19,6 +19,20 @@ class restaurant extends database
         # code...
     }
 
+
+    public function getCityName($id)
+    {
+        $sql = "select * from cities_tb where id='$id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+        # code...
+    }
+
+
     public function getSpec()
     {
         $sql = "select * from specialty";
@@ -79,11 +93,73 @@ class restaurant extends database
             }
         }
     }
+
+    public function getUserCity()
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        $ip = '168.192.0.1';
+        $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
+
+        if ($query["status"] == "fail") {
+            return false;
+        } else {
+            return $query;
+        }
+    }
+
+    public function getNearestCities()
+    {
+
+        $user_city_arr = $this->getUserCity();
+
+        $user_city_name = $user_city_arr["city"];
+
+
+
+        //  var_dump($user_city_arr);
+
+        // $lat = $user_city_arr["lat"];
+        // $long = $user_city_arr["lon"];
+
+         $lat = "3.107685";
+        $long = "101.7624521";
+
+
+
+
+
+
+        $sql = "SELECT * , (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - lat) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(lat * pi()/180) * POWER(SIN(( $long - lon) * pi()/180 / 2), 2) ))) as distance  
+        from cities_tb 
+        having  distance <= 10
+        order by distance";
+        $res = mysqli_query($this->link, $sql);
+
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+
+
+        // while ($row = mysqli_fetch_assoc($res)) {
+        //     echo $row['city_en']."<br>";
+        // }
+    }
 }
 $obj = new restaurant;
+$objRestaurant1 = $obj->restaurantFunction();
 $objRestaurant = $obj->restaurantFunction();
 $objSpec = $obj->getSpec();
 $objCity = $obj->getCities();
+$objUserCity = $obj->getUserCity();
+$objNearestCities = $obj->getNearestCities();
 
 
 
@@ -241,13 +317,13 @@ $objCity = $obj->getCities();
 
 
                                     <select name="location[]" class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled>עיר</option>
+                                        <option value="" selected disabled>עיר</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                               
+
                                                 <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_heb"]) ?></option>
 
                                         <?php
@@ -284,7 +360,203 @@ $objCity = $obj->getCities();
 
 
 
-                <?php if ($objRestaurant) {
+                <?php
+
+                if ($objUserCity != false && $objNearestCities != false) {
+
+                    $day = strtolower(date("D"));
+
+
+
+                    $ind = 0;
+                    $nearestCitiesArrD = [];
+                    while ($row = mysqli_fetch_assoc($objNearestCities)) {
+                        $nearestCitiesArrD[$ind++] = strtolower($row['city_en']);
+                    }
+
+                    $user_city = strtolower($objUserCity["city"]);
+
+                    array_push($nearestCitiesArrD, $user_city);
+
+                    $nearestCitiesArr = array_unique($nearestCitiesArrD);
+
+
+
+
+
+                    while ($row = mysqli_fetch_assoc($objRestaurant1)) {
+
+                        $rest_id = $row["id"];
+                        $cities_arr = unserialize($row["cities"]);
+
+                        $i = 0;
+                        $matched = false;
+
+                        if (is_array($cities_arr)) {
+                            foreach ($cities_arr as $city_id) {
+
+
+                                $city_name_row = mysqli_fetch_assoc($obj->getCityName($city_id));
+
+                                $city_name = strtolower($city_name_row["city_en"]);
+
+
+                                if (in_array($city_name, $nearestCitiesArr)) {
+                                    $matched = true;
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        if ($matched == true) {
+
+                ?>
+
+                            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
+                                <div class="card mb-3">
+                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                        <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+
+                                                <?php
+                                                $objImage = $obj->getImages($rest_id);
+
+                                                if ($objImage) {
+
+                                                    $active = true;
+                                                    while ($row1 = mysqli_fetch_assoc($objImage)) {
+
+                                                        $src = $row1["image"];
+
+
+                                                ?>
+
+                                                        <div class="carousel-item <?php echo $active == true ? "active" : "" ?>">
+                                                            <img class="d-block w-100 card-img-top" width="305px" height="230px" src="<?php echo "resturaunt/rest_img/$src" ?>" alt="First slide">
+                                                        </div>
+                                                    <?php
+                                                        $active = false;
+                                                    }
+                                                } else {
+
+
+                                                    ?>
+                                                    <div class="carousel-item active">
+                                                        <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
+                                                    </div>
+                                                    <div class="carousel-item">
+                                                        <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
+                                                    </div>
+                                                    <div class="carousel-item">
+                                                        <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
+                                                    </div>
+
+                                                <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">הקודם</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">הבא</span>
+                                            </a>
+                                        </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                            <div class="row">
+
+                                                <div class="col-md-6">
+                                                    <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_heb']; ?></h6>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                    <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                    <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                    <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                    <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_heb']; ?>
+                                        </small>
+
+
+                                        <div class="container">
+                                            <hr class="font-weight-bold">
+                                        </div>
+                                        <div class="container text-center">
+
+
+                                            <div class="owl-carousel owl-theme">
+
+                                                <?php
+
+                                                $r_id = $row["id"];
+                                                $r_name = $row["name_en"];
+
+
+
+
+                                                $sql = "select * from $r_name";
+                                                $res = mysqli_query($obj->link, $sql);
+                                                if (mysqli_num_rows($res) > 0) {
+                                                    while ($row1 = mysqli_fetch_assoc($res)) {
+
+                                                        $time = explode("-", $row1["time"]);
+
+                                                        $start_time = $time[0];
+                                                        $s_t = explode(":", $start_time);
+
+                                                        $st = $s_t[0];
+
+                                                        $end_time = $time[1];
+                                                        $e_t = explode(":", $end_time);
+
+                                                        $et = $e_t[0];
+
+
+                                                ?>
+
+                                                        <div class="item">
+                                                            <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
+                                                            <small class="d-block" style="color: #481639;"><?php echo "$st:00" ?></small>
+                                                        </div>
+
+                                                        <div class="item">
+                                                            <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
+                                                            <small class="d-block" style="color: #481639;"><?php echo "$st:30" ?></small>
+                                                        </div>
+
+
+
+                                                <?php
+                                                    }
+                                                }
+
+
+                                                ?>
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                    <?php
+
+                        }
+                    }
+                } else if ($objRestaurant) {
 
 
 
@@ -293,7 +565,7 @@ $objCity = $obj->getCities();
 
 
 
-                ?>
+                    ?>
                     <?php while ($row = mysqli_fetch_assoc($objRestaurant)) {
 
                         $rest_id = $row["id"];
