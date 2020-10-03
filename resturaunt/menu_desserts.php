@@ -33,15 +33,11 @@ class menu extends database
             $dessert = $_POST['name'];
             $s_price = $_POST["price"];
 
-            $lang = $_POST["lang"];
 
-            if ($lang == "english") {
-                $sql = "INSERT INTO `menu_dessert_tb` (`dessert_en`, `price`, `rest_id`,`created`) VALUES ('$dessert', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
-                $res = mysqli_query($this->link, $sql);
-            } else if ($lang == "hebrew") {
-                $sql = "INSERT INTO `menu_dessert_tb` (`dessert_heb`, `price`,`rest_id`,`created`) VALUES ('$dessert', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
-                $res = mysqli_query($this->link, $sql);
-            }
+
+            $sql = "INSERT INTO `menu_dessert_tb` (`dessert_en`, `price`, `rest_id`,`created`) VALUES ('$dessert', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
+            $res = mysqli_query($this->link, $sql);
+
 
             if ($res) {
                 $msg = "success_add";
@@ -133,20 +129,7 @@ $objCreate = $obj->saveFunction();
                                             </div>
                                             <div class="modal-body bg-light">
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        Select Language
-                                                        <select name="lang" class="border-0 form-control" required>
-
-                                                            <option value="english">English</option>
-                                                            <option value="hebrew">Hebrew</option>
-                                                        </select>
-
-                                                    </div>
-
-
-                                                </div>
-                                                <br><br>
+                                               
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <input type="text" name="name" class="border-0 form-control" placeholder="Name" required>
@@ -200,7 +183,7 @@ $objCreate = $obj->saveFunction();
                             } ?>
 
 
-<?php
+                            <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
@@ -260,8 +243,7 @@ $objCreate = $obj->saveFunction();
                                             <th>ID</th>
                                             <th>Dessert</th>
                                             <th>Dessert Price</th>
-                                            <th>Created</th>
-                                            <th>Updated</th>
+
                                             <th>Edit/Delete</th>
 
 
@@ -273,8 +255,7 @@ $objCreate = $obj->saveFunction();
                                             <th>ID</th>
                                             <th>Dessert</th>
                                             <th>Dessert Price</th>
-                                            <th>Created</th>
-                                            <th>Updated</th>
+
                                             <th>Edit/Delete</th>
 
 
@@ -285,40 +266,27 @@ $objCreate = $obj->saveFunction();
                                         <?php
                                         $a = 1;
                                         if ($objMenu) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objMenu)) { 
+                                            <?php while ($row = mysqli_fetch_assoc($objMenu)) {
                                                 $id = $row["id"];
-                                                ?>
-                                                <tr>
-                                                    <td><?php echo $a++ ?></td>
 
-                                                    <?php
-                                                    if ($row['dessert_en'] != NULL) {
-                                                    ?>
+                                                if ($row['dessert_en'] != NULL) {
+                                            ?>
+                                                    <tr>
+                                                        <td><?php echo $a++ ?></td>
+
+
                                                         <td><?php echo $row['dessert_en']; ?></td>
                                                         <td><?php echo $row['price']; ?></td>
-                                                        <td><?php echo $row['created']; ?></td>
-                                                        <td><?php echo $row['updated']; ?></td>  
-                                                    <?php
-                                                    } else if ($row['dessert_heb'] != NULL) {
-                                                    ?>
-                                                        <td><?php echo $row['dessert_heb']; ?></td>
-                                                        <td><?php echo $row['price']; ?></td>
-                                                        <td><?php echo $row['created']; ?></td>
-                                                        <td><?php echo $row['updated']; ?></td>
 
-                                                    <?php
-                                                    }
-
-                                                    ?>
-
-                                                    <td>
-                                                        <a href="menu_dessert_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                        <a href="menu_dessert_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                                    </td>
+                                                        <td>
+                                                            <a href="menu_dessert_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                            <a href="menu_dessert_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                        </td>
 
 
-                                                </tr>
-                                            <?php } ?>
+                                                    </tr>
+                                            <?php }
+                                            } ?>
                                         <?php } ?>
 
                                     </tbody>

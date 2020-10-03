@@ -5,16 +5,16 @@ if (!isset($_SESSION['Rname'])) {
 }
 
 include('class/database.php');
-class MenuDishEdit extends database
+class NoteEdit extends database
 {
     protected $link;
-    public function getItem()
+    public function getNote()
     {
 
 
         $id = $_GET['id'];
 
-        $sql = "select * from menu_dish_tb where id = '$id' ";
+        $sql = "select * from notes_tb where id = '$id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -24,34 +24,37 @@ class MenuDishEdit extends database
         # code...
     }
 
-    public function updateItem()
+    public function updateNote()
     {
 
         if (isset($_POST['submit'])) {
+
             $id = $_GET['id'];
 
-            $dish = $_POST['name'];
-            $price = $_POST["price"];
+            $note = $_POST['note'];
+            $day = $_POST["day"];
 
 
-            $sql = "UPDATE menu_dish_tb SET dish_en='$dish', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
+            $sql = "UPDATE notes_tb SET note_heb='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
             $res = mysqli_query($this->link, $sql);
+
+
 
             if ($res) {
                 $msg = "success_upd";
-                header("location: menu_dishes.php?msg=$msg");
+                header("location: notes_heb.php?msg=$msg");
                 return true;
             } else {
                 $msg = "fail_upd";
-                header("location: menu_dishes.php?msg=$msg");
+                header("location: notes_heb.php?msg=$msg");
                 return false;
             }
         }
     }
 }
-$obj = new MenuDishEdit;
-$objItem = $obj->getItem();
-$objItemUpdate = $obj->updateItem();
+$obj = new NoteEdit;
+$objNote = $obj->getNote();
+$objNoteUpdate = $obj->updateNote();
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +68,7 @@ $objItemUpdate = $obj->updateItem();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Restaurant - Edit Dish</title>
+    <title>לַעֲרוֹך הערה</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -91,28 +94,16 @@ $objItemUpdate = $obj->updateItem();
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-
-
-
-
-
-                </nav>
-                <!-- End of Topbar -->
+                <!-- topbar -->
+                <?php include('topbar.php'); ?>
+                <!-- End of topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Edit Dish</h1>
+                        <h1 class="h3 mb-0 text-gray-800">לַעֲרוֹך הערה</h1>
 
                     </div>
 
@@ -120,61 +111,64 @@ $objItemUpdate = $obj->updateItem();
                     <div class="row">
 
                         <div class="col-lg-12">
-                            <?php
-
-                            $row = mysqli_fetch_assoc($objItem)
-
-
-                            ?>
-
+                           
                             <!-- ------Menu English Starts -->
                             <div class="card shadow mb-4">
 
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Edit Dish Information</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">לַעֲרוֹך הערה</h6>
                                 </div>
                                 <div class="card-body">
 
-                                    <?php if (strcmp($objItemUpdate, 'taken') == 0) { ?>
-                                        <div class="alert alert-warning alert-dismissible">
-                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                            <strong>Restaurant Name Is Already Taken!</strong>
-                                        </div>
 
-
-                                    <?php } ?>
 
 
 
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Dish Information
+                                                <h5 class="modal-title" id="exampleModalLabel">הערה מידע
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body bg-light">
+                                                <?php
+
+                                                $row = mysqli_fetch_assoc($objNote)
+
+
+                                                ?>
 
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" value="<?php echo $row["dish_en"] ?>" class=" form-control" placeholder="Name" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control" placeholder="Price" required>
+                                                        <input type="text" required name="note" value="<?php echo $row["note_heb"] ?>" class="form-control" placeholder="הערה">
                                                     </div>
 
+                                                    <div class="col-md-6">
+                                                        <select required name="day" class="form-control">
+                                                            <option selected><?php echo $row["day"] ?></option>
+                                                            <option></option>
+                                                            <option>sun</option>
+                                                            <option>mon</option>
+                                                            <option>tue</option>
+                                                            <option>wed</option>
+                                                            <option>thu</option>
+                                                            <option>fri</option>
+                                                            <option>sat</option>
+                                                        </select>
+                                                    </div>
 
                                                 </div>
-                                                <br>
+
 
 
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">סגירה</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">שמירה</button>
                                             </div>
 
                                         </div>

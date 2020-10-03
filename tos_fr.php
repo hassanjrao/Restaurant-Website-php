@@ -35,7 +35,7 @@ $objTOS = $obj->getTOS();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of use</title>
+    <title>Conditions d'utilisation</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -79,7 +79,7 @@ $objTOS = $obj->getTOS();
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">Terms of use</h3>
+            <h3 class="text-center"><span class="font-weight-bold">Conditions d'utilisation</h3>
 
             <div class="row">
 

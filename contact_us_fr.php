@@ -33,7 +33,7 @@ $objContact = $obj->getContact();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact us</title>
+    <title>Nous contacter</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -77,7 +77,7 @@ $objContact = $obj->getContact();
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">Contact us</h3>
+            <h3 class="text-center"><span class="font-weight-bold">Nous contacter</h3>
 
             <div class="row">
 

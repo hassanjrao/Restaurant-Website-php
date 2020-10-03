@@ -13,7 +13,7 @@ class menu extends database
 
         $id = $_SESSION['rest_id'];
 
-        $sql = "SELECT * from menu_dish_tb where rest_id='$id'";
+        $sql = "SELECT * from menu_starter_tb where rest_id='$id'";
         $res = mysqli_query($this->link, $sql);
 
 
@@ -30,20 +30,21 @@ class menu extends database
         if (isset($_POST['submit'])) {
             $rest_id = $_SESSION['rest_id'];
 
-            $dish = $_POST['name'];
+            $starter = $_POST['name'];
             $s_price = $_POST["price"];
 
-            $sql = "INSERT INTO `menu_dish_tb` (`dish_en`, `price`, `rest_id`,`created`) VALUES ('$dish', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
-            $res = mysqli_query($this->link, $sql);
 
+
+            $sql = "INSERT INTO `menu_starter_tb` (`starter_heb`, `price`,`rest_id`,`created`) VALUES ('$starter', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
+            $res = mysqli_query($this->link, $sql);
 
             if ($res) {
                 $msg = "success_add";
-                header("location: menu_dishes.php?msg=$msg");
+                header("location: menu_starters_heb.php?msg=$msg");
                 return true;
             } else {
                 $msg = "fail_add";
-                header("location: menu_dishes.php?msg=$msg");
+                header("location: menu_starters_heb.php?msg=$msg");
                 return false;
             }
         }
@@ -67,7 +68,7 @@ $objCreate = $obj->saveFunction();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Menu</title>
+    <title>תפריט</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -87,7 +88,7 @@ $objCreate = $obj->saveFunction();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_heb.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -104,7 +105,7 @@ $objCreate = $obj->saveFunction();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Menu - Dishes</h1>
+                    <h1 class="h3 mb-2 text-gray-800">תפריט - שם מנה ראשונה</h1>
 
 
                     <!-- DataTales Example -->
@@ -112,14 +113,13 @@ $objCreate = $obj->saveFunction();
 
 
                         <div class="card-header py-3">
-                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">Add
-                                Dish</button>
+                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">הוסף מנה ראשונה</button>
                             <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="menuModalLabel">Add Dish
+                                                <h5 class="modal-title" id="menuModalLabel">הוסף מנה ראשונה
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -128,12 +128,13 @@ $objCreate = $obj->saveFunction();
                                             <div class="modal-body bg-light">
 
 
+
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" class="border-0 form-control" placeholder="Name" required>
+                                                        <input type="text" name="name" class="border-0 form-control" placeholder="שם" required>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="number" name="price" class="form-control border-0" placeholder="Price" required>
+                                                        <input type="number" name="price" class="form-control border-0" placeholder="מחיר" required>
                                                     </div>
 
 
@@ -144,8 +145,8 @@ $objCreate = $obj->saveFunction();
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">סגירה</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">שמירה</button>
                                             </div>
                                         </div>
                                     </form>
@@ -154,12 +155,12 @@ $objCreate = $obj->saveFunction();
                         </div>
                         <div class="card-body">
 
-                            <?php
+                        <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Added!</strong>
+                                        <strong>הוספה בוצעה</strong>
                                     </div>
 
 
@@ -172,7 +173,7 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'fail_add') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Addition Failed!</strong>
+                                        <strong>הוספה נכשלה</strong>
                                     </div>
 
 
@@ -185,7 +186,20 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Updated!</strong>
+                                        <strong>עדכון בוצע</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>עדכון נכשל</strong>
                                     </div>
 
 
@@ -199,7 +213,7 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'success_del') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Deleted!</strong>
+                                        <strong>מחיקה בוצעה</strong>
                                     </div>
 
 
@@ -211,38 +225,22 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'fail_del') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Deletion Failed!</strong>
+                                        <strong>מחיקה נכשלה</strong>
                                     </div>
 
 
                             <?php }
                             } ?>
 
-                            <?php
-                            if (isset($_GET["msg"])) {
-                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
-                                    <div class="alert alert-warning alert-dismissible">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Update Failed!</strong>
-                                    </div>
-
-
-                            <?php
-                                }
-                            } ?>
-
-
-
 
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Dish</th>
-                                            <th>Dish Price</th>
-                                           
-                                            <th>Edit/Delete</th>
+                                            <th>מספר</th>
+                                            <th>שם מנה ראשונה</th>
+                                            <th>מחיר</th>
+                                            <th>הוספה/מחיקה</th>
 
 
 
@@ -250,11 +248,10 @@ $objCreate = $obj->saveFunction();
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Dish</th>
-                                            <th>Dish Price</th>
-                                           
-                                            <th>Edit/Delete</th>
+                                            <th>מספר</th>
+                                            <th>שם מנה ראשונה</th>
+                                            <th>מחיר</th>
+                                            <th>הוספה/מחיקה</th>
 
 
                                         </tr>
@@ -265,31 +262,30 @@ $objCreate = $obj->saveFunction();
                                         $a = 1;
                                         if ($objMenu) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objMenu)) {
+
                                                 $id = $row["id"];
                                             ?>
 
 
                                                 <?php
-                                                if ($row['dish_en'] != NULL) {
+                                                if ($row['starter_heb'] != NULL) {
                                                 ?>
+
                                                     <tr>
                                                         <td><?php echo $a++ ?></td>
-                                                        <td><?php echo $row['dish_en']; ?></td>
+                                                        <td><?php echo $row['starter_heb']; ?></td>
                                                         <td><?php echo $row['price']; ?></td>
-                                                       
 
                                                         <td>
-                                                            <a href="menu_dish_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                            <a href="menu_dish_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                            <a href="menu_starter_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">הוספה</a>
+                                                            <a href="menu_starter_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">מחיקה</a>
                                                         </td>
 
                                                     </tr>
 
-                                                <?php
-                                                } ?>
 
-
-                                            <?php } ?>
+                                            <?php }
+                                            } ?>
                                         <?php } ?>
 
                                     </tbody>

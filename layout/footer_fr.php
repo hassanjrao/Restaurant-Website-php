@@ -27,7 +27,7 @@
                 <div class="col-md-3 mt-5">
                   
                     <a style="text-decoration: none;" class="text-secondary d-block" href="tos_fr.php">Conditions d’utilisation</a>
-                    <a style="text-decoration: none;" class="text-secondary d-block" href="privacy-policy-fr.php">politique de confidentialité</a>
+                    <a style="text-decoration: none;" class="text-secondary d-block" href="privacy-policy-fr.php">Politique de confidentialité</a>
                    
                 </div>
                 <div class="col-md-3 mt-5 d-block mx-auto align-content-center align-items-center">

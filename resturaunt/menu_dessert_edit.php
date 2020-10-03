@@ -33,24 +33,17 @@ class MenuDessertEdit extends database
             $dessert = $_POST['name'];
             $price = $_POST["price"];
 
-            $lang = $_POST["lang"];
 
 
-            if ($lang == "english") {
-                $sql = "UPDATE menu_dessert_tb SET dessert_en='$dessert', dessert_heb=NULL, price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
-                $res = mysqli_query($this->link, $sql);
-            }
-            else if ($lang == "hebrew") {
-                $sql = "UPDATE menu_dessert_tb SET  dessert_en=NULL, dessert_heb='$dessert', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
-                $res = mysqli_query($this->link, $sql);
-            }
+            $sql = "UPDATE menu_dessert_tb SET dessert_en='$dessert', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
+            $res = mysqli_query($this->link, $sql);
+
 
             if ($res) {
                 $msg = "success_upd";
                 header("location: menu_desserts.php?msg=$msg");
                 return true;
-            }
-            else{
+            } else {
                 $msg = "fail_upd";
                 header("location: menu_desserts.php?msg=$msg");
                 return false;
@@ -100,21 +93,9 @@ $objItemUpdate = $obj->updateItem();
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-
-
-
-
-
-                </nav>
-                <!-- End of Topbar -->
+                <!-- topbar -->
+                <?php include('topbar.php'); ?>
+                <!-- End of topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -165,26 +146,13 @@ $objItemUpdate = $obj->updateItem();
                                                 </button>
                                             </div>
                                             <div class="modal-body bg-light">
+                                               
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        Select Language
-                                                        <select name="lang" class="border-0 form-control" required>
-                                                            <option selected value="<?php echo $row["dessert_en"] !== NULL ? "english" : "hebrew" ?>"><?php echo $row["dessert_en"] !== NULL ? "English" : "Hebrew" ?></option>
-                                                            <option value="english">English</option>
-                                                            <option value="hebrew">Hebrew</option>
-                                                        </select>
-
-                                                    </div>
-
-
-                                                </div>
-                                                <br><br>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <input type="text" name="name" value="<?php echo $row["dessert_en"] != NULL ? $row["dessert_en"] : $row["dessert_heb"]; ?>" class="border-0 form-control" placeholder="Name" required>
+                                                        <input type="text" name="name" value="<?php echo $row["dessert_en"]; ?>" class=" form-control" placeholder="Name" required>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control border-0" placeholder="Price" required>
+                                                        <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control " placeholder="Price" required>
                                                     </div>
 
 

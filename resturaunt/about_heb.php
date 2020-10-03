@@ -26,16 +26,16 @@ class About extends database
 
             $rest_id = $_SESSION['rest_id'];
 
-            $sql = "UPDATE restaurant_tbl SET about_en='$about',created=CURRENT_TIMESTAMP where id='$rest_id'";
+            $sql = "UPDATE restaurant_tbl SET about_heb='$about',created=CURRENT_TIMESTAMP where id='$rest_id'";
             $res = mysqli_query($this->link, $sql);
 
             if ($res) {
                 $msg = "success_upd";
-                header("location: about.php?msg=success_upd");
+                header("location: about_heb.php?msg=success_upd");
                 return true;
             } else {
                 $msg = "fail_upd";
-                header("location: about.php?msg=fail_upd");
+                header("location: about_heb.php?msg=fail_upd");
                 return false;
             }
         }
@@ -58,7 +58,7 @@ $objCreate = $obj->createAboutEn();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Restaurant - About </title>
+    <title>אודות</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -80,7 +80,7 @@ $objCreate = $obj->createAboutEn();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_heb.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -89,15 +89,15 @@ $objCreate = $obj->createAboutEn();
             <!-- Main Content -->
             <div id="content">
 
-               <!-- topbar -->
-               <?php include('topbar.php'); ?>
+                <!-- topbar -->
+                <?php include('topbar.php'); ?>
                 <!-- End of topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">About </h1>
+                    <h1 class="h3 mb-2 text-gray-800">אודות </h1>
 
 
                     <!-- DataTales Example -->
@@ -112,7 +112,7 @@ $objCreate = $obj->createAboutEn();
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Added!</strong>
+                                        <strong>הוספה בוצעה</strong>
                                     </div>
 
 
@@ -125,7 +125,7 @@ $objCreate = $obj->createAboutEn();
                                 if (strcmp($_GET["msg"], 'fail_add') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Addition Failed!</strong>
+                                        <strong>הוספה נכשלה</strong>
                                     </div>
 
 
@@ -133,13 +133,12 @@ $objCreate = $obj->createAboutEn();
                                 }
                             } ?>
 
-
                             <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Updated!</strong>
+                                        <strong>עדכון בוצע</strong>
                                     </div>
 
 
@@ -152,12 +151,37 @@ $objCreate = $obj->createAboutEn();
                                 if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Update Failed!</strong>
+                                        <strong>עדכון נכשל</strong>
                                     </div>
 
 
                             <?php
                                 }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+
+                                if (strcmp($_GET["msg"], 'success_del') == 0) { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>מחיקה בוצעה</strong>
+                                    </div>
+
+
+                            <?php }
+                            } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_del') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>מחיקה נכשלה</strong>
+                                    </div>
+
+
+                            <?php }
                             } ?>
 
 
@@ -168,7 +192,7 @@ $objCreate = $obj->createAboutEn();
                                 if ($objAbout) {
 
                                     $row = mysqli_fetch_assoc($objAbout);
-                                    $about = $row["about_en"];
+                                    $about = $row["about_heb"];
 
                                 ?>
 
@@ -178,7 +202,7 @@ $objCreate = $obj->createAboutEn();
                                 } else {
 
                                 ?>
-                                    <textarea rows="17" cols="50" placeholder="Enter text" name="aboutus"></textarea>
+                                    <textarea rows="17" cols="50" placeholder="רשום טקסט" name="aboutus"></textarea>
                                 <?php
 
                                 }
@@ -187,7 +211,7 @@ $objCreate = $obj->createAboutEn();
 
 
                                 <br><br>
-                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" name="submit" class="btn btn-primary">שמירה</button>
 
                             </form>
 
