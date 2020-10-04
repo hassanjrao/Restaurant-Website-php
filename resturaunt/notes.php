@@ -158,14 +158,17 @@ $objCreate = $obj->createNote();
                         </div>
                         <div class="card-body">
 
-                            <?php if (strcmp($objCreate, 'taken') == 0) { ?>
-                                <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Note is already there on this day, Please edit!</strong>
-                                </div>
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'taken') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Note is already there on this day, Please edit!</strong>
+                                    </div>
 
 
-                            <?php } ?>
+                            <?php }
+                            } ?>
 
 
                             <?php
@@ -277,22 +280,22 @@ $objCreate = $obj->createNote();
 
                                                 $id = $row['id'];
 
-                                                if ($row['note_en'] != NULL) {
+
 
 
                                             ?>
-                                                    <tr>
-                                                        <td><?php echo $a++; ?></td>
-                                                        <td><?php echo $row['note_en']; ?></td>
-                                                        <td><?php echo $row['day']; ?></td>
+                                                <tr>
+                                                    <td><?php echo $a++; ?></td>
+                                                    <td><?php echo $row['note_en'] == NULL ? "English version is note available, please edit" : $row['note_en'] ?></td>
+                                                    <td><?php echo $row['day']; ?></td>
 
-                                                        <td>
-                                                            <a href="<?php echo "note_edit.php?id=$id"; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                            <a href="<?php echo "note_delete.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                                        </td>
+                                                    <td>
+                                                        <a href="<?php echo "note_edit.php?id=$id"; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="<?php echo "note_delete.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
 
-                                                    </tr>
-                                            <?php }
+                                                </tr>
+                                            <?php
                                             } ?>
                                         <?php } ?>
                                     </tbody>

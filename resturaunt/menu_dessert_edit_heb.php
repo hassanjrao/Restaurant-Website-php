@@ -83,7 +83,7 @@ $objItemUpdate = $obj->updateItem();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_heb.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->

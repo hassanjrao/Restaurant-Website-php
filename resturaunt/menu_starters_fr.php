@@ -13,7 +13,7 @@ class menu extends database
 
         $id = $_SESSION['rest_id'];
 
-        $sql = "SELECT * from menu_dessert_tb where rest_id='$id'";
+        $sql = "SELECT * from menu_starter_tb where rest_id='$id'";
         $res = mysqli_query($this->link, $sql);
 
 
@@ -30,22 +30,23 @@ class menu extends database
         if (isset($_POST['submit'])) {
             $rest_id = $_SESSION['rest_id'];
 
-            $dessert = $_POST['name'];
+            $starter = $_POST['name'];
             $s_price = $_POST["price"];
 
 
 
-            $sql = "INSERT INTO `menu_dessert_tb` (`dessert_en`, `price`, `rest_id`,`created`) VALUES ('$dessert', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
+
+            $sql = "INSERT INTO `menu_starter_tb` (`starter_fr`, `price`, `rest_id`,`created`) VALUES ('$starter', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
             $res = mysqli_query($this->link, $sql);
 
 
             if ($res) {
                 $msg = "success_add";
-                header("location: menu_desserts.php?msg=$msg");
+                header("location: menu_starters_fr.php?msg=$msg");
                 return true;
             } else {
                 $msg = "fail_add";
-                header("location: menu_desserts.php?msg=$msg");
+                header("location: menu_starters_fr.php?msg=$msg");
                 return false;
             }
         }
@@ -89,7 +90,7 @@ $objCreate = $obj->saveFunction();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -106,7 +107,7 @@ $objCreate = $obj->saveFunction();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Menu - Desserts</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Menu - Entrees</h1>
 
 
                     <!-- DataTales Example -->
@@ -114,14 +115,13 @@ $objCreate = $obj->saveFunction();
 
 
                         <div class="card-header py-3">
-                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">Add
-                                Dessert</button>
+                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">Ajouter une entrée</button>
                             <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="menuModalLabel">Add Dessert
+                                                <h5 class="modal-title" id="menuModalLabel">Ajouter une entrée
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -130,12 +130,13 @@ $objCreate = $obj->saveFunction();
                                             <div class="modal-body bg-light">
 
 
+
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" class="border-0 form-control" placeholder="Name" required>
+                                                        <input type="text" name="name" class="border-0 form-control" placeholder="Nom" required>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="number" name="price" class="form-control border-0" placeholder="Price" required>
+                                                        <input type="number" name="price" class="form-control border-0" placeholder="Prix" required>
                                                     </div>
 
 
@@ -146,8 +147,8 @@ $objCreate = $obj->saveFunction();
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Enregistrer</button>
                                             </div>
                                         </div>
                                     </form>
@@ -156,12 +157,25 @@ $objCreate = $obj->saveFunction();
                         </div>
                         <div class="card-body">
 
+                        <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'taken') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>La note est déjà là ce jour-là, veuillez modifier!</strong>
+                                    </div>
+
+
+                            <?php }
+                            } ?>
+
+
                             <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Added!</strong>
+                                        <strong>Ajout réussi</strong>
                                     </div>
 
 
@@ -174,27 +188,40 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'fail_add') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Addition Failed!</strong>
+                                        <strong>Ajout échoué!</strong>
                                     </div>
 
 
                             <?php
                                 }
                             } ?>
-
 
                             <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Updated!</strong>
+                                        <strong>Mise a jour réussie</strong>
                                     </div>
 
 
                             <?php
                                 }
                             } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Mise a jour échouée</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
 
                             <?php
                             if (isset($_GET["msg"])) {
@@ -202,7 +229,7 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'success_del') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Deleted!</strong>
+                                        <strong>Suppression réussie</strong>
                                     </div>
 
 
@@ -214,24 +241,11 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'fail_del') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Deletion Failed!</strong>
+                                        <strong>Suppression échouée</strong>
                                     </div>
 
 
                             <?php }
-                            } ?>
-
-                            <?php
-                            if (isset($_GET["msg"])) {
-                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
-                                    <div class="alert alert-warning alert-dismissible">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Update Failed!</strong>
-                                    </div>
-
-
-                            <?php
-                                }
                             } ?>
 
 
@@ -240,11 +254,11 @@ $objCreate = $obj->saveFunction();
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
+                                            <th>Numero</th>
+                                            <th>Entrée</th>
+                                            <th>Prix entrée</th>
 
-                                            <th>Edit/Delete</th>
+                                            <th>Modifier/Supprimer </th>
 
 
 
@@ -252,12 +266,11 @@ $objCreate = $obj->saveFunction();
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
+                                            <th>Numero</th>
+                                            <th>Entrée</th>
+                                            <th>Prix entrée</th>
 
-                                            <th>Edit/Delete</th>
-
+                                            <th>Modifier/Supprimer </th>
 
                                         </tr>
                                     </tfoot>
@@ -267,28 +280,27 @@ $objCreate = $obj->saveFunction();
                                         $a = 1;
                                         if ($objMenu) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objMenu)) {
-                                                $id = $row["id"];
 
+                                                $id = $row["id"];
 
                                             ?>
                                                 <tr>
                                                     <td><?php echo $a++ ?></td>
-
-
-                                                    <td><?php echo $row['dessert_en'] == NULL ? "<span class='text-danger'>English version is note available, please edit </span>" : $row['dessert_en']; ?></td>
-                                                    
+                                                    <td><?php echo $row['starter_fr'] == NULL ? "<span class='text-danger'>French version is note available, please edit </span>" : $row['starter_fr']; ?></td>
                                                     <td><?php echo $row['price']; ?></td>
 
-                                                    <td>
-                                                        <a href="menu_dessert_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                        <a href="menu_dessert_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                                    </td>
 
+                                                    <td>
+                                                        <a href="menu_starter_edit_fr.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Modifier</a>
+                                                        <a href="menu_starter_delete_fr.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Supprimer</a>
+                                                    </td>
 
                                                 </tr>
 
-                                        <?php }
-                                        } ?>
+
+                                            <?php
+                                            } ?>
+                                        <?php } ?>
 
                                     </tbody>
                                 </table>

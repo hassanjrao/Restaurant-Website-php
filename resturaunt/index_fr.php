@@ -144,7 +144,7 @@ $obj = new DashBoard;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Resturaunt Panel - Dashboard </title>
+    <title>Tableau de bord </title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -166,7 +166,7 @@ $obj = new DashBoard;
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -183,7 +183,7 @@ $obj = new DashBoard;
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">DashBoard</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Tableau de bord </h1>
 
 
 
@@ -249,9 +249,9 @@ $obj = new DashBoard;
                                                 Menu</div>
 
 
-                                            <div class="mb-0 font-weight-bold text-gray-800">Starters: <?php echo $obj->countStarters(); ?>
+                                            <div class="mb-0 font-weight-bold text-gray-800">Entrée: <?php echo $obj->countStarters(); ?>
                                             </div>
-                                            <div class="mb-0 font-weight-bold text-gray-800">Dishes: <?php echo $obj->countDishes(); ?>
+                                            <div class="mb-0 font-weight-bold text-gray-800">Plats: <?php echo $obj->countDishes(); ?>
                                             </div>
                                             <div class=" mb-0  font-weight-bold text-gray-800">Desserts: <?php echo $obj->countDesserts(); ?>
                                             </div>

@@ -155,7 +155,7 @@ $objCreate = $obj->saveFunction();
                         </div>
                         <div class="card-body">
 
-                        <?php
+                            <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
@@ -267,24 +267,21 @@ $objCreate = $obj->saveFunction();
                                             ?>
 
 
-                                                <?php
-                                                if ($row['starter_heb'] != NULL) {
-                                                ?>
 
-                                                    <tr>
-                                                        <td><?php echo $a++ ?></td>
-                                                        <td><?php echo $row['starter_heb']; ?></td>
-                                                        <td><?php echo $row['price']; ?></td>
+                                                <tr>
+                                                    <td><?php echo $a++ ?></td>
+                                                    <td><?php echo $row['starter_heb'] == NULL ? "<span class='text-danger'>Hebrew version is note available, please edit </span>" : $row['starter_heb']; ?></td>
+                                                    <td><?php echo $row['price']; ?></td>
 
-                                                        <td>
-                                                            <a href="menu_starter_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">הוספה</a>
-                                                            <a href="menu_starter_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">מחיקה</a>
-                                                        </td>
+                                                    <td>
+                                                        <a href="menu_starter_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">הוספה</a>
+                                                        <a href="menu_starter_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">מחיקה</a>
+                                                    </td>
 
-                                                    </tr>
+                                                </tr>
 
 
-                                            <?php }
+                                            <?php
                                             } ?>
                                         <?php } ?>
 

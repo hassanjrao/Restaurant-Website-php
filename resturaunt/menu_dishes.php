@@ -241,7 +241,7 @@ $objCreate = $obj->saveFunction();
                                             <th>ID</th>
                                             <th>Dish</th>
                                             <th>Dish Price</th>
-                                           
+
                                             <th>Edit/Delete</th>
 
 
@@ -253,7 +253,7 @@ $objCreate = $obj->saveFunction();
                                             <th>ID</th>
                                             <th>Dish</th>
                                             <th>Dish Price</th>
-                                           
+
                                             <th>Edit/Delete</th>
 
 
@@ -269,28 +269,22 @@ $objCreate = $obj->saveFunction();
                                             ?>
 
 
-                                                <?php
-                                                if ($row['dish_en'] != NULL) {
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $a++ ?></td>
-                                                        <td><?php echo $row['dish_en']; ?></td>
-                                                        <td><?php echo $row['price']; ?></td>
-                                                       
-
-                                                        <td>
-                                                            <a href="menu_dish_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                            <a href="menu_dish_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                                        </td>
-
-                                                    </tr>
-
-                                                <?php
-                                                } ?>
+                                                <tr>
+                                                    <td><?php echo $a++ ?></td>
+                                                    <td><?php echo $row['dish_en'] == NULL ? "<span class='text-danger'>English version is note available, please edit </span>" : $row['dish_en']; ?></td>
+                                                    <td><?php echo $row['price']; ?></td>
 
 
-                                            <?php } ?>
-                                        <?php } ?>
+                                                    <td>
+                                                        <a href="menu_dish_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="menu_dish_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
+
+                                                </tr>
+
+
+                                        <?php }
+                                        } ?>
 
                                     </tbody>
                                 </table>

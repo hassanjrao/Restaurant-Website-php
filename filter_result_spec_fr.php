@@ -1,7 +1,7 @@
 <?php
 include('class/database.php');
 if (!isset($_POST["specialty"])) {
-    header("location: index.php");
+    header("location: index_fr.php");
 }
 class restaurant extends database
 {

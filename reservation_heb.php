@@ -286,7 +286,7 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservation</title>
+    <title>הזמנה</title>
     <?php include('layout/style.php'); ?>
 
 </head>

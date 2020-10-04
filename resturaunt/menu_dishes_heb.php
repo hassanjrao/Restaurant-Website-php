@@ -153,7 +153,7 @@ $objCreate = $obj->saveFunction();
                         </div>
                         <div class="card-body">
 
-                        <?php
+                            <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
@@ -266,28 +266,22 @@ $objCreate = $obj->saveFunction();
                                             ?>
 
 
-                                                <?php
-                                                if ($row['dish_heb'] != NULL) {
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $a++ ?></td>
-                                                        <td><?php echo $row['dish_heb']; ?></td>
-                                                        <td><?php echo $row['price']; ?></td>
+
+                                                <tr>
+                                                    <td><?php echo $a++ ?></td>
+                                                    <td><?php echo $row['dish_heb'] == NULL ? "<span class='text-danger'>Hebrew version is note available, please edit </span>" : $row['dish_heb']; ?></td>
+                                                    <td><?php echo $row['price']; ?></td>
 
 
-                                                        <td>
-                                                            <a href="menu_dish_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                            <a href="menu_dish_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                                        </td>
+                                                    <td>
+                                                        <a href="menu_dish_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="menu_dish_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
 
-                                                    </tr>
+                                                </tr>
 
-                                                <?php
-                                                } ?>
-
-
-                                            <?php } ?>
-                                        <?php } ?>
+                                        <?php }
+                                        } ?>
 
                                     </tbody>
                                 </table>

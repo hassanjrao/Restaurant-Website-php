@@ -64,6 +64,7 @@ class reservation extends database
     {
 
         $rest_name = $_SESSION['Rname'];
+
         $sql = "SELECT COUNT(1) FROM reservation_tbl  where rest_name='$rest_name' and date='$date' and user_confirm='1'";
         $res = mysqli_query($this->link, $sql);
 
@@ -188,7 +189,7 @@ $objRestName = $obj->getRestName();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>הזמנה</title>
+    <title>Reservation</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -205,7 +206,7 @@ $objRestName = $obj->getRestName();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar_heb.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -222,7 +223,7 @@ $objRestName = $obj->getRestName();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h4 text-gray-900 mb-4 mt-5 font-weight-bold">רשימת הזמנות</h1>
+                    <h1 class="h4 text-gray-900 mb-4 mt-5 font-weight-bold">Liste Reservation</h1>
                     <?php
 
 
@@ -244,7 +245,7 @@ $objRestName = $obj->getRestName();
                                             <div class="card-header" id="headingOne">
                                                 <h2 class="mb-0">
                                                     <button class="btn btn-link" style="text-decoration: none;" type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $ind ?>" aria-expanded="true" aria-controls="collapseOne">
-                                                        <strong>תאריך:</strong> <?php echo $nd ?>
+                                                        <strong>Date:</strong> <?php echo $nd ?>
 
                                                         <?php
 
@@ -282,32 +283,32 @@ $objRestName = $obj->getRestName();
                                                 
                                                 $rest_row = mysqli_fetch_assoc($obj->getRestName());
 
-                                                $restName=$rest_row["name_heb"];
+                                                $restName=$rest_row["name_fr"];
 
 
                                                 if ($objDetail) {
                                                     while ($row = mysqli_fetch_assoc($objDetail)) {
 
                                                 ?>
-                                                        <form action="confirm_heb.php" method="POST">
+                                                        <form action="confirm_fr.php" method="POST">
 
                                                             <div class="card-body">
                                                                 <div class="row">
 
                                                                     <div class="col-md-12">
 
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">שם מסעדה:- <span class="h6 text-gray-900 mb-4 font-weight-bold"><?php echo ucwords($restName); ?></span>
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Nom Restaurant :- <span class="h6 text-gray-900 mb-4 font-weight-bold"><?php echo ucwords($restName); ?></span>
                                                                         </h1>
 
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">שם סועד:-
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Nom :-
                                                                         </h1>
                                                                         <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                             <?php echo $row['fname']; ?>
                                                                             <?php echo $row['lname']; ?>
                                                                         </h1>
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">קוד הזמנה:-
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Code:-
                                                                         </h1>
                                                                         <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                             <?php echo $row['code']; ?>
@@ -319,16 +320,16 @@ $objRestName = $obj->getRestName();
                                                                         <?php if ($row['confirm_people'] == NULL) {
 
                                                                         ?>
-                                                                            <h1 class="h6 text-secondary mb-4 font-weight-bold">כמות סועדים:-
+                                                                            <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirmer le nombre de personne:-
                                                                             </h1>
-                                                                            <input type="number" placeholder="כמות סועדים" class="form-control text-gray-900 mb-4 font-weight-bold" name="confirm_people" value=<?php echo intval($row['people']); ?>>
+                                                                            <input type="number" placeholder="Confirmer le nombre de personne" class="form-control text-gray-900 mb-4 font-weight-bold" name="confirm_people" value=<?php echo intval($row['people']); ?>>
                                                                             <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
 
                                                                         <?php
                                                                         } else {
                                                                         ?>
 
-                                                                            <h1 class="h6 text-secondary mb-4 font-weight-bold">מאושרים:-
+                                                                            <h1 class="h6 text-secondary mb-4 font-weight-bold">Personne confirmée:-
                                                                             </h1>
                                                                             <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                                 <?php echo $row['confirm_people']; ?>
@@ -345,18 +346,18 @@ $objRestName = $obj->getRestName();
 
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">כתובת אימייל:-
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Email:-
                                                                         </h1>
                                                                         <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                             <?php echo $row['email']; ?>
 
                                                                         </h1>
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">טלפון:-
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Telephone:-
                                                                         </h1>
                                                                         <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                             <?php echo $row['phone']; ?></h1>
 
-                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">תאריך הזמנת לקוח:-
+                                                                        <h1 class="h6 text-secondary mb-4 font-weight-bold">Reservation faite le:-
                                                                         </h1>
                                                                         <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                             <?php echo $row['created']; ?>
@@ -364,14 +365,14 @@ $objRestName = $obj->getRestName();
 
                                                                     </div>
                                                                     <div class="col-md-4 text-center">
-                                                                        <h1 class="h6 text-secondary mb-2 font-weight-bold">שעת הגעה:-
+                                                                        <h1 class="h6 text-secondary mb-2 font-weight-bold">Heure:-
                                                                         </h1>
                                                                         <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
                                                                             <?php echo $row['time']; ?>
                                                                         </h1>
 
                                                                         <br>
-                                                                        <h1 class="h6 text-secondary mb-2 font-weight-bold">אחוז הנחה
+                                                                        <h1 class="h6 text-secondary mb-2 font-weight-bold">Remise
                                                                         </h1>
 
                                                                         <?php
@@ -408,7 +409,7 @@ $objRestName = $obj->getRestName();
 
                                                                     ?>
                                                                         <div class="col-md-12">
-                                                                            <input type="submit" class="btn btn-success" name="btn-submit" value="כמות סועדים">
+                                                                            <input type="submit" class="btn btn-success" name="btn-submit" value="Confirmer le nombre de personne">
 
                                                                         </div>
                                                                     <?php

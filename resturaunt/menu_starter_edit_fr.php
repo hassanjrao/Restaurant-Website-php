@@ -34,17 +34,17 @@ class MenuStarterEdit extends database
             $price = $_POST["price"];
 
 
-            $sql = "UPDATE menu_starter_tb SET  starter_en='$dish', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
+            $sql = "UPDATE menu_starter_tb SET  starter_fr='$dish', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
             $res = mysqli_query($this->link, $sql);
 
 
             if ($res) {
                 $msg = "success_upd";
-                header("location: menu_starters.php?msg=$msg");
+                header("location: menu_starters_fr.php?msg=$msg");
                 return true;
             } else {
                 $msg = "fail_upd";
-                header("location: menu_starters.php?msg=$msg");
+                header("location: menu_starters_fr.php?msg=$msg");
                 return false;
             }
         }
@@ -66,7 +66,7 @@ $objItemUpdate = $obj->updateItem();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Edit Starter</title>
+    <title>Modifier Entrée</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -83,7 +83,7 @@ $objItemUpdate = $obj->updateItem();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -101,7 +101,7 @@ $objItemUpdate = $obj->updateItem();
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Edit Starter</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Modifier Entrée</h1>
 
                     </div>
 
@@ -120,7 +120,7 @@ $objItemUpdate = $obj->updateItem();
                             <div class="card shadow mb-4">
 
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Starter Information</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Informations de Entrée</h6>
                                 </div>
                                 <div class="card-body">
 
@@ -141,7 +141,7 @@ $objItemUpdate = $obj->updateItem();
 
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" value="<?php echo $row["starter_en"] ?>" class="border-0 form-control" placeholder="Name" required>
+                                                        <input type="text" name="name" value="<?php echo $row["starter_fr"] ?>" class="border-0 form-control" placeholder="Nom " required>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control border-0" placeholder="Price" required>
@@ -155,8 +155,8 @@ $objItemUpdate = $obj->updateItem();
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Enregistrer</button>
                                             </div>
 
                                         </div>
@@ -166,6 +166,16 @@ $objItemUpdate = $obj->updateItem();
                             </div>
 
                             <!-- Menu English Ends -->
+
+
+
+
+
+
+
+
+
+
 
 
                         </div>

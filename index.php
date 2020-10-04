@@ -22,7 +22,7 @@ class restaurant extends database
 
     public function restaurantFunction()
     {
-        $sql = "SELECT * FROM `restaurant_tbl` order by id desc LIMIT 6";
+        $sql = "SELECT * FROM `restaurant_tbl` order by id desc";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;

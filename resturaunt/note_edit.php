@@ -34,20 +34,31 @@ class NoteEdit extends database
             $note = $_POST['note'];
             $day = $_POST["day"];
 
+            $rest_id = $_SESSION['rest_id'];
 
-            $sql = "UPDATE notes_tb SET note_en='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
-            $res = mysqli_query($this->link, $sql);
-
-
-
-            if ($res) {
-                $msg = "success_upd";
+            $sqlFind = "select * from notes_tb where day = '$day' and rest_id='$rest_id' ";
+            $resFind = mysqli_query($this->link, $sqlFind);
+            if (mysqli_num_rows($resFind) > 0) {
+                $msg = "taken";
                 header("location: notes.php?msg=$msg");
                 return true;
             } else {
-                $msg = "fail_upd";
-                header("location: notes.php?msg=$msg");
-                return false;
+
+
+                $sql = "UPDATE notes_tb SET note_en='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: notes.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: notes.php?msg=$msg");
+                    return false;
+                }
             }
         }
     }
@@ -111,7 +122,7 @@ $objNoteUpdate = $obj->updateNote();
                     <div class="row">
 
                         <div class="col-lg-12">
-                           
+
                             <!-- ------Menu English Starts -->
                             <div class="card shadow mb-4">
 

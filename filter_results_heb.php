@@ -112,7 +112,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filter Results</title>
+    <title>סנן תוצאות</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -150,7 +150,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 </head>
 
 <body class="bg-light">
-    <?php include('layout/navbar.php'); ?>
+    <?php include('layout/navbar_heb.php'); ?>
 
     <div class="back_img">
         <div class="container">
@@ -170,7 +170,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                         </div>
                         <div class="col-md-2"></div>
                     </div>
-                    <form method="POST" action="filter_results.php">
+                    <form method="POST" action="filter_results_heb.php">
                         <div class="row pt-4">
                             <div class="col-md-2">
                                 <div class="input-group input-focus bg-light shadow">
@@ -257,7 +257,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
 
                                     <select class="form-control border-0 bg-light " name="location[]">
-                                        <option value="" selected disabled>Location</option>
+                                        <option value="" selected disabled>מקום</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
@@ -297,7 +297,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">Filter Results</h3>
+            <h3 class="text-center"><span class="font-weight-bold">סנן תוצאות</h3>
             <div class="row">
 
 
@@ -2005,7 +2005,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                                                 <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                                                                                                     <div class="card mb-3">
-                                                                                                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>" style="text-decoration: none;">
+                                                                                                                        <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>" style="text-decoration: none;">
                                                                                                                             <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                                                                                                 <div class="carousel-inner">
 
@@ -2057,7 +2057,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                             </div>
                                                                                                                         </a>
                                                                                                                         <div class="card-body">
-                                                                                                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                                                                                                            <a href="restaurant_heb.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                                                                                                                 <div class="row">
 
                                                                                                                                     <div class="col-md-6">

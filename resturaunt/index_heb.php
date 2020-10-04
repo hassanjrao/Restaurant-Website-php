@@ -107,7 +107,7 @@ class DashBoard extends database
 
         $name = $_SESSION['Rname'];
 
-        $sql = "SELECT * FROM reservation_tbl where rest_name='$name'";
+        $sql = "SELECT * FROM reservation_tbl where rest_name='$name' and user_confirm='1'";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return mysqli_num_rows($res);

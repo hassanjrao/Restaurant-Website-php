@@ -5,16 +5,16 @@ if (!isset($_SESSION['Rname'])) {
 }
 
 include('class/database.php');
-class MenuStarterEdit extends database
+class NoteEdit extends database
 {
     protected $link;
-    public function getItem()
+    public function getNote()
     {
 
 
         $id = $_GET['id'];
 
-        $sql = "select * from menu_starter_tb where id = '$id' ";
+        $sql = "select * from notes_tb where id = '$id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -24,35 +24,47 @@ class MenuStarterEdit extends database
         # code...
     }
 
-    public function updateItem()
+    public function updateNote()
     {
 
         if (isset($_POST['submit'])) {
+
             $id = $_GET['id'];
 
-            $dish = $_POST['name'];
-            $price = $_POST["price"];
+            $note = $_POST['note'];
+            $day = $_POST["day"];
 
+            $rest_id = $_SESSION['rest_id'];
 
-            $sql = "UPDATE menu_starter_tb SET  starter_en='$dish', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
-            $res = mysqli_query($this->link, $sql);
-
-
-            if ($res) {
-                $msg = "success_upd";
-                header("location: menu_starters.php?msg=$msg");
+            $sqlFind = "select * from notes_tb where day = '$day' and rest_id='$rest_id' ";
+            $resFind = mysqli_query($this->link, $sqlFind);
+            if (mysqli_num_rows($resFind) > 0) {
+                $msg = "taken";
+                header("location: notes_fr.php?msg=$msg");
                 return true;
             } else {
-                $msg = "fail_upd";
-                header("location: menu_starters.php?msg=$msg");
-                return false;
+
+                $sql = "UPDATE notes_tb SET note_fr='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: notes_fr.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: notes_fr.php?msg=$msg");
+                    return false;
+                }
             }
         }
     }
 }
-$obj = new MenuStarterEdit;
-$objItem = $obj->getItem();
-$objItemUpdate = $obj->updateItem();
+$obj = new NoteEdit;
+$objNote = $obj->getNote();
+$objNoteUpdate = $obj->updateNote();
 
 ?>
 <!DOCTYPE html>
@@ -66,7 +78,7 @@ $objItemUpdate = $obj->updateItem();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Edit Starter</title>
+    <title>Modifier Note</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -83,7 +95,7 @@ $objItemUpdate = $obj->updateItem();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -101,7 +113,7 @@ $objItemUpdate = $obj->updateItem();
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Edit Starter</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Modifier Note</h1>
 
                     </div>
 
@@ -109,54 +121,80 @@ $objItemUpdate = $obj->updateItem();
                     <div class="row">
 
                         <div class="col-lg-12">
-                            <?php
-
-                            $row = mysqli_fetch_assoc($objItem)
-
-
-                            ?>
 
                             <!-- ------Menu English Starts -->
                             <div class="card shadow mb-4">
 
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Starter Information</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Modifier Note</h6>
                                 </div>
                                 <div class="card-body">
 
-                                  
+
 
 
 
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                <h5 class="modal-title" id="exampleModalLabel">Note
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body bg-light">
+                                                <?php
+
+                                                $row = mysqli_fetch_assoc($objNote);
+
+                                                if ($row['day'] == "sun") {
+                                                    $day = "Dimanche";
+                                                } else if ($row['day'] == "mon") {
+                                                    $day = "Lundi";
+                                                } else if ($row['day'] == "tue") {
+                                                    $day = "Mardi";
+                                                } else if ($row['day'] == "wed") {
+                                                    $day = "Mercredi";
+                                                } else if ($row['day'] == "thu") {
+                                                    $day = "Jeudi";
+                                                } else if ($row['day'] == "fri") {
+                                                    $day = "Vendredi";
+                                                } else if ($row['day'] == "sat") {
+                                                    $day = "Samedi";
+                                                }
+
+
+                                                ?>
 
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" value="<?php echo $row["starter_en"] ?>" class="border-0 form-control" placeholder="Name" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control border-0" placeholder="Price" required>
+                                                        <input type="text" required name="note" value="<?php echo $row["note_fr"] ?>" class="form-control" placeholder="Note">
                                                     </div>
 
+                                                    <div class="col-md-6">
+                                                        <select required name="day" class="form-control">
+                                                            <option value="<?php echo $row['day'] ?>" selected><?php echo $day ?></option>
+                                                            <option></option>
+                                                            <option value="sun">Dimanche</option>
+                                                            <option value="mon">Lundi</option>
+                                                            <option value="tue">Mardi </option>
+                                                            <option value="wed">Mercredi</option>
+                                                            <option value="thu">Jeudi</option>
+                                                            <option value="fri">Vendredi</option>
+                                                            <option value="sat">Samedi</option>
+                                                        </select>
+                                                    </div>
 
                                                 </div>
-                                                <br>
+
 
 
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Enregistrer</button>
                                             </div>
 
                                         </div>
@@ -166,6 +204,16 @@ $objItemUpdate = $obj->updateItem();
                             </div>
 
                             <!-- Menu English Ends -->
+
+
+
+
+
+
+
+
+
+
 
 
                         </div>

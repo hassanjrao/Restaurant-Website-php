@@ -410,8 +410,7 @@ $objGetRest = $obj->getRestaurant();
                                 <span class="input-group-text border-0 bg-light "><i class="far fa-clock fa-2x"></i></span>
                             </div>
                             <select name="time" id="" class="form-control bg-light border-0" required>
-                                <option value="" selected disabled class="">זמן</option>
-
+                               
 
 
                                 <?php
@@ -621,7 +620,7 @@ $objGetRest = $obj->getRestaurant();
                             <div class="accordion-group">
                                 <div class="collapse in show" id="collapseExample1">
                                     <div class="bg-white border-0 p-5">
-                                        <h4 class="font-weight-bold" style="color: #EEA11D;">Starter</h4>
+                                        <h4 class="font-weight-bold" style="color: #EEA11D;">ראשונות</h4>
 
                                         <?php if ($objFood) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood)) {
@@ -636,7 +635,7 @@ $objGetRest = $obj->getRestaurant();
 
 
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Dishes</h4>
+                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">עיקריות</h4>
                                         <?php if ($objFood2) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood2)) {
                                                 if ($row['dish_heb'] !== NULL || $row['dish_heb'] != "") { ?>
@@ -646,7 +645,7 @@ $objGetRest = $obj->getRestaurant();
                                         <?php }
                                         } ?>
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Desserts</h4>
+                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">קינוחים</h4>
                                         <?php if ($objFood3) {
                                         ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood3)) {

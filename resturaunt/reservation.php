@@ -49,7 +49,7 @@ class reservation extends database
     {
 
         $rest_name = $_SESSION['Rname'];
-        $sql = "SELECT COUNT(1) FROM reservation_tbl  where rest_name='$rest_name' and date='$date'";
+        $sql = "SELECT COUNT(1) FROM reservation_tbl  where rest_name='$rest_name' and date='$date' and user_confirm='1'";
         $res = mysqli_query($this->link, $sql);
 
 

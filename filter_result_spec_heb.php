@@ -73,7 +73,7 @@ $objCity = $obj->getCities();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filter Results</title>
+    <title>סנן תוצאות</title>
     <?php include('layout/style.php'); ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -218,7 +218,7 @@ $objCity = $obj->getCities();
 
 
                                     <select class="form-control border-0 bg-light " name="location[]">
-                                        <option value="" selected disabled>Location</option>
+                                        <option value="" selected disabled>מקום</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
@@ -255,7 +255,7 @@ $objCity = $obj->getCities();
 
     <section>
         <div class="container item_section">
-            <h3 class="text-center"><span class="font-weight-bold">Filter Results</h3>
+            <h3 class="text-center"><span class="font-weight-bold">סנן תוצאות</h3>
             <div class="row">
 
 

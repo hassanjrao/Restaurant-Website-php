@@ -133,13 +133,13 @@ $objCreate = $obj->createNote();
                                                     <div class="col-md-6">
                                                         <select required name="day" class="form-control">
                                                             <option selected disabled>יום</option>
-                                                            <option value="sun">sun</option>
-                                                            <option value="mon">mon</option>
-                                                            <option value="tue">tue</option>
-                                                            <option value="wed">wed</option>
-                                                            <option value="thu">thu</option>
-                                                            <option value="fri">fri</option>
-                                                            <option value="sat">sat</option>
+                                                            <option value="sun">ראשון</option>
+                                                            <option value="mon">שני</option>
+                                                            <option value="tue">שלישי</option>
+                                                            <option value="wed">רביעי</option>
+                                                            <option value="thu">חמישי</option>
+                                                            <option value="fri">שישי</option>
+                                                            <option value="sat">שבת</option>
                                                         </select>
                                                     </div>
 
@@ -157,14 +157,16 @@ $objCreate = $obj->createNote();
                         </div>
                         <div class="card-body">
 
-                            <?php if (strcmp($objCreate, 'taken') == 0) { ?>
-                                <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Note is already there on this day, Please edit!</strong>
-                                </div>
+                            <?php if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'taken') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Note is already there on this day, Please edit!</strong>
+                                    </div>
 
 
-                            <?php } ?>
+                            <?php }
+                            } ?>
 
 
                             <?php
@@ -277,22 +279,44 @@ $objCreate = $obj->createNote();
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                                 $id = $row['id'];
-                                                if ($row['note_heb'] != NULL) {
+
+                                                if($row['day']=="sun"){
+                                                    $day="ראשון";
+                                                }
+                                                else if($row['day']=="mon"){
+                                                    $day="שני";
+                                                }
+                                                else if($row['day']=="tue"){
+                                                    $day="שלישי";
+                                                }
+                                                else if($row['day']=="wed"){
+                                                    $day="רביעי";
+                                                }
+                                                else if($row['day']=="thu"){
+                                                    $day="חמישי";
+                                                }
+                                                else if($row['day']=="fri"){
+                                                    $day="שישי";
+                                                }
+                                                else if($row['day']=="sat"){
+                                                    $day="שבת";
+                                                }
+
 
 
                                             ?>
-                                                    <tr>
-                                                        <td><?php echo $a++; ?></td>
-                                                        <td><?php echo $row['note_heb']; ?></td>
-                                                        <td><?php echo $row['day']; ?></td>
+                                                <tr>
+                                                    <td><?php echo $a++; ?></td>
+                                                    <td><?php echo $row['note_heb']==NULL? "Hebrew version is note available, please edit":$row['note_heb'] ?></td>
+                                                    <td><?php echo $day; ?></td>
 
-                                                        <td>
-                                                            <a href="<?php echo "note_edit_heb.php?id=$id"; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                            <a href="<?php echo "note_delete_heb.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                                        </td>
+                                                    <td>
+                                                        <a href="<?php echo "note_edit_heb.php?id=$id"; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="<?php echo "note_delete_heb.php?id=$id"; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
 
-                                                    </tr>
-                                            <?php }
+                                                </tr>
+                                            <?php
                                             } ?>
                                         <?php } ?>
                                     </tbody>

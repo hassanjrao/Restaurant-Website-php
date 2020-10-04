@@ -3,20 +3,15 @@ session_start();
 if (!isset($_SESSION['Rname'])) {
     header('location:restaurant_login.php');
 }
-
 include('class/database.php');
-class menu extends database
+class Images extends database
 {
     protected $link;
-    public function getMenu()
+    public function getImages()
     {
-
-        $id = $_SESSION['rest_id'];
-
-        $sql = "SELECT * from menu_dessert_tb where rest_id='$id'";
+        $rest_id = $_SESSION['rest_id'];
+        $sql = "select * from rest_images where rest_id='$rest_id'";
         $res = mysqli_query($this->link, $sql);
-
-
         if (mysqli_num_rows($res) > 0) {
             return $res;
         } else {
@@ -24,39 +19,40 @@ class menu extends database
         }
         # code...
     }
-
-    public function saveFunction()
+    public function createImage()
     {
         if (isset($_POST['submit'])) {
+
             $rest_id = $_SESSION['rest_id'];
 
-            $dessert = $_POST['name'];
-            $s_price = $_POST["price"];
+            $folder = "rest_img/";
+            $image = $_FILES['image']['name'];
 
 
+            $path = $folder . $image;
 
-            $sql = "INSERT INTO `menu_dessert_tb` (`dessert_en`, `price`, `rest_id`,`created`) VALUES ('$dessert', '$s_price', '$rest_id', CURRENT_TIMESTAMP)";
+            $sql = "INSERT INTO rest_images (`image`, `rest_id` ,`created`) VALUES ('$image','$rest_id' ,CURRENT_TIMESTAMP)";
             $res = mysqli_query($this->link, $sql);
 
-
             if ($res) {
+
+                move_uploaded_file($_FILES['image']['tmp_name'], $path);
                 $msg = "success_add";
-                header("location: menu_desserts.php?msg=$msg");
+                header("location: images_fr.php?msg=$msg");
                 return true;
             } else {
                 $msg = "fail_add";
-                header("location: menu_desserts.php?msg=$msg");
+                header("location: images_fr.php?msg=$msg");
                 return false;
             }
         }
+
         # code...
     }
 }
-$obj = new menu;
-$objMenu = $obj->getMenu();
-$objCreate = $obj->saveFunction();
-
-// $row = mysqli_fetch_assoc($objProfile);
+$obj = new Images;
+$objImage = $obj->getImages();
+$objCreate = $obj->createImage();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +65,7 @@ $objCreate = $obj->saveFunction();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Menu</title>
+    <title>Images</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -89,7 +85,7 @@ $objCreate = $obj->saveFunction();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -106,48 +102,37 @@ $objCreate = $obj->saveFunction();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Menu - Desserts</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Images</h1>
 
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-
-
                         <div class="card-header py-3">
-                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#menuModal">Add
-                                Dessert</button>
-                            <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
+                            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">Ajouter une image</button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
-                                    <form action="" method="post">
+                                    <form action="" method="post" enctype="multipart/form-data">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="menuModalLabel">Add Dessert
+                                                <h5 class="modal-title" id="exampleModalLabel">Image
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
+
                                             <div class="modal-body bg-light">
-
-
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" class="border-0 form-control" placeholder="Name" required>
+                                                        <input type="file" accept="image/*" name="image" class="form-control" required placeholder="image">
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="price" class="form-control border-0" placeholder="Price" required>
-                                                    </div>
-
 
                                                 </div>
-                                                <br>
-
-
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Suivant </button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Enregistrer</button>
                                             </div>
                                         </div>
                                     </form>
@@ -156,12 +141,28 @@ $objCreate = $obj->saveFunction();
                         </div>
                         <div class="card-body">
 
+
+
+
+                        <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'taken') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>La note est déjà là ce jour-là, veuillez modifier!</strong>
+                                    </div>
+
+
+                            <?php }
+                            } ?>
+
+
                             <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_add') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Added!</strong>
+                                        <strong>Ajout réussi</strong>
                                     </div>
 
 
@@ -174,27 +175,40 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'fail_add') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Addition Failed!</strong>
+                                        <strong>Ajout échoué!</strong>
                                     </div>
 
 
                             <?php
                                 }
                             } ?>
-
 
                             <?php
                             if (isset($_GET["msg"])) {
                                 if (strcmp($_GET["msg"], 'success_upd') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Updated!</strong>
+                                        <strong>Mise a jour réussie</strong>
                                     </div>
 
 
                             <?php
                                 }
                             } ?>
+
+                            <?php
+                            if (isset($_GET["msg"])) {
+                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
+                                    <div class="alert alert-warning alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Mise a jour échouée</strong>
+                                    </div>
+
+
+                            <?php
+                                }
+                            } ?>
+
 
                             <?php
                             if (isset($_GET["msg"])) {
@@ -202,7 +216,7 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'success_del') == 0) { ?>
                                     <div class="alert alert-success alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Successfully Deleted!</strong>
+                                        <strong>Suppression réussie</strong>
                                     </div>
 
 
@@ -214,24 +228,11 @@ $objCreate = $obj->saveFunction();
                                 if (strcmp($_GET["msg"], 'fail_del') == 0) { ?>
                                     <div class="alert alert-warning alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Deletion Failed!</strong>
+                                        <strong>Suppression échouée</strong>
                                     </div>
 
 
                             <?php }
-                            } ?>
-
-                            <?php
-                            if (isset($_GET["msg"])) {
-                                if (strcmp($_GET["msg"], 'fail_upd') == 0) { ?>
-                                    <div class="alert alert-warning alert-dismissible">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <strong>Update Failed!</strong>
-                                    </div>
-
-
-                            <?php
-                                }
                             } ?>
 
 
@@ -240,56 +241,43 @@ $objCreate = $obj->saveFunction();
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
-
-                                            <th>Edit/Delete</th>
-
-
+                                            <th>Numero </th>
+                                            <th>Image</th>
+                                            <th>Supprimer </th>
 
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Dessert</th>
-                                            <th>Dessert Price</th>
-
-                                            <th>Edit/Delete</th>
-
+                                            <th>Numero </th>
+                                            <th>Image</th>
+                                            <th>Supprimer </th>
 
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                        <?php if ($objImage) {
+                                            $a = 1;
+                                        ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objImage)) {
 
-                                        <?php
-                                        $a = 1;
-                                        if ($objMenu) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objMenu)) {
-                                                $id = $row["id"];
+                                                $id = $row['id'];
 
 
                                             ?>
                                                 <tr>
-                                                    <td><?php echo $a++ ?></td>
+                                                    <td><?php echo $a++; ?></td>
+                                                    <td><img width="200px" height="200px" src='<?php echo "rest_img/" . $row['image']; ?>' /> </td>
 
-
-                                                    <td><?php echo $row['dessert_en'] == NULL ? "<span class='text-danger'>English version is note available, please edit </span>" : $row['dessert_en']; ?></td>
-                                                    
-                                                    <td><?php echo $row['price']; ?></td>
+                                                   
 
                                                     <td>
-                                                        <a href="menu_dessert_edit.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                        <a href="menu_dessert_delete.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                        <a href="<?php echo "image_delete_fr.php?id=$id"; ?>" class="btn btn-danger btn-sm">Supprimer</a>
                                                     </td>
 
-
                                                 </tr>
-
-                                        <?php }
-                                        } ?>
-
+                                            <?php } ?>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -324,7 +312,7 @@ $objCreate = $obj->saveFunction();
     </a>
 
     <!-- Logout Modal-->
-    <!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -340,7 +328,7 @@ $objCreate = $obj->saveFunction();
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

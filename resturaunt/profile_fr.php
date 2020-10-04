@@ -157,15 +157,16 @@ class profile extends database
 
 
 
-            $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `cities`='$cities' ,`kosher` = '$kosher',`kosher_spec_heb`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
+            $sql = "UPDATE `restaurant_tbl` SET `speciality` = '$speciality',`services` = '$services', `cities`='$cities' ,`kosher` = '$kosher',`kosher_spec_fr`='$kosherSpec', `phone` = '$phone',`bank_id` = '$bank_id' where name_en = '$name' ";
             $res = mysqli_query($this->link, $sql);
-        
+
+
 
             if ($res) {
-                header("location: profile_heb.php");
+                header("location: profile_fr.php");
                 return true;
             } else {
-                header("location: profile_heb.php");
+                header("location: profile_fr.php");
                 return false;
             }
         }
@@ -194,7 +195,7 @@ $objCityID = $obj->getCityID();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>פרופיל</title>
+    <title>Profil </title>
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -232,7 +233,7 @@ $objCityID = $obj->getCityID();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar_heb.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -249,7 +250,7 @@ $objCityID = $obj->getCityID();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">דף פרופיל</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Page de profil</h1>
                     <div class="container">
 
                         <div class="card o-hidden border-0 shadow-lg my-5">
@@ -263,24 +264,24 @@ $objCityID = $obj->getCityID();
                                             <div class="text-center">
 
                                             </div>
-                                            <form class="user" method="post" action="profile_heb.php" enctype="multipart/form-data">
+                                            <form class="user" method="post" action="profile_fr.php" enctype="multipart/form-data">
 
                                                 <div class="row">
 
                                                     <div class="col-md-6">
-                                                        <h1 class="h4 text-gray-900 mb-4 mt-3">פרטי מסעדה</h1>
-                                                        <h1 class="h6 text-gray-900 mb-4">שם:
-                                                            <span class="font-weight-bold"><?php echo $row['name_heb']; ?></span>
+                                                        <h1 class="h4 text-gray-900 mb-4 mt-3">Details du restaurant </h1>
+                                                        <h1 class="h6 text-gray-900 mb-4">Nom:
+                                                            <span class="font-weight-bold"><?php echo $row['name_fr']; ?></span>
                                                         </h1>
-                                                        <h1 class="h6 text-gray-900 mb-4">כתובת:
-                                                            <span class="font-weight-bold"><?php echo $row['address_heb']; ?></span>
+                                                        <h1 class="h6 text-gray-900 mb-4">Adresse:
+                                                            <span class="font-weight-bold"><?php echo $row['address_fr']; ?></span>
                                                         </h1>
 
 
 
 
-                                                        <h1 class="h6 text-gray-900 mb-4">טלפון:
-                                                            <input type="text" placeholder="מספר טלפון" class="form-control w-50 mt-3" value="<?php echo $row['phone']; ?>" name="phone">
+                                                        <h1 class="h6 text-gray-900 mb-4">Telephone:
+                                                            <input type="text" placeholder="Numero de telephone" class="form-control w-50 mt-3" value="<?php echo $row['phone']; ?>" name="phone">
 
                                                         </h1>
 
@@ -288,37 +289,34 @@ $objCityID = $obj->getCityID();
 
                                                     <div class="col-md-6">
 
-                                                        <h1 id="kosher-container" class="h6 text-gray-900 mb-4">כשר:
+                                                        <h1 id="kosher-container" class="h6 text-gray-900 mb-4">Kasher:
 
                                                             <?php
                                                             if ($row["kosher"] == "yes") {
 
-                                                                $kosher_spec = $row['kosher_spec_heb'];
+                                                                $kosher_spec = $row['kosher_spec_fr'];
 
-
-                                                                $kosh = "כן";
-
-
-                                                            ?>
-                                                                <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
-                                                                    <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh; ?></option>
-                                                                    <option disabled></option>
-                                                                    <option value="no">לא</option>
-                                                                    <option value="yes">רשום כאן סוג כשרות</option>
-                                                                </select>
-
-
-                                                                <input type="text" class="form-control w-50 mt-3" id="kosher-spec" name="kosher-spec" value="<?php echo $row['kosher_spec_heb']; ?>" placeholder="ציין כשר">
-                                                            <?php
-                                                            } else if ($row["kosher"] == "no") {
-                                                                $kosher_spec = "";
-                                                                $kosh = "לא";
+                                                                $kosh = "Oui";
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh ?></option>
                                                                     <option disabled></option>
-                                                                    <option value="no">לא</option>
-                                                                    <option value="yes">רשום כאן סוג כשרות</option>
+                                                                    <option value="no">Non </option>
+                                                                    <option value="yes">precisez ci dessous</option>
+                                                                </select>
+
+
+                                                                <input type="text" class="form-control w-50 mt-3" id="kosher-spec" name="kosher-spec" value="<?php echo $row['kosher_spec_fr']; ?>" placeholder="Kasher spécifier">
+                                                            <?php
+                                                            } else if ($row["kosher"] == "no") {
+                                                                $kosher_spec = "";
+                                                                $kosh = "non"
+                                                            ?>
+                                                                <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
+                                                                    <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh; ?></option>
+                                                                    <option disabled></option>
+                                                                    <option value="no">Non </option>
+                                                                    <option value="yes">precisez ci dessous</option>
                                                                 </select>
 
 
@@ -328,8 +326,8 @@ $objCityID = $obj->getCityID();
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
 
-                                                                    <option value="no">לא</option>
-                                                                    <option value="yes">כן</option>
+                                                                    <option value="no">Non </option>
+                                                                    <option value="yes">Oui</option>
                                                                 </select>
 
 
@@ -340,7 +338,7 @@ $objCityID = $obj->getCityID();
 
                                                         </h1>
 
-                                                        <h1 class="h6 text-gray-900 mb-4">:ערים
+                                                        <h1 class="h6 text-gray-900 mb-4">Villes:
 
                                                             <?php
 
@@ -366,7 +364,7 @@ $objCityID = $obj->getCityID();
                                                             ?>
 
                                                             <select class="form-control" name="cities[]" multiple required>
-                                                             
+                                                               
 
                                                                 <?php
 
@@ -378,7 +376,7 @@ $objCityID = $obj->getCityID();
                                                                         $row = mysqli_fetch_assoc($newObj->getCityName($city_id));
 
 
-                                                                        $city = $row["city_heb"]
+                                                                        $city = $row["city_fr"]
                                                                 ?>
                                                                         <option selected value="<?php echo $city_id ?>"><?php echo ucwords($city) ?></option>
 
@@ -391,7 +389,7 @@ $objCityID = $obj->getCityID();
                                                                         # code...
 
                                                                         $row = mysqli_fetch_assoc($newObj->getCityName($id));
-                                                                        $city = $row["city_heb"];
+                                                                        $city = $row["city_fr"];
 
                                                                     ?>
                                                                         <option value="<?php echo $id ?>"><?php echo ucwords($city) ?></option>
@@ -426,7 +424,7 @@ $objCityID = $obj->getCityID();
                                                     <div class="row">
                                                         <div class="col-lg-6">
 
-                                                            <h1 class="h4 mt-4 text-gray-900 mb-4 ">שירותי המסעדה</h1>
+                                                            <h1 class="h4 mt-4 text-gray-900 mb-4 ">Services:</h1>
 
                                                             <?php
 
@@ -467,7 +465,7 @@ $objCityID = $obj->getCityID();
                                                                         $row = mysqli_fetch_assoc($newObj->getServiceName($ser_id));
 
 
-                                                                        $ser = $row["service_heb"]
+                                                                        $ser = $row["service_fr"]
                                                                 ?>
                                                                         <option selected value="<?php echo $ser_id ?>"><?php echo ucwords($ser) ?></option>
 
@@ -480,7 +478,7 @@ $objCityID = $obj->getCityID();
                                                                         # code...
 
                                                                         $row = mysqli_fetch_assoc($newObj->getServiceName($id));
-                                                                        $ser = $row["service_heb"];
+                                                                        $ser = $row["service_fr"];
 
                                                                     ?>
                                                                         <option value="<?php echo $id ?>"><?php echo ucwords($ser) ?></option>
@@ -504,7 +502,7 @@ $objCityID = $obj->getCityID();
                                                         <div class="col-lg-6">
 
 
-                                                            <h1 class="h4 mt-4 text-gray-900 mb-4 ">סוג המסעדה:</h1>
+                                                            <h1 class="h4 mt-4 text-gray-900 mb-4 ">Specialite:</h1>
 
                                                             <?php
 
@@ -540,7 +538,7 @@ $objCityID = $obj->getCityID();
                                                                         $row = mysqli_fetch_assoc($newObj->getSpecName($spec_id));
 
 
-                                                                        $spec = $row["specialty_heb"]
+                                                                        $spec = $row["specialty_fr"]
                                                                 ?>
                                                                         <option selected value="<?php echo $spec_id ?>"><?php echo ucwords($spec) ?></option>
 
@@ -553,7 +551,7 @@ $objCityID = $obj->getCityID();
                                                                         # code...
 
                                                                         $row = mysqli_fetch_assoc($newObj->getSpecName($id));
-                                                                        $spec = $row["specialty_heb"];
+                                                                        $spec = $row["specialty_fr"];
 
                                                                     ?>
                                                                         <option value="<?php echo $id ?>"><?php echo ucwords($spec) ?></option>
@@ -579,7 +577,7 @@ $objCityID = $obj->getCityID();
                                                 </section>
 
                                                 <section>
-                                                    <h1 class="h4 mt-4 text-gray-900 mb-4 ">פרטי חשבון בנק</h1>
+                                                    <h1 class="h4 mt-4 text-gray-900 mb-4 ">Bank Information</h1>
                                                     <table class="table table-striped table-dark table-hover">
                                                         <?php
                                                         if ($objBank) {
@@ -589,24 +587,24 @@ $objCityID = $obj->getCityID();
 
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">בנק</th>
+                                                                <th scope="col">Banque</th>
                                                                 <td scope="col"><input type="text" class="form-control" name="bank" value="<?php echo ucwords($bank_info["bank"]) ?>"></td>
 
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <th scope="row">מספר חשבון</th>
+                                                                <th scope="row">Numero de compte</th>
                                                                 <td scope="col"><input type="text" class="form-control" name="account_number" value="<?php echo ucwords($bank_info["account_number"]) ?>"></td>
 
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">סניף</th>
+                                                                <th scope="row">Agence</th>
                                                                 <td scope="col"><input type="text" class="form-control" name="agency" value="<?php echo ucwords($bank_info["agency"]) ?>"></td>
 
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">שם בעל החשבון</th>
+                                                                <th scope="row">Nom</th>
                                                                 <td scope="col"><input type="text" class="form-control" name="b_name" value="<?php echo ucwords($bank_info["name"]) ?>"></td>
 
                                                             </tr>
@@ -615,7 +613,7 @@ $objCityID = $obj->getCityID();
 
 
                                                 </section>
-                                                <input type="submit" name="submit" value="שמירה" class="btn mt-4 btn-success w-25">
+                                                <input type="submit" name="submit" value="Enregistrer" class="btn mt-4 btn-success w-25">
 
                                             </form>
 
@@ -628,7 +626,53 @@ $objCityID = $obj->getCityID();
                         </div>
 
                     </div>
-                  
+                    <!-- <h1 class="h3 mb-4 text-gray-800">Menu</h1> -->
+                    <!-- <form action="" method="post">
+                        <div class="container">
+                            <table class="table table-hover" id="table_field">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Starter</th>
+                                        <th scope="col">Dishes</th>
+                                        <th scope="col">Desserts</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    <?php
+                                    $conn = mysqli_connect("localhost", "root", "", "woopyzz");
+                                    if (isset($_POST['submit'])) {
+                                        $starter = $_POST['starter'];
+                                        $dish = $_POST['dish'];
+                                        $dessert = $_POST['dessert'];
+                                        $restName = $_SESSION['Rname'];
+
+                                        foreach ($starter as $key => $value) {
+                                            $sql2 = "INSERT INTO `restaurant_food` (`id`,`name`,`starter`, `dish`, `dessert`, `created`, `updated`) VALUES (NULL, '$restName', '" . $value . "', '" . $dish[$key] . "', '" . $dessert[$key] . "', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                                            $res2 = mysqli_query($conn, $sql2);
+                                            if ($res2) {
+                                                header('location:restaurant_profile.php');
+                                            }
+                                        }
+                                    }
+
+                                    ?>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" name="starter[]" class="form-control"></td>
+                                        <td><input type="text" name="dish[]" class="form-control"></td>
+                                        <td><input type="text" name="dessert[]" class="form-control"></td>
+                                        <td><input type="button" class="btn btn-primary" name="add" id="add"
+                                                value="Add More"></td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="text-center">
+                                <input class="btn btn-success w-25" type="submit" name="submit" value="Save">
+                            </div>
+                        </div>
+                    </form> -->
 
 
                 </div>

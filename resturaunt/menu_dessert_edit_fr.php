@@ -5,7 +5,7 @@ if (!isset($_SESSION['Rname'])) {
 }
 
 include('class/database.php');
-class MenuStarterEdit extends database
+class MenuDessertEdit extends database
 {
     protected $link;
     public function getItem()
@@ -14,7 +14,7 @@ class MenuStarterEdit extends database
 
         $id = $_GET['id'];
 
-        $sql = "select * from menu_starter_tb where id = '$id' ";
+        $sql = "select * from menu_dessert_tb where id = '$id' ";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -30,27 +30,28 @@ class MenuStarterEdit extends database
         if (isset($_POST['submit'])) {
             $id = $_GET['id'];
 
-            $dish = $_POST['name'];
+            $dessert = $_POST['name'];
             $price = $_POST["price"];
 
 
-            $sql = "UPDATE menu_starter_tb SET  starter_en='$dish', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
+
+            $sql = "UPDATE menu_dessert_tb SET dessert_fr='$dessert', price='$price', updated=CURRENT_TIMESTAMP where id='$id'";
             $res = mysqli_query($this->link, $sql);
 
 
             if ($res) {
                 $msg = "success_upd";
-                header("location: menu_starters.php?msg=$msg");
+                header("location: menu_desserts_fr.php?msg=$msg");
                 return true;
             } else {
                 $msg = "fail_upd";
-                header("location: menu_starters.php?msg=$msg");
+                header("location: menu_desserts_fr.php?msg=$msg");
                 return false;
             }
         }
     }
 }
-$obj = new MenuStarterEdit;
+$obj = new MenuDessertEdit;
 $objItem = $obj->getItem();
 $objItemUpdate = $obj->updateItem();
 
@@ -66,7 +67,7 @@ $objItemUpdate = $obj->updateItem();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Edit Starter</title>
+    <title>Modifier le dessert</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -83,7 +84,7 @@ $objItemUpdate = $obj->updateItem();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_fr.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -101,7 +102,7 @@ $objItemUpdate = $obj->updateItem();
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Edit Starter</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Modifier le dessert</h1>
 
                     </div>
 
@@ -120,31 +121,31 @@ $objItemUpdate = $obj->updateItem();
                             <div class="card shadow mb-4">
 
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Starter Information</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Modifier le dessert</h6>
                                 </div>
                                 <div class="card-body">
 
-                                  
+                                   
 
 
 
                                     <form action="" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                <h5 class="modal-title" id="exampleModalLabel">Informations sur le dessert
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body bg-light">
-
+                                               
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" name="name" value="<?php echo $row["starter_en"] ?>" class="border-0 form-control" placeholder="Name" required>
+                                                        <input type="text" name="name" value="<?php echo $row["dessert_fr"]; ?>" class=" form-control" placeholder="Nom" required>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control border-0" placeholder="Price" required>
+                                                        <input type="number" name="price" value="<?php echo $row["price"] ?>" class="form-control " placeholder="Prix" required>
                                                     </div>
 
 
@@ -155,8 +156,8 @@ $objItemUpdate = $obj->updateItem();
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Enregistrer</button>
                                             </div>
 
                                         </div>

@@ -590,7 +590,7 @@ $objGetRest = $obj->getRestaurant();
                             <div class="accordion-group">
                                 <div class="collapse in show" id="collapseExample1">
                                     <div class="bg-white border-0 p-5">
-                                        <h4 class="font-weight-bold" style="color: #EEA11D;">Entrée</h4>
+                                        <h4 class="font-weight-bold" style="color: #EEA11D;">Entrees </h4>
 
                                         <?php if ($objFood) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood)) {
@@ -605,7 +605,7 @@ $objGetRest = $obj->getRestaurant();
 
 
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Vaisselle</h4>
+                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Plats</h4>
                                         <?php if ($objFood2) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objFood2)) {
                                                 if ($row['dish_fr'] !== NULL || $row['dish_fr'] != "") { ?>

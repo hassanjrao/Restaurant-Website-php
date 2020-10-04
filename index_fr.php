@@ -8,7 +8,7 @@ class restaurant extends database
 
     public function restaurantFunction()
     {
-        $sql = "SELECT * FROM `restaurant_tbl` order by id desc LIMIT 6";
+        $sql = "SELECT * FROM `restaurant_tbl` order by id desc";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;
@@ -411,7 +411,7 @@ $objNearestCities = $obj->getNearestCities();
 
                             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                 <div class="card mb-3">
-                                    <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                    <a href="restaurant_fr.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                         <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                             <div class="carousel-inner">
 
@@ -463,7 +463,7 @@ $objNearestCities = $obj->getNearestCities();
                                         </div>
                                     </a>
                                     <div class="card-body">
-                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                        <a href="restaurant_fr.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
                                             <div class="row">
 
                                                 <div class="col-md-6">

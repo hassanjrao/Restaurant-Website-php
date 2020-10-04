@@ -34,20 +34,31 @@ class NoteEdit extends database
             $note = $_POST['note'];
             $day = $_POST["day"];
 
+            $rest_id = $_SESSION['rest_id'];
 
-            $sql = "UPDATE notes_tb SET note_heb='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
-            $res = mysqli_query($this->link, $sql);
-
-
-
-            if ($res) {
-                $msg = "success_upd";
+            $sqlFind = "select * from notes_tb where day = '$day' and rest_id='$rest_id' ";
+            $resFind = mysqli_query($this->link, $sqlFind);
+            if (mysqli_num_rows($resFind) > 0) {
+                $msg = "taken";
                 header("location: notes_heb.php?msg=$msg");
                 return true;
             } else {
-                $msg = "fail_upd";
-                header("location: notes_heb.php?msg=$msg");
-                return false;
+
+
+                $sql = "UPDATE notes_tb SET note_heb='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
+                $res = mysqli_query($this->link, $sql);
+
+
+
+                if ($res) {
+                    $msg = "success_upd";
+                    header("location: notes_heb.php?msg=$msg");
+                    return true;
+                } else {
+                    $msg = "fail_upd";
+                    header("location: notes_heb.php?msg=$msg");
+                    return false;
+                }
             }
         }
     }
@@ -85,7 +96,7 @@ $objNoteUpdate = $obj->updateNote();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar.php'); ?>
+        <?php include('sidebar_heb.php'); ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -111,7 +122,7 @@ $objNoteUpdate = $obj->updateNote();
                     <div class="row">
 
                         <div class="col-lg-12">
-                           
+
                             <!-- ------Menu English Starts -->
                             <div class="card shadow mb-4">
 
@@ -136,7 +147,23 @@ $objNoteUpdate = $obj->updateNote();
                                             <div class="modal-body bg-light">
                                                 <?php
 
-                                                $row = mysqli_fetch_assoc($objNote)
+                                                $row = mysqli_fetch_assoc($objNote);
+
+                                                if ($row['day'] == "sun") {
+                                                    $day = "ראשון";
+                                                } else if ($row['day'] == "mon") {
+                                                    $day = "שני";
+                                                } else if ($row['day'] == "tue") {
+                                                    $day = "שלישי";
+                                                } else if ($row['day'] == "wed") {
+                                                    $day = "רביעי";
+                                                } else if ($row['day'] == "thu") {
+                                                    $day = "חמישי";
+                                                } else if ($row['day'] == "fri") {
+                                                    $day = "שישי";
+                                                } else if ($row['day'] == "sat") {
+                                                    $day = "שבת";
+                                                }
 
 
                                                 ?>
@@ -148,15 +175,15 @@ $objNoteUpdate = $obj->updateNote();
 
                                                     <div class="col-md-6">
                                                         <select required name="day" class="form-control">
-                                                            <option selected><?php echo $row["day"] ?></option>
+                                                            <option value="<?php echo $row['day'] ?>" selected><?php echo $day ?></option>
                                                             <option></option>
-                                                            <option>sun</option>
-                                                            <option>mon</option>
-                                                            <option>tue</option>
-                                                            <option>wed</option>
-                                                            <option>thu</option>
-                                                            <option>fri</option>
-                                                            <option>sat</option>
+                                                            <option value="sun">ראשון</option>
+                                                            <option value="mon">שני</option>
+                                                            <option value="tue">שלישי</option>
+                                                            <option value="wed">רביעי</option>
+                                                            <option value="thu">חמישי</option>
+                                                            <option value="fri">שישי</option>
+                                                            <option value="sat">שבת</option>
                                                         </select>
                                                     </div>
 
