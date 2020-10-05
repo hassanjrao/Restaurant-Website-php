@@ -187,19 +187,8 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                                 </div>
 
                                 <?php
-                                if (isset($_SESSION['img']) || isset($rowInfo["client_id"])) {
-
-                                ?>
-
-                                    <div class="col-md-5 text-center">
-
-                                        <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="<?php echo $rowInfo['image']; ?>" alt="">
-                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
-                                        <p class="lead">הוסף תמונות</p>
-                                    </div>
-
-                                <?php
-                                } else {
+                                $image = $rowInfo['image'];
+                                if (file_exists("user_img/$image")) {
 
 
                                 ?>
@@ -207,6 +196,21 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                                     <div class="col-md-5 text-center">
 
                                         <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="user_img/<?php echo $rowInfo['image']; ?>" alt="">
+                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
+                                        <p class="lead">הוסף תמונות</p>
+                                    </div>
+
+                                <?php
+
+                                } else {
+
+
+
+                                ?>
+
+                                    <div class="col-md-5 text-center">
+
+                                        <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="<?php echo $rowInfo['image']; ?>" alt="">
                                         <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
                                         <p class="lead">הוסף תמונות</p>
                                     </div>

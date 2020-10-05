@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset( $_SESSION['name'])){
+if (!isset($_SESSION['name'])) {
     header("location: login.php");
 }
 include('class/database.php');
@@ -9,7 +9,7 @@ class reservation extends database
     public $link;
     public function reservationFunction()
     {
-        
+
         $sql = "SELECT *
         FROM user_tbl
         INNER JOIN reservation_tbl
@@ -26,7 +26,7 @@ class reservation extends database
 
     public function getDate()
     {
-        
+
         $sql = "SELECT * FROM reservation_tbl  where user_confirm=1 order by id desc";
         $res = mysqli_query($this->link, $sql);
 
@@ -173,153 +173,110 @@ $objDate = $obj->getDate();
 
                                         <div id="collapseOne<?php echo $ind ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 
-                                            <?php
+                                            <div class="table-responsive pl-2 pr-2 pt-2 pb-2">
+                                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="1">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Restaurant Name</th>
+                                                            <th>Client Name</th>
+                                                            <th>Code</th>
+                                                            <th>No. of people</th>
+                                                            <th>Email</th>
+                                                            <th>Phone</th>
+                                                            <th>Created</th>
+                                                            <th>Hour</th>
+                                                            <th>Discount</th>
 
-                                        
-                                            $sql = "SELECT *
+                                                        </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Restaurant Name</th>
+                                                            <th>Client Name</th>
+                                                            <th>Code</th>
+                                                            <th>No. of people</th>
+                                                            <th>Email</th>
+                                                            <th>Phone</th>
+                                                            <th>Created</th>
+                                                            <th>Hour</th>
+                                                            <th>Discount</th>
+
+
+                                                        </tr>
+                                                    </tfoot>
+                                                    <tbody>
+                                                        <?php
+
+
+                                                        $sql = "SELECT *
                                                 FROM user_tbl
                                                 INNER JOIN reservation_tbl
                                                 ON user_tbl.email = reservation_tbl.email where reservation_tbl.date = '$date' AND reservation_tbl.user_confirm = 1 order by reservation_tbl.id desc;";
-                                            $res = mysqli_query($objLink, $sql);
+                                                        $res = mysqli_query($objLink, $sql);
 
 
-                                            if (mysqli_num_rows($res) > 0) {
-                                                while ($row = mysqli_fetch_assoc($res)) {
-
-
-
-                                            ?>
-
-                                                    <div class="card-body">
-                                                        <div class="row">
-
-                                                            <div class="col-md-12">
-
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Restaurant Name:- <span class="h6 text-gray-900 mb-4 font-weight-bold"><?php echo ucwords($row["rest_name"]); ?></span>
-                                                                </h1>
-
-                                                            </div>
-                                                            <br><br>
-                                                            <div class="col-md-4">
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Client Name:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['fname']; ?>
-                                                                    <?php echo $row['lname']; ?>
-                                                                </h1>
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Code:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['code']; ?>
-                                                                </h1>
+                                                        if (mysqli_num_rows($res) > 0) {
+                                                            $a=1;
+                                                            while ($row = mysqli_fetch_assoc($res)) {
 
 
 
+                                                        ?>
+                                                                <tr>
+                                                                    <td><?php echo $a++ ?></td>
+                                                                    <td><?php echo ucwords(ucwords($row["rest_name"])); ?></td>
+                                                                    <td><?php echo ucwords($row['fname'] . $row['lname']); ?></td>
+                                                                    <td><?php echo $row['code']; ?></td>
+                                                                    <td><?php echo $row['people'] == NULL ? $row['confirm_people'] : $row['people']; ?></td>
+                                                                    <td><?php echo $row['email']; ?></td>
+                                                                    <td><?php echo $row['phone']; ?></td>
+                                                                    <td><?php echo $row['created']; ?></td>
+                                                                    <td><?php echo $row['time']; ?></td>
+                                                                    <?php
 
-                                                                <?php if ($row['confirm_people'] == NULL) {
+                                                                    $time = $row["time"];
+                                                                    $date = $row["date"];
+                                                                    $day = strtolower(date('D', strtotime("$date")));
 
-                                                                ?>
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirmed Person:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['people']; ?>
-                                                                    </h1>
+                                                                    $newObj = new reservation;
 
-                                                                <?php
-                                                                } else {
-                                                                ?>
+                                                                    $objDiscount = $newObj->getDiscount($time, $row["rest_name"]);
 
-                                                                    <h1 class="h6 text-secondary mb-4 font-weight-bold">Confirmed Person:-
-                                                                    </h1>
-                                                                    <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                        <?php echo $row['confirm_people']; ?>
-                                                                    </h1>
+                                                                    if ($objDiscount) {
 
-                                                                <?php
-
-                                                                }
-                                                                ?>
-
-                                                                <!-- <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                               </h1> -->
-
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Email:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['email']; ?>
-
-                                                                </h1>
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Phone:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['phone']; ?></h1>
-
-                                                                <h1 class="h6 text-secondary mb-4 font-weight-bold">Created
-                                                                    Reservation:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['created']; ?>
-                                                                </h1>
-
-                                                            </div>
-                                                            <div class="col-md-4 text-center">
-
-                                                                <h1 class="h6 text-secondary mb-2 font-weight-bold">Hour:-
-                                                                </h1>
-                                                                <h1 class="h6 text-gray-900 mb-4 font-weight-bold">
-                                                                    <?php echo $row['time']; ?>
-                                                                </h1>
-
-                                                                <br>
-
-                                                                <h1 class="h6 text-secondary mb-2 font-weight-bold">Discount
-                                                                </h1>
-
-                                                                <?php
-                                                                $time = $row["time"];
-                                                                $date = $row["date"];
-                                                                $day = strtolower(date('D', strtotime("$date")));
-
-                                                                $newObj = new reservation;
-
-                                                                $objDiscount = $newObj->getDiscount($time, $row["rest_name"]);
-
-                                                                if ($objDiscount) {
-
-                                                                    $result = mysqli_fetch_assoc($objDiscount);
-
-                                                                ?>
-                                                                    <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold"><?php echo $result["$day"] != NULL ? $result["$day"] : "0"; ?>%</button>
-
-                                                                <?php
-                                                                } else {
-                                                                ?>
-                                                                    <button class="btn p-5 btn-lg btn-danger btn-default btn-circle font-weight-bold">0%</button>
-
-                                                                <?php
-                                                                }
+                                                                        $result = mysqli_fetch_assoc($objDiscount);
+                                                                    ?>
+                                                                        <td><?php echo $result["$day"] != NULL ? $result["$day"] : "0"; ?>%</td>
 
 
+                                                                    <?php
+                                                                    } else {
+                                                                    ?>
+                                                                        <td>0%</td>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
 
-                                                                ?>
-                                                            </div>
+                                                                </tr>
 
 
 
 
-                                                        </div>
 
-                                                    </div>
+                                                        <?php
+                                                            }
+                                                        }
 
-                                                    <hr>
+                                                        ?>
 
-                                            <?php
-                                                }
-                                            }
+                                                    </tbody>
 
-                                            ?>
+                                                </table>
+
+                                            </div>
+
 
                                         </div>
 

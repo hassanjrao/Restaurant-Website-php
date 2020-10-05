@@ -81,7 +81,7 @@ $objRestS2 = $obj->getRestaurants();
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Select Resturaunt:</h6>
+                <h6 class="collapse-header">Select Restaurant:</h6>
 
                 <?php if ($objRestS) { ?>
                     <?php while ($row = mysqli_fetch_assoc($objRestS)) { ?>
@@ -119,6 +119,7 @@ $objRestS2 = $obj->getRestaurants();
                 <a class="collapse-item" href="join.php">Join us</a>
                 <a class="collapse-item" href="contact.php">Contact us</a>
                 <a class="collapse-item" href="faq.php">FAQ</a>
+                <a class="collapse-item" href="privacy-policy.php">Privacy Policy</a>
 
 
             </div>

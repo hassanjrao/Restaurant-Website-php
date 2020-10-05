@@ -54,7 +54,7 @@ if (isset($accessToken)) {
         $lname = $profile->getProperty('last_name');
         $fbfullname = $profile->getProperty('name');   // To Get Facebook full name
         $email = $profile->getProperty('email');    //  To Get Facebook email
-        $img=$picture['url'] ;
+        $img = $picture['url'];
         # save the user nformation in session variable
         $_SESSION['fb_id'] = $fbid;
         $_SESSION['email'] = $email;
@@ -64,10 +64,10 @@ if (isset($accessToken)) {
 
         // Create connection
 
-       $hostname = "localhost";
-$username = "apollo";
-$password = "B9q6q*8r";
-$dbname = "woopyzz";
+        $hostname = "localhost";
+        $username = "apollo";
+        $password = "B9q6q*8r";
+        $dbname = "woopyzz";
 
         $conn = new mysqli($hostname, $username, $password, $dbname);
 
@@ -77,8 +77,23 @@ $dbname = "woopyzz";
             $resl = mysqli_fetch_assoc($res);
             $_SESSION["email"] = $resl["email"];
             if (isset($_GET['code'])) {
-                header('Location: profile.php');
-                exit();
+
+                if (isset($_SESSION["lan"])) {
+
+                    if ($_SESSION["lan"] == "en") {
+                        header('Location: profile.php');
+                        exit();
+                    } else if ($_SESSION["lan"] == "heb") {
+                        header('Location: profile_heb.php');
+                        exit();
+                    } else if ($_SESSION["lan"] == "fr") {
+                        header('Location: profile_fr.php');
+                        exit();
+                    }
+                } else {
+                    header('Location: profile.php');
+                    exit();
+                }
             }
         } else {
             $sql2 = "INSERT INTO `user_tbl` (`id`, `client_id` ,`fname`, `lname`, `email`, `phone`, `password`, `created`) VALUES (NULL, $client_id ,'$fname', '$lname', '$email', NULL, NULL, CURRENT_TIMESTAMP)";
@@ -87,8 +102,22 @@ $dbname = "woopyzz";
                 $sql3 = "INSERT INTO `user_info` (`id`, `email`, `phone`, `country`, `state`, `city`, `image`, `created`, `updated`) VALUES (NULL, '$email', NULL, NULL, NULL, NULL, '$img', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
                 mysqli_query($conn, $sql3);
                 if (isset($_GET['code'])) {
-                    header('Location: profile.php');
-                    exit();
+
+                    if (isset($_SESSION["lan"])) {
+                        if ($_SESSION["lan"] == "en") {
+                            header('Location: profile.php');
+                            exit();
+                        } else if ($_SESSION["lan"] == "heb") {
+                            header('Location: profile_heb.php');
+                            exit();
+                        } else if ($_SESSION["lan"] == "fr") {
+                            header('Location: profile_fr.php');
+                            exit();
+                        }
+                    } else {
+                        header('Location: profile.php');
+                        exit();
+                    }
                 }
             } else {
             }
@@ -98,8 +127,24 @@ $dbname = "woopyzz";
         echo 'Graph returned an error: ' . $e->getMessage();
         session_destroy();
         // redirecting user back to app login page
-        header("Location: signInUp.php");
-        exit;
+        if (isset($_SESSION["lan"])) {
+
+            if ($_SESSION["lan"] == "en") {
+                header("Location: signInUp.php");
+                exit();
+            } else if ($_SESSION["lan"] == "heb") {
+                header("Location: signInUp_heb.php");
+                exit();
+            } else if ($_SESSION["lan"] == "fr") {
+                header("Location: signInUp_fr.php");
+                exit();
+            }
+        }
+        else{
+            header("Location: signInUp.php");
+            exit();
+        }
+       
     } catch (Facebook\Exceptions\FacebookSDKException $e) {
         // When validation fails or other local issues
         echo 'Facebook SDK returned an error: ' . $e->getMessage();

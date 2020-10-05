@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+if(!isset($_SESSION["lan"])){
+    $_SESSION["lan"]="fr";
+}
 include('class/database.php');
 class restaurant extends database
 {
@@ -357,11 +361,11 @@ $objNearestCities = $obj->getNearestCities();
 
 
                 <?php
-
+                $notMatchedAtAll = false;
                 if ($objUserCity != false && $objNearestCities != false) {
 
                     $day = strtolower(date("D"));
-
+                    $notMatchedAtAll = true;
 
 
                     $ind = 0;
@@ -399,7 +403,7 @@ $objNearestCities = $obj->getNearestCities();
 
                                 if (in_array($city_name, $nearestCitiesArr)) {
                                     $matched = true;
-
+                                    $notMatchedAtAll = false;
                                     break;
                                 }
                             }
@@ -564,6 +568,161 @@ $objNearestCities = $obj->getNearestCities();
                         $rest_id = $row["id"];
 
                         ?>
+
+                        <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
+                            <div class="card mb-3">
+                                <a href="restaurant_fr.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                    <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+
+                                            <?php
+                                            $objImage = $obj->getImages($rest_id);
+
+                                            if ($objImage) {
+
+                                                $active = true;
+                                                while ($row1 = mysqli_fetch_assoc($objImage)) {
+
+                                                    $src = $row1["image"];
+
+
+                                            ?>
+
+                                                    <div class="carousel-item <?php echo $active == true ? "active" : "" ?>">
+                                                        <img class="d-block w-100 card-img-top" width="305px" height="230px" src="<?php echo "resturaunt/rest_img/$src" ?>" alt="First slide">
+                                                    </div>
+                                                <?php
+                                                    $active = false;
+                                                }
+                                            } else {
+
+
+                                                ?>
+                                                <div class="carousel-item active">
+                                                    <img class="d-block w-100 card-img-top" src="images/pizza-3007395_1920.jpg" alt="First slide">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block w-100 card-img-top" src="images/sushi-373588_1920.jpg" alt="Second slide">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img class="d-block w-100 card-img-top" src="images/platter-2009590_1920.jpg" alt="Third slide">
+                                                </div>
+
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Précédent</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls<?php echo $row['id']; ?>" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Suivant</span>
+                                        </a>
+                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <a href="restaurant_fr.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>&day=<?php echo $day; ?>" style="text-decoration: none;">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <h6 class="card-title m-0 font-weight-bold"><?php echo $row['name_fr']; ?></h6>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                <i class="fas fa-star" style="color:#EEA11D"></i>
+                                                <i class="fas fa-star" style="color:#EEA11D"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
+                                    </small>
+
+
+                                    <div class="container">
+                                        <hr class="font-weight-bold">
+                                    </div>
+                                    <div class="container text-center">
+
+
+                                        <div class="owl-carousel owl-theme">
+
+                                            <?php
+
+                                            $r_id = $row["id"];
+                                            $r_name = $row["name_en"];
+
+
+
+
+                                            $sql = "select * from $r_name";
+                                            $res = mysqli_query($obj->link, $sql);
+                                            if (mysqli_num_rows($res) > 0) {
+                                                while ($row1 = mysqli_fetch_assoc($res)) {
+
+                                                    $time = explode("-", $row1["time"]);
+
+                                                    $start_time = $time[0];
+                                                    $s_t = explode(":", $start_time);
+
+                                                    $st = $s_t[0];
+
+                                                    $end_time = $time[1];
+                                                    $e_t = explode(":", $end_time);
+
+                                                    $et = $e_t[0];
+
+
+                                            ?>
+
+                                                    <div class="item">
+                                                        <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
+                                                        <small class="d-block" style="color: #481639;"><?php echo "$st:00" ?></small>
+                                                    </div>
+
+                                                    <div class="item">
+                                                        <small class="font-weight-bold" style="color: #EEA11D;"><?php echo $row1[$day] == Null ? "0" : $row1[$day] ?>%</small>
+                                                        <small class="d-block" style="color: #481639;"><?php echo "$st:30" ?></small>
+                                                    </div>
+
+
+
+                                            <?php
+                                                }
+                                            }
+
+
+                                            ?>
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    <?php } ?>
+                    <?php }
+                if ($notMatchedAtAll == true) {
+
+
+
+                    $day = strtolower(date("D"));
+
+
+                    while ($row = mysqli_fetch_assoc($objRestaurant)) {
+
+                        $rest_id = $row["id"];
+
+                    ?>
 
                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                             <div class="card mb-3">

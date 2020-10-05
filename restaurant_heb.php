@@ -410,7 +410,7 @@ $objGetRest = $obj->getRestaurant();
                                 <span class="input-group-text border-0 bg-light "><i class="far fa-clock fa-2x"></i></span>
                             </div>
                             <select name="time" id="" class="form-control bg-light border-0" required>
-                               
+
 
 
                                 <?php
@@ -620,41 +620,139 @@ $objGetRest = $obj->getRestaurant();
                             <div class="accordion-group">
                                 <div class="collapse in show" id="collapseExample1">
                                     <div class="bg-white border-0 p-5">
-                                        <h4 class="font-weight-bold" style="color: #EEA11D;">ראשונות</h4>
 
-                                        <?php if ($objFood) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood)) {
+                                        <div class="row">
 
-                                                if ($row['starter_heb'] !== NULL || $row['starter_heb'] != "") {
-                                            ?>
-                                                    <p class="mt-3"><strong><?php echo $row['starter_heb']; ?></strong> </p>
-                                                    <hr>
-                                        <?php }
-                                            }
-                                        } ?>
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold" style="color: #EEA11D;">ראשונות</h4>
+
+                                                <?php if ($objFood) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($objFood)) {
+
+                                                        if ($row['starter_heb'] !== NULL || $row['starter_heb'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong><?php echo $row['starter_heb']; ?></strong> </p>
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold" style="color: #EEA11D;">מחיר</h4>
+                                                <?php
+                                                $fObj = new Restaurant;
+                                                $fprice = $fObj->foodFunction();
+                                                if ($fprice) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($fprice)) {
+
+                                                        if ($row['starter_heb'] !== NULL || $row['starter_heb'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
 
 
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">עיקריות</h4>
-                                        <?php if ($objFood2) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood2)) {
-                                                if ($row['dish_heb'] !== NULL || $row['dish_heb'] != "") { ?>
-                                                    <p class="mt-3"><strong><?php echo $row['dish_heb']; ?></strong> </p>
-                                                    <hr>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">עיקריות</h4>
+                                                <?php if ($objFood2) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($objFood2)) {
+                                                        if ($row['dish_heb'] !== NULL || $row['dish_heb'] != "") { ?>
+                                                            <p class="mt-3"><strong><?php echo $row['dish_heb']; ?></strong> </p>
+                                                            <hr>
+                                                        <?php } ?>
+                                                <?php }
+                                                } ?>
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">מחיר</h4>
+                                                <?php
+                                                $fObj = new Restaurant;
+                                                $fprice = $fObj->foodFunction2();
+                                                if ($fprice) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($fprice)) {
+
+                                                        if ($row['dish_heb'] !== NULL || $row['dish_heb'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+
+
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">קינוחים</h4>
+                                                <?php if ($objFood3) {
+                                                ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($objFood3)) {
+                                                        if ($row['dessert_heb'] !== NULL || $row['dessert_heb'] != "") { ?>
+                                                            <p class="mt-3"><strong><?php echo $row['dessert_heb']; ?></strong> </p>
+                                                            <hr>
+                                                    <?php }
+                                                    } ?>
                                                 <?php } ?>
-                                        <?php }
-                                        } ?>
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">קינוחים</h4>
-                                        <?php if ($objFood3) {
-                                        ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood3)) {
-                                                if ($row['dessert_heb'] !== NULL || $row['dessert_heb'] != "") { ?>
-                                                    <p class="mt-3"><strong><?php echo $row['dessert_heb']; ?></strong> </p>
-                                                    <hr>
-                                            <?php }
-                                            } ?>
-                                        <?php } ?>
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">מחיר</h4>
+                                                <?php
+                                                $fObj = new Restaurant;
+                                                $fprice = $fObj->foodFunction3();
+                                                if ($fprice) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($fprice)) {
+
+                                                        if ($row['dessert_heb'] !== NULL || $row['dessert_heb'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+
+
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+
+                                            </div>
+
+                                        </div>
+
+
+
+
+
+
+
+
 
                                     </div>
                                 </div>

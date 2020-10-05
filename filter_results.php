@@ -9,19 +9,65 @@ class FilterRestaurant extends database
 {
     public $link;
 
+    public function getUserLocation()
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        $ip = '168.192.0.1';
+        $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
+
+        if ($query["status"] == "fail") {
+            return false;
+        } else {
+            return $query;
+        }
+    }
+
+   
+
 
     public function getRestaurants()
     {
+        if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
 
-        $sql = "SELECT * FROM `restaurant_tbl`";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
+            $user_location_arr = $this->getUserLocation();
+
+
+            //  var_dump($user_location_arr);
+
+            // $lat = $user_location_arr["lat"];
+            // $long = $user_location_arr["lon"];
+
+            $lat = "32.07372";
+            $long = "34.78205";
+
+            $sql = "SELECT * , (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - lat) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(lat * pi()/180) * POWER(SIN(( $long - lon) * pi()/180 / 2), 2) ))) as distance  
+            from restaurant_tbl
+            having  distance <= 20
+            order by distance";
+            $res = mysqli_query($this->link, $sql);
+
+            if (mysqli_num_rows($res) > 0) {
+                return $res;
+            } else {
+                return false;
+            }
         } else {
-            return false;
-        }
-        # code...
 
+            $sql = "SELECT * FROM `restaurant_tbl`";
+            $res = mysqli_query($this->link, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                return $res;
+            } else {
+                return false;
+            }
+            # code...
+        }
     }
 
     public function filterRestaurants()
@@ -85,7 +131,7 @@ class FilterRestaurant extends database
 }
 $obj = new FilterRestaurant;
 $objRestaurant = $obj->getRestaurants();
-// $objFilter = $obj->filter();
+
 $objSpec = $obj->getSpec();
 $objCity = $obj->getCities();
 if (isset($_POST["location"]) && $_POST["location"] != "") {
@@ -258,13 +304,13 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
 
                                     <select class="form-control border-0 bg-light " name="location[]">
-
+                                    <option disabled selected>Location</option>
                                         <?php
                                         if ($objCity) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objCity)) {
 
                                             ?>
-                                               
+
                                                 <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_en"]) ?></option>
 
                                         <?php
@@ -1975,10 +2021,10 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                     $flag = false;
                                                                                                     $rest_id = $row1["id"];
 
-                                                                                                    
+
 
                                                                                                     if (is_array(unserialize($row1["cities"]))) {
-                                                                                                    
+
                                                                                                         foreach ($_POST["location"] as  $sp) {
                                                                                                             if (in_array($sp, unserialize($row1["cities"]))) {
                                                                                                                 $flag = true;
@@ -1988,7 +2034,7 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                     }
 
                                                                                                     if ($flag == true) {
-                                                                                                       
+
                                                                                                         $sql2 = "SELECT * FROM `restaurant_tbl` where id='$rest_id'";
                                                                                                         $res2 = mysqli_query($obj->link, $sql2);
 

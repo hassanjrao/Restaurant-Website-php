@@ -302,9 +302,9 @@ $objCityID = $obj->getCityID();
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh; ?></option>
-                                                                    <option disabled></option>
+                                                                 
                                                                     <option value="no">לא</option>
-                                                                    <option value="yes">רשום כאן סוג כשרות</option>
+                                                                   
                                                                 </select>
 
 
@@ -316,9 +316,8 @@ $objCityID = $obj->getCityID();
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh ?></option>
-                                                                    <option disabled></option>
-                                                                    <option value="no">לא</option>
-                                                                    <option value="yes">רשום כאן סוג כשרות</option>
+                                                                   
+                                                                    <option value="yes">כן</option>
                                                                 </select>
 
 
@@ -707,7 +706,7 @@ $objCityID = $obj->getCityID();
                     newElem.setAttribute("name", "kosher-spec");
                     newElem.setAttribute("id", "kosher-spec");
                     newElem.setAttribute("value", "<?php echo $kosher_spec ?>");
-                    newElem.setAttribute("placeholder", "Kosher specify");
+                    newElem.setAttribute("placeholder", "ציין כשר בתיבה זו");
                     newElem.setAttribute("class", "form-control w-50 mt-3");
 
                     console.log(newElem);

@@ -188,20 +188,9 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                                 </div>
 
                                 <?php
-                                if (isset($_SESSION['img']) || isset($rowInfo["client_id"])) {
 
-                                ?>
-
-                                    <div class="col-md-5 text-center">
-
-                                        <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="<?php echo $rowInfo['image']; ?>" alt="">
-                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
-                                        <p class="lead">Tap to upload image</p>
-                                    </div>
-
-                                <?php
-                                } else {
-
+                                $image = $rowInfo['image'];
+                                if (file_exists("user_img/$image")) {
 
                                 ?>
 
@@ -213,8 +202,24 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                                     </div>
 
                                 <?php
+
+
                                 }
+
+                                // if (isset($_SESSION['img']) || isset($rowInfo["client_id"]))
+                                else {
+
                                 ?>
+
+                                    <div class="col-md-5 text-center">
+
+                                        <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="<?php echo $rowInfo['image']; ?>" alt="">
+                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
+                                        <p class="lead">Tap to upload image</p>
+                                    </div>
+
+                                <?php
+                                } ?>
 
                                 <div class="col-md-12">
                                     <label for="country" class="font-weight-bold mt-4">Country</label>

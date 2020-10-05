@@ -542,7 +542,7 @@ $objGetRest = $obj->getRestaurant();
                                 ?>
 
                             </select>
-                          
+
                         </div>
                         <input type="hidden" name="dayl" value="<?php echo $day ?>">
                         <div class="input-group input-focus bg-light mt-3">
@@ -575,14 +575,14 @@ $objGetRest = $obj->getRestaurant();
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                        Commentaires
+                                            Commentaires
                                         </a>
                                     </p>
                                 </div>
                                 <div class="col-md-3 col-3">
                                     <p>
                                         <a style="color: #000; text-decoration:none" class="col-btn" data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" data-parent="#myGroup" aria-controls="collapseExample">
-                                        A propos
+                                            A propos
                                         </a>
                                     </p>
                                 </div>
@@ -590,41 +590,138 @@ $objGetRest = $obj->getRestaurant();
                             <div class="accordion-group">
                                 <div class="collapse in show" id="collapseExample1">
                                     <div class="bg-white border-0 p-5">
-                                        <h4 class="font-weight-bold" style="color: #EEA11D;">Entrees </h4>
 
-                                        <?php if ($objFood) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood)) {
+                                        <div class="row">
 
-                                                if ($row['starter_fr'] !== NULL || $row['starter_fr'] != "") {
-                                            ?>
-                                                    <p class="mt-3"><strong><?php echo $row['starter_fr']; ?></strong> </p>
-                                                    <hr>
-                                        <?php }
-                                            }
-                                        } ?>
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold" style="color: #EEA11D;">Entrees </h4>
+
+                                                <?php if ($objFood) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($objFood)) {
+
+                                                        if ($row['starter_fr'] !== NULL || $row['starter_fr'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong><?php echo $row['starter_fr']; ?></strong> </p>
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold" style="color: #EEA11D;">Prix</h4>
+                                                <?php
+                                                $fObj = new Restaurant;
+                                                $fprice = $fObj->foodFunction();
+                                                if ($fprice) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($fprice)) {
+
+                                                        if ($row['starter_fr'] !== NULL || $row['starter_fr'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+
+
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-6 col-md-6">
+
+
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Plats</h4>
+                                                <?php if ($objFood2) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($objFood2)) {
+                                                        if ($row['dish_fr'] !== NULL || $row['dish_fr'] != "") { ?>
+                                                            <p class="mt-3"><strong><?php echo $row['dish_fr']; ?></strong> </p>
+                                                            <hr>
+                                                        <?php } ?>
+                                                <?php }
+                                                } ?>
+
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold" style="color: #EEA11D;">Prix</h4>
+                                                <?php
+                                                $fObj = new Restaurant;
+                                                $fprice = $fObj->foodFunction2();
+                                                if ($fprice) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($fprice)) {
+
+                                                        if ($row['dish_fr'] !== NULL || $row['dish_fr'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+
+
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-6 col-md-6">
 
 
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Plats</h4>
-                                        <?php if ($objFood2) { ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood2)) {
-                                                if ($row['dish_fr'] !== NULL || $row['dish_fr'] != "") { ?>
-                                                    <p class="mt-3"><strong><?php echo $row['dish_fr']; ?></strong> </p>
-                                                    <hr>
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Desserts</h4>
+                                                <?php if ($objFood3) {
+                                                ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($objFood3)) {
+                                                        if ($row['dessert_fr'] !== NULL || $row['dessert_fr'] != "") { ?>
+                                                            <p class="mt-3"><strong><?php echo $row['dessert_fr']; ?></strong> </p>
+                                                            <hr>
+                                                    <?php }
+                                                    } ?>
                                                 <?php } ?>
-                                        <?php }
-                                        } ?>
 
-                                        <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Desserts</h4>
-                                        <?php if ($objFood3) {
-                                        ?>
-                                            <?php while ($row = mysqli_fetch_assoc($objFood3)) {
-                                                if ($row['dessert_fr'] !== NULL || $row['dessert_fr'] != "") { ?>
-                                                    <p class="mt-3"><strong><?php echo $row['dessert_fr']; ?></strong> </p>
-                                                    <hr>
-                                            <?php }
-                                            } ?>
-                                        <?php } ?>
+
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+
+                                                <h4 class="font-weight-bold" style="color: #EEA11D;">Prix</h4>
+                                                <?php
+                                                $fObj = new Restaurant;
+                                                $fprice = $fObj->foodFunction3();
+                                                if ($fprice) { ?>
+                                                    <?php while ($row = mysqli_fetch_assoc($fprice)) {
+
+                                                        if ($row['dessert_fr'] !== NULL || $row['dessert_fr'] != "") {
+                                                    ?>
+                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+
+
+                                                            <hr>
+                                                <?php }
+                                                    }
+                                                } ?>
+
+
+                                            </div>
+
+                                        </div>
+
+
 
                                     </div>
                                 </div>
@@ -703,14 +800,14 @@ $objGetRest = $obj->getRestaurant();
                                 <div class="collapse" id="collapseExample4">
                                     <div class="bg-white border-0 p-5">
                                         <div class="container">
-                                        <div class="row">
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <?php
                                                     $obj2 = new restaurant;
                                                     $obj2Rest = $obj2->getRestaurant();
                                                     if ($obj2Rest) {
 
-                                                    
+
 
                                                         while ($row_about = mysqli_fetch_assoc($obj2Rest)) {
 

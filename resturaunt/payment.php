@@ -76,9 +76,7 @@ $objUpdate = $obj->updateFunction2();
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -111,10 +109,13 @@ $objUpdate = $obj->updateFunction2();
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Payment</h1>
-                    
+
+                    <p class="mb-4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Make Changes
+                        </button></p>
+
                     <form action="" method="post">
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -128,21 +129,20 @@ $objUpdate = $obj->updateFunction2();
                                             <div class="col-md-6">
                                                 <?php if ($objPayment2) { ?>
 
-                                                <select name="month" id="" class="form-control ">
-                                                    <option value="" disabled selected>Select Month</option>
-                                                    <?php while ($row2 = mysqli_fetch_assoc($objPayment2)) { ?>
-                                                    <option value="<?php echo $row2['month']; ?>">
-                                                        <?php echo $row2['month']; ?>
-                                                    </option>
+                                                    <select name="month" id="" class="form-control ">
+                                                        <option value="" disabled selected>Select Month</option>
+                                                        <?php while ($row2 = mysqli_fetch_assoc($objPayment2)) { ?>
+                                                            <option value="<?php echo $row2['month']; ?>">
+                                                                <?php echo $row2['month']; ?>
+                                                            </option>
 
-                                                    <?php } ?>
-                                                </select>
+                                                        <?php } ?>
+                                                    </select>
 
                                                 <?php } ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="number" name="client" class="form-control"
-                                                    placeholder="Client Number">
+                                                <input type="number" name="client" class="form-control" placeholder="Client Number">
                                             </div>
                                             <!-- <div class="col-md-4">
                                                 <select name="status" id="" class="form-control ">
@@ -163,8 +163,7 @@ $objUpdate = $obj->updateFunction2();
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <button type="submit" name="update" class="btn btn-success">Update</button>
                                     </div>
                                 </div>
@@ -174,7 +173,7 @@ $objUpdate = $obj->updateFunction2();
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -199,29 +198,26 @@ $objUpdate = $obj->updateFunction2();
                                     </tfoot>
                                     <tbody>
                                         <?php if ($objPayment) { ?>
-                                        <?php while ($row = mysqli_fetch_assoc($objPayment)) { ?>
-                                        <tr>
-                                            <td><?php echo $row['month']; ?></td>
-                                            <td><?php echo $row['client']; ?></td>
-                                            <td><?php echo $row['amount']; ?></td>
-                                            <td>
-                                                <?php if (strcmp($row['status'], 'Done') == 0) { ?>
-                                                <span
-                                                    class="badge badge-pill badge-success"><?php echo $row['status']; ?></span>
-                                                <?php } ?>
-                                                <?php if (strcmp($row['status'], 'Not Done') == 0) { ?>
-                                                <span
-                                                    class="badge badge-pill badge-danger"><?php echo $row['status']; ?></span>
-                                                <?php } ?>
-                                                <?php if (strcmp($row['status'], 'In Progress') == 0) { ?>
-                                                <span
-                                                    class="badge badge-pill badge-warning"><?php echo $row['status']; ?></span>
-                                                <?php } ?>
-                                            </td>
+                                            <?php while ($row = mysqli_fetch_assoc($objPayment)) { ?>
+                                                <tr>
+                                                    <td><?php echo $row['month']; ?></td>
+                                                    <td><?php echo $row['client']; ?></td>
+                                                    <td><?php echo $row['amount']; ?></td>
+                                                    <td>
+                                                        <?php if (strcmp($row['status'], 'Done') == 0) { ?>
+                                                            <span class="badge badge-pill badge-success"><?php echo $row['status']; ?></span>
+                                                        <?php } ?>
+                                                        <?php if (strcmp($row['status'], 'Not Done') == 0) { ?>
+                                                            <span class="badge badge-pill badge-danger"><?php echo $row['status']; ?></span>
+                                                        <?php } ?>
+                                                        <?php if (strcmp($row['status'], 'In Progress') == 0) { ?>
+                                                            <span class="badge badge-pill badge-warning"><?php echo $row['status']; ?></span>
+                                                        <?php } ?>
+                                                    </td>
 
-                                        </tr>
+                                                </tr>
 
-                                        <?php } ?>
+                                            <?php } ?>
 
                                         <?php } ?>
 
@@ -264,8 +260,7 @@ $objUpdate = $obj->updateFunction2();
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -300,15 +295,15 @@ $objUpdate = $obj->updateFunction2();
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
     <script>
-    $('#dataTable').dataTable({
-        "order": [],
-        "columnDefs": [{
-            "targets": 'no-sort',
-            "orderable": false,
-        }],
-        "bPaginate": false
+        $('#dataTable').dataTable({
+            "order": [],
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }],
+            "bPaginate": false
 
-    });
+        });
     </script>
 
 </body>

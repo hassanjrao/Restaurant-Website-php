@@ -156,13 +156,13 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                     <h3 class="float-left font-weight-bold" style="color: #481639">Tableau de bord </h3>
                     <a href="profile_fr.php" class="active font-weight-bold text-dark pt-5 d-block mt-5" style="text-decoration: none;">Profil</a>
                     <hr>
-                    <a href="resetpass_fr.php" class=" font-weight-normal text-dark  d-block" style="text-decoration: none;">Réinitialiser le mot de passe  </a>
+                    <a href="resetpass_fr.php" class=" font-weight-normal text-dark  d-block" style="text-decoration: none;">Réinitialiser le mot de passe </a>
                     <hr>
                     <a href="myreservation_fr.php" class=" font-weight-normal text-dark  d-block" style="text-decoration: none;">Mes reservations<?php if ($objReserve) { ?>
-                            <span class="badge badge-dark ml-2"><?php echo $rowCount['total']; ?></span>
-                        <?php } else { ?>
-                            <span class="badge badge-dark ml-2">0</span>
-                        <?php } ?></a>
+                        <span class="badge badge-dark ml-2"><?php echo $rowCount['total']; ?></span>
+                    <?php } else { ?>
+                        <span class="badge badge-dark ml-2">0</span>
+                    <?php } ?></a>
                     <hr>
                     <a href="logout.php" class="mb-5 font-weight-normal text-dark  d-block" style="text-decoration: none;">Se déconnecter</a>
                 </div>
@@ -186,19 +186,8 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                                 </div>
 
                                 <?php
-                                if (isset($_SESSION['img']) || isset($rowInfo["client_id"])) {
-
-                                ?>
-
-                                    <div class="col-md-5 text-center">
-
-                                        <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="<?php echo $rowInfo['image']; ?>" alt="">
-                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
-                                        <p class="lead">Ajouter une image</p>
-                                    </div>
-
-                                <?php
-                                } else {
+                                $image = $rowInfo['image'];
+                                if (file_exists("user_img/$image")) {
 
 
                                 ?>
@@ -206,6 +195,19 @@ $rowCount = mysqli_fetch_assoc($objReserve);
                                     <div class="col-md-5 text-center">
 
                                         <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="user_img/<?php echo $rowInfo['image']; ?>" alt="">
+                                        <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
+                                        <p class="lead">Ajouter une image</p>
+                                    </div>
+
+                                <?php
+
+                                } else {
+
+                                ?>
+
+                                    <div class="col-md-5 text-center">
+
+                                        <img class="profileImage" onclick="triggerClick()" id="profileDisplay" src="<?php echo $rowInfo['image']; ?>" alt="">
                                         <input type="file" accept="image/*" name="image" id="profileImage" onchange="displayImage(this)" style="display: none;">
                                         <p class="lead">Ajouter une image</p>
                                     </div>
