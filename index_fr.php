@@ -331,11 +331,14 @@ $permission = true;
                                     <div class="col-md-2"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-7 col-10">
+                                    <div class="col-md-6 col-8">
                                         <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Rechercher</button>
                                     </div>
                                     <div class="col-md-1 col-2">
                                         <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
+                                    </div>
+                                    <div class="col-md-1 col-2">
+                                        <button type="button" onclick="getPermission()" class="btn home_btn shadow p-3 mt-4 btn-block"><i class="fas fa-map-marker-alt"></i></button>
                                     </div>
                                 </div>
                             </form>
@@ -666,11 +669,15 @@ $permission = true;
                                             <div class="col-md-2"></div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-7 col-10">
+                                            <div class="col-md-6 col-8">
                                                 <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Rechercher</button>
                                             </div>
                                             <div class="col-md-1 col-2">
                                                 <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
+                                            </div>
+
+                                            <div class="col-md-1 col-2">
+                                                <button type="button" onclick="getPermission()" class="btn home_btn shadow p-3 mt-4 btn-block"><i class="fas fa-map-marker-alt"></i></button>
                                             </div>
                                         </div>
                                     </form>
@@ -924,7 +931,7 @@ $permission = true;
                             jQuery('.collapse').collapse('hide');
                         });
 
-                        <?php if (!isset($_GET["permission"])) { ?>
+                        <?php if (!isset($_GET["permission"]) && !isset($_SESSION["permission"])) { ?>
 
                             function getLocation() {
                                 if (navigator.geolocation) {
@@ -935,20 +942,52 @@ $permission = true;
                             }
 
                             function showPosition(position) {
-                                if (confirm("Search Nearby Restaurants?")) {
+                                if (confirm("Rechercher des restaurants à proximité")) {
 
                                     var lat = position.coords.latitude;
                                     var lon = position.coords.longitude;
+
+                                    <?php $_SESSION["permission"] = true; ?>
                                     location.replace("index_fr.php?permission=true&lat=" + lat + "&lon=" + lon);
 
                                 } else {
                                     <?php $permission = false; ?>
+
+                                    <?php $_SESSION["permission"] = false; ?>
                                 }
                                 // x.innerHTML = "Latitude: " + position.coords.latitude +
                                 //     "<br>Longitude: " + position.coords.longitude;
                             }
 
                         <?php } ?>
+
+                        function getPermission() {
+                            if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(showPos);
+                            } else {
+                                x.innerHTML = "Geolocation is not supported by this browser.";
+                            }
+                        }
+
+                        function showPos(position) {
+                            if (confirm("Rechercher des restaurants à proximité")) {
+
+                                var lat = position.coords.latitude;
+                                var lon = position.coords.longitude;
+
+                                <?php $_SESSION["permission"] = true; ?>
+                                location.replace("index_fr.php?permission=true&lat=" + lat + "&lon=" + lon);
+
+                            } else {
+                                <?php $permission = false; ?>
+
+                                <?php $_SESSION["permission"] = false; ?>
+
+                                location.replace("index_fr.php");
+                            }
+                            // x.innerHTML = "Latitude: " + position.coords.latitude +
+                            //     "<br>Longitude: " + position.coords.longitude;
+                        }
                     </script>
                     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                     <script>

@@ -320,29 +320,7 @@ $rowInfo = mysqli_fetch_assoc($objInfo);
                             <i class="fas fa-star fa-2x"></i>
                             <i class="fas fa-star fa-2x"></i>
 
-                            <?php
-
-                            if ($obj->featureFunction()) {
-
-                                $row = mysqli_fetch_assoc($obj->featureFunction());
-
-                                $services_arr = unserialize($row["services"]);
-
-                                foreach ($services_arr as $service) {
-
-                                    if ($obj->getService($service)) {
-
-                                        $row = mysqli_fetch_assoc($obj->getService($service));
-
-                            ?>
-                                        <p class="mt-3"><?php echo $row["service_fr"]; ?></p>
-                            <?php
-
-                                    }
-                                }
-                            }
-
-                            ?>
+                           
 
                         </div>
                         <div class="col-md-4 mx-auto">

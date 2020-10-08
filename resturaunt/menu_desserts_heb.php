@@ -261,30 +261,29 @@ $objCreate = $obj->saveFunction();
                                     </tfoot>
                                     <tbody>
 
-                                        <?php
+                                       <?php
                                         $a = 1;
                                         if ($objMenu) { ?>
                                             <?php while ($row = mysqli_fetch_assoc($objMenu)) {
                                                 $id = $row["id"];
-                                                if ($row['dessert_heb'] != NULL) {
                                             ?>
 
-                                                    <tr>
-                                                        <td><?php echo $a++ ?></td>
-                                                        <td><?php echo $row['dessert_heb']; ?></td>
-                                                        <td><?php echo $row['price']; ?></td>
-
-                                                        <td>
-                                                            <a href="menu_dessert_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">הוספה</a>
-                                                            <a href="menu_dessert_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">מחיקה</a>
-                                                        </td>
 
 
-                                                    </tr>
+                                                <tr>
+                                                    <td><?php echo $a++ ?></td>
+                                                    <td><?php echo $row['dessert_heb'] == NULL ? "<span class='text-danger'>Hebrew version is note available, please edit </span>" : $row['dessert_heb']; ?></td>
+                                                    <td><?php echo $row['price']; ?></td>
 
+
+                                                    <td>
+                                                        <a href="menu_dessert_edit_heb.php?id=<?php echo $id; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="menu_dessert_delete_heb.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
+
+                                                </tr>
 
                                         <?php }
-                                            }
                                         } ?>
 
 

@@ -239,6 +239,17 @@ class restaurant extends database
         }
         # code...
     }
+
+    public function getService($id)
+    {
+        $sql = "select * from services_tb where id = '$id'";
+        $res = mysqli_query($this->link, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            return $res;
+        } else {
+            return false;
+        }
+    }
 }
 $obj = new restaurant;
 $objRest = $obj->restaurantFunction();
@@ -281,7 +292,7 @@ $objGetRest = $obj->getRestaurant();
 <body class="bg-light">
     <?php include('layout/navbar_fr.php'); ?>
 
-    <?php include('layout/hero_section.php'); ?>
+    <?php include('layout/hero_section_fr.php'); ?>
 
     <section>
         <div class="container">
@@ -622,7 +633,7 @@ $objGetRest = $obj->getRestaurant();
 
                                                         if ($row['starter_fr'] !== NULL || $row['starter_fr'] != "") {
                                                     ?>
-                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+                                                            <p class="mt-3"><strong>shekels ₪ <?php echo $row['price']; ?></strong> </span></p>
 
 
                                                             <hr>
@@ -664,7 +675,7 @@ $objGetRest = $obj->getRestaurant();
 
                                                         if ($row['dish_fr'] !== NULL || $row['dish_fr'] != "") {
                                                     ?>
-                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+                                                            <p class="mt-3"><strong>shekels ₪ <?php echo $row['price']; ?></strong> </span></p>
 
 
                                                             <hr>
@@ -708,7 +719,7 @@ $objGetRest = $obj->getRestaurant();
 
                                                         if ($row['dessert_fr'] !== NULL || $row['dessert_fr'] != "") {
                                                     ?>
-                                                            <p class="mt-3"><strong>$ <?php echo $row['price']; ?></strong> </span></p>
+                                                            <p class="mt-3"><strong>shekels ₪ <?php echo $row['price']; ?></strong> </span></p>
 
 
                                                             <hr>
@@ -816,7 +827,27 @@ $objGetRest = $obj->getRestaurant();
                                                     ?>
 
                                                             <p class=" text-justify"><?php echo $restAbout ?></p>
+                                                        <?php
+                                                        }
+
+                                                        ?>
+                                                        <h4 class="mt-4"><?php echo "Services"; ?></h4>
+                                                        <?php
+
+                                                        $row = mysqli_fetch_assoc($obj2->getRestaurant());
+                                                        $services_arr = unserialize($row["services"]);
+
+                                                        foreach ($services_arr as $service) {
+
+                                                            if ($obj->getService($service)) {
+
+                                                                $row = mysqli_fetch_assoc($obj->getService($service));
+
+                                                        ?>
+                                                                <p class="mt-1"><?php echo $row["service_fr"]; ?></p>
                                                     <?php
+
+                                                            }
                                                         }
                                                     }
 

@@ -1,7 +1,26 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
-            <a class="navbar-brand font-weight-bold" style="font-family: 'Lato', sans-serif; color: #481639" href="index_fr.php"><img src="images/logo.png" alt=""></a>
+
+
+            <?php
+
+            if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+
+                $lat = $_GET["lat"];
+                $lon = $_GET["lon"];
+            ?>
+                <a class="navbar-brand font-weight-bold" style="font-family: 'Lato', sans-serif; color: #481639" href="<?php echo "index_fr.php?permission=true&lat=" . $lat . "&lon=" . $lon ?>"><img src="images/logo.png" alt=""></a>
+
+            <?php
+            } else {
+            ?>
+                <a class="navbar-brand font-weight-bold" style="font-family: 'Lato', sans-serif; color: #481639" href="index_fr.php"><img src="images/logo.png" alt=""></a>
+
+            <?php
+            }
+            ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -38,9 +57,29 @@
                             Language
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="index.php?lan=en">English</a>
-                            <a class="dropdown-item" href="index.php?lan=heb">Hebrew</a>
-                            <a class="dropdown-item" href="index.php?lan=fr">French</a>
+                        <?php
+                            if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                $lat = $_GET["lat"];
+                                $lon = $_GET["lon"];
+
+                            ?>
+
+                                <a class="dropdown-item" href="<?php echo "index.php?lan=en&permission=true&lat=$lat&lon=$lon" ?>">English</a>
+                                <a class=" dropdown-item" href="<?php echo "index.php?lan=heb&permission=true&lat=$lat&lon=$lon" ?>">Hebrew</a>
+                                <a class=" dropdown-item" href="<?php echo "index.php?lan=fr&permission=true&lat=$lat&lon=$lon" ?>">French</a>
+
+                            <?php
+                            } else {
+                            ?>
+
+                                <a class=" dropdown-item" href="index.php?lan=en">English</a>
+                                <a class="dropdown-item" href="index.php?lan=heb">Hebrew</a>
+                                <a class="dropdown-item" href="index.php?lan=fr">French</a>
+
+                            <?php
+                            }
+                            ?>
                         </div>
                     </li>
 

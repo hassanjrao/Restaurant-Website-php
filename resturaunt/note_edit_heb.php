@@ -36,29 +36,21 @@ class NoteEdit extends database
 
             $rest_id = $_SESSION['rest_id'];
 
-            $sqlFind = "select * from notes_tb where day = '$day' and rest_id='$rest_id' ";
-            $resFind = mysqli_query($this->link, $sqlFind);
-            if (mysqli_num_rows($resFind) > 0) {
-                $msg = "taken";
+
+
+
+            $sql = "UPDATE notes_tb SET note_heb='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
+            $res = mysqli_query($this->link, $sql);
+
+
+            if ($res) {
+                $msg = "success_upd";
                 header("location: notes_heb.php?msg=$msg");
                 return true;
             } else {
-
-
-                $sql = "UPDATE notes_tb SET note_heb='$note', day='$day', updated=CURRENT_TIMESTAMP where id='$id'";
-                $res = mysqli_query($this->link, $sql);
-
-
-
-                if ($res) {
-                    $msg = "success_upd";
-                    header("location: notes_heb.php?msg=$msg");
-                    return true;
-                } else {
-                    $msg = "fail_upd";
-                    header("location: notes_heb.php?msg=$msg");
-                    return false;
-                }
+                $msg = "fail_upd";
+                header("location: notes_heb.php?msg=$msg");
+                return false;
             }
         }
     }
@@ -174,18 +166,13 @@ $objNoteUpdate = $obj->updateNote();
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <select required name="day" class="form-control">
-                                                            <option value="<?php echo $row['day'] ?>" selected><?php echo $day ?></option>
-                                                            <option></option>
-                                                            <option value="sun">ראשון</option>
-                                                            <option value="mon">שני</option>
-                                                            <option value="tue">שלישי</option>
-                                                            <option value="wed">רביעי</option>
-                                                            <option value="thu">חמישי</option>
-                                                            <option value="fri">שישי</option>
-                                                            <option value="sat">שבת</option>
-                                                        </select>
+                                                        <input type="text" required readonly name="day-t" value="<?php echo $day ?>" class="form-control" placeholder="הערה">
                                                     </div>
+
+                                                    <div class="col-md-6">
+                                                        <input type="hidden" required readonly name="day" value="<?php echo  $row['day'] ?>" class="form-control" placeholder="הערה">
+                                                    </div>
+
 
                                                 </div>
 

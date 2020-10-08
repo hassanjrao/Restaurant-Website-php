@@ -9,8 +9,8 @@ class About extends database
     protected $link;
     public function getAbout()
     {
-
-        $sql = "SELECT about_en, about_heb, about_fr from restaurant_tbl";
+        $rest_id = $_SESSION['rest_id'];
+        $sql = "SELECT about_en, about_heb, about_fr from restaurant_tbl where id='$rest_id'";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
             return $res;

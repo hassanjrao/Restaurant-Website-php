@@ -310,12 +310,15 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                 <div class="col-md-2"></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-7 col-10">
+                                <div class="col-md-6 col-8">
                                     <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Rechercher</button>
                                 </div>
                                 <div class="col-md-1 col-2">
                                     <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
                                 </div>
+                                <div class="col-md-1 col-2">
+                                        <button type="button" onclick="getPermission()" class="btn home_btn shadow p-3 mt-4 btn-block"><i class="fas fa-map-marker-alt"></i></button>
+                                    </div>
                             </div>
                             </form>
                 </div>
@@ -430,6 +433,30 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                 $flag = false;
                                                 $gret = true;
 
+                                                
+                                                if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                    $measure_unit = 'kilometers';
+                                                    $measure_state = false;
+                                                    $measure = 0;
+                                                    $error = '';
+                                                    $lat_b = $_GET["lat"];
+                                                    $lon_b = $_GET["lon"];
+                                                    $lat_a = $row["lat"];
+                                                    $lon_a = $row["lon"];
+                                                    $delta_lat = $lat_b - $lat_a;
+                                                    $delta_lon = $lon_b - $lon_a;
+                                                    $earth_radius = 6372.795477598;
+                                                    $alpha    = $delta_lat / 2;
+                                                    $beta     = $delta_lon / 2;
+                                                    $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                    $c        = asin(min(1, sqrt($a)));
+                                                    $distance = 2 * $earth_radius * $c;
+                                                    $distance = round($distance, 4);
+                                                    $measure = $distance;
+                                                }
+
                 ?>
 
                                                 <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
@@ -508,6 +535,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                             <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                             </small>
 
+                                                            <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                </small>
+                                                            <?php } ?>
 
 
 
@@ -659,6 +691,29 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                         $flag = false;
 
+                                                        
+                                                        if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                            $measure_unit = 'kilometers';
+                                                            $measure_state = false;
+                                                            $measure = 0;
+                                                            $error = '';
+                                                            $lat_b = $_GET["lat"];
+                                                            $lon_b = $_GET["lon"];
+                                                            $lat_a = $row["lat"];
+                                                            $lon_a = $row["lon"];
+                                                            $delta_lat = $lat_b - $lat_a;
+                                                            $delta_lon = $lon_b - $lon_a;
+                                                            $earth_radius = 6372.795477598;
+                                                            $alpha    = $delta_lat / 2;
+                                                            $beta     = $delta_lon / 2;
+                                                            $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                            $c        = asin(min(1, sqrt($a)));
+                                                            $distance = 2 * $earth_radius * $c;
+                                                            $distance = round($distance, 4);
+                                                            $measure = $distance;
+                                                        }
                                         ?>
 
                                                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
@@ -735,6 +790,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                     <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                     </small>
 
+                                                                    <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                        <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                        </small>
+                                                                    <?php } ?>
 
                                                                     <div class="container">
                                                                         <hr class="font-weight-bold">
@@ -976,6 +1036,30 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                     $flag = false;
 
+                                                                    
+                                                                    if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                                        $measure_unit = 'kilometers';
+                                                                        $measure_state = false;
+                                                                        $measure = 0;
+                                                                        $error = '';
+                                                                        $lat_b = $_GET["lat"];
+                                                                        $lon_b = $_GET["lon"];
+                                                                        $lat_a = $row["lat"];
+                                                                        $lon_a = $row["lon"];
+                                                                        $delta_lat = $lat_b - $lat_a;
+                                                                        $delta_lon = $lon_b - $lon_a;
+                                                                        $earth_radius = 6372.795477598;
+                                                                        $alpha    = $delta_lat / 2;
+                                                                        $beta     = $delta_lon / 2;
+                                                                        $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                                        $c        = asin(min(1, sqrt($a)));
+                                                                        $distance = 2 * $earth_radius * $c;
+                                                                        $distance = round($distance, 4);
+                                                                        $measure = $distance;
+                                                                    }
+
                                                 ?>
 
                                                                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
@@ -1052,6 +1136,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                 <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                                 </small>
 
+                                                                                <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                                    <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                                    </small>
+                                                                                <?php } ?>
 
                                                                                 <div class="container">
                                                                                     <hr class="font-weight-bold">
@@ -1142,6 +1231,30 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                         $flag = false;
 
+                                                                        
+                                                                        if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                                            $measure_unit = 'kilometers';
+                                                                            $measure_state = false;
+                                                                            $measure = 0;
+                                                                            $error = '';
+                                                                            $lat_b = $_GET["lat"];
+                                                                            $lon_b = $_GET["lon"];
+                                                                            $lat_a = $row["lat"];
+                                                                            $lon_a = $row["lon"];
+                                                                            $delta_lat = $lat_b - $lat_a;
+                                                                            $delta_lon = $lon_b - $lon_a;
+                                                                            $earth_radius = 6372.795477598;
+                                                                            $alpha    = $delta_lat / 2;
+                                                                            $beta     = $delta_lon / 2;
+                                                                            $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                                            $c        = asin(min(1, sqrt($a)));
+                                                                            $distance = 2 * $earth_radius * $c;
+                                                                            $distance = round($distance, 4);
+                                                                            $measure = $distance;
+                                                                        }
+
                                                         ?>
 
                                                                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
@@ -1218,6 +1331,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                     <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                                     </small>
 
+                                                                                    <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                                        <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                                        </small>
+                                                                                    <?php } ?>
 
                                                                                     <div class="container">
                                                                                         <hr class="font-weight-bold">
@@ -1368,6 +1486,30 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                             $flag = false;
                                                                                             $gret = true;
 
+                                                                                            
+                                                                                            if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                                                                $measure_unit = 'kilometers';
+                                                                                                $measure_state = false;
+                                                                                                $measure = 0;
+                                                                                                $error = '';
+                                                                                                $lat_b = $_GET["lat"];
+                                                                                                $lon_b = $_GET["lon"];
+                                                                                                $lat_a = $row["lat"];
+                                                                                                $lon_a = $row["lon"];
+                                                                                                $delta_lat = $lat_b - $lat_a;
+                                                                                                $delta_lon = $lon_b - $lon_a;
+                                                                                                $earth_radius = 6372.795477598;
+                                                                                                $alpha    = $delta_lat / 2;
+                                                                                                $beta     = $delta_lon / 2;
+                                                                                                $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                                                                $c        = asin(min(1, sqrt($a)));
+                                                                                                $distance = 2 * $earth_radius * $c;
+                                                                                                $distance = round($distance, 4);
+                                                                                                $measure = $distance;
+                                                                                            }
+
                                                                         ?>
 
                                                                                             <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
@@ -1444,6 +1586,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                         <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                                                         </small>
 
+                                                                                                        <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                                                            <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                                                            </small>
+                                                                                                        <?php } ?>
 
                                                                                                         <div class="container">
                                                                                                             <hr class="font-weight-bold">
@@ -1690,6 +1837,30 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                                         $flag = false;
 
+                                                                                                        
+                                                                                                        if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                                                                            $measure_unit = 'kilometers';
+                                                                                                            $measure_state = false;
+                                                                                                            $measure = 0;
+                                                                                                            $error = '';
+                                                                                                            $lat_b = $_GET["lat"];
+                                                                                                            $lon_b = $_GET["lon"];
+                                                                                                            $lat_a = $row["lat"];
+                                                                                                            $lon_a = $row["lon"];
+                                                                                                            $delta_lat = $lat_b - $lat_a;
+                                                                                                            $delta_lon = $lon_b - $lon_a;
+                                                                                                            $earth_radius = 6372.795477598;
+                                                                                                            $alpha    = $delta_lat / 2;
+                                                                                                            $beta     = $delta_lon / 2;
+                                                                                                            $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                                                                            $c        = asin(min(1, sqrt($a)));
+                                                                                                            $distance = 2 * $earth_radius * $c;
+                                                                                                            $distance = round($distance, 4);
+                                                                                                            $measure = $distance;
+                                                                                                        }
+
                                                                                     ?>
 
                                                                                                         <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
@@ -1765,6 +1936,12 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
                                                                                                                     <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                                                                     </small>
+
+                                                                                                                    <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                                                                        <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                                                                        </small>
+                                                                                                                    <?php } ?>
 
 
                                                                                                                     <div class="container">
@@ -1862,6 +2039,31 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                             $gret = true;
 
 
+                                                                                                            
+                                                                                                            if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                                                                                $measure_unit = 'kilometers';
+                                                                                                                $measure_state = false;
+                                                                                                                $measure = 0;
+                                                                                                                $error = '';
+                                                                                                                $lat_b = $_GET["lat"];
+                                                                                                                $lon_b = $_GET["lon"];
+                                                                                                                $lat_a = $row["lat"];
+                                                                                                                $lon_a = $row["lon"];
+                                                                                                                $delta_lat = $lat_b - $lat_a;
+                                                                                                                $delta_lon = $lon_b - $lon_a;
+                                                                                                                $earth_radius = 6372.795477598;
+                                                                                                                $alpha    = $delta_lat / 2;
+                                                                                                                $beta     = $delta_lon / 2;
+                                                                                                                $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                                                                                $c        = asin(min(1, sqrt($a)));
+                                                                                                                $distance = 2 * $earth_radius * $c;
+                                                                                                                $distance = round($distance, 4);
+                                                                                                                $measure = $distance;
+                                                                                                            }
+
+
 
                                                                                             ?>
 
@@ -1940,6 +2142,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                         <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                                                                         </small>
 
+                                                                                                                        <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                                                                            <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                                                                            </small>
+                                                                                                                        <?php } ?>
 
                                                                                                                         <div class="container">
                                                                                                                             <hr class="font-weight-bold">
@@ -2030,6 +2237,28 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
 
 
 
+                                                                                                                if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                                                                                                  
+                                                                                                                    $measure_unit = 'kilometers';
+                                                                                                                    $measure_state = false;
+                                                                                                                    $measure = 0;
+                                                                                                                    $error = '';
+                                                                                                                    $lat_b = $_GET["lat"];
+                                                                                                                    $lon_b = $_GET["lon"];
+                                                                                                                    $lat_a = $row["lat"];
+                                                                                                                    $lon_a = $row["lon"];
+                                                                                                                    $delta_lat = $lat_b - $lat_a;
+                                                                                                                    $delta_lon = $lon_b - $lon_a;
+                                                                                                                    $earth_radius = 6372.795477598;
+                                                                                                                    $alpha    = $delta_lat / 2;
+                                                                                                                    $beta     = $delta_lon / 2;
+                                                                                                                    $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                                                                                                                    $c        = asin(min(1, sqrt($a)));
+                                                                                                                    $distance = 2 * $earth_radius * $c;
+                                                                                                                    $distance = round($distance, 4);
+                                                                                                                    $measure = $distance;
+                                                                                                                }
 
 
                                                                                                     ?>
@@ -2108,6 +2337,11 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
                                                                                                                             <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_fr']; ?>
                                                                                                                             </small>
 
+                                                                                                                            <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") { ?>
+
+                                                                                                                                <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
+                                                                                                                                </small>
+                                                                                                                            <?php } ?>
 
                                                                                                                             <div class="container">
                                                                                                                                 <hr class="font-weight-bold">
@@ -2276,6 +2510,34 @@ $location = isset($_POST["location"]) == true ? $_POST["location"] : NULL;
             });
 
         });
+
+        function getPermission() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPos);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPos(position) {
+            if (confirm("Rechercher des restaurants à proximité")) {
+
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+
+                <?php $_SESSION["permission"] = true; ?>
+                location.replace("index_fr.php?permission=true&lat=" + lat + "&lon=" + lon);
+
+            } else {
+                <?php $permission = false; ?>
+
+                <?php $_SESSION["permission"] = false; ?>
+
+                location.replace("index_fr.php");
+            }
+            // x.innerHTML = "Latitude: " + position.coords.latitude +
+            //     "<br>Longitude: " + position.coords.longitude;
+        }
     </script>
     <script src="js/owl.carousel.min.js"></script>
     <script>

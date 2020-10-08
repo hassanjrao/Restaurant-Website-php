@@ -275,7 +275,7 @@ $objRestUpdate = $obj->updateRest();
                                                     </div>
                                                     <div class="col-md-12 mt-3">
                                                         Address French
-                                                        <input type="text" name="address_fr" id="address_fr" value="<?php echo $row["name_fr"] ?>" class="form-control border-0" placeholder="Address French">
+                                                        <input type="text" name="address_fr" id="address_fr" value="<?php echo $row["address_fr"] ?>" class="form-control border-0" placeholder="Address French">
                                                     </div>
                                                 </div>
 

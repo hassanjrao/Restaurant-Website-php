@@ -46,7 +46,7 @@ class discount extends database
             }
             if ($res) {
                 echo "Added";
-                header('location:discount.php');
+                header('location:discount_fr.php');
                 return $res;
             } else {
                 echo "no";

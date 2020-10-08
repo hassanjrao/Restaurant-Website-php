@@ -362,7 +362,7 @@ $objCityID = $obj->getCityID();
 
                                                             ?>
 
-                                                            <select class="form-control" name="cities[]" multiple required>
+                                                            <select class="form-control" name="cities[]" multiple>
 
 
                                                                 <?php
@@ -375,7 +375,8 @@ $objCityID = $obj->getCityID();
                                                                         $row = mysqli_fetch_assoc($newObj->getCityName($city_id));
 
 
-                                                                        $city = $row["city_fr"]
+                                                                        $city = $row["city_fr"]==NULL ? "<span class='text-danger'>French version not available</span>" : $row["city_fr"];
+
                                                                 ?>
                                                                         <option selected value="<?php echo $city_id ?>"><?php echo ucwords($city) ?></option>
 
@@ -388,7 +389,7 @@ $objCityID = $obj->getCityID();
                                                                         # code...
 
                                                                         $row = mysqli_fetch_assoc($newObj->getCityName($id));
-                                                                        $city = $row["city_fr"];
+                                                                        $city = $row["city_fr"]==NULL ? "<span class='text-danger'>French version not available</span>" : $row["city_fr"];
 
                                                                     ?>
                                                                         <option value="<?php echo $id ?>"><?php echo ucwords($city) ?></option>
@@ -448,7 +449,7 @@ $objCityID = $obj->getCityID();
                                                             }
 
                                                             ?>
-                                                            <select name="services[]" class="form-control w-50" multiple required>
+                                                            <select name="services[]" class="form-control w-50" multiple>
 
 
 
@@ -526,7 +527,7 @@ $objCityID = $obj->getCityID();
                                                             }
 
                                                             ?>
-                                                            <select name="specialty[]" class="form-control w-50" multiple required>
+                                                            <select name="specialty[]" class="form-control w-50" multiple >
                                                                 <?php
 
                                                                 $newObj = new Profile;

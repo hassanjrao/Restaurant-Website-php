@@ -367,7 +367,7 @@ $objCityID = $obj->getCityID();
 
                                                             ?>
 
-                                                            <select class="form-control" name="cities[]" multiple required>
+                                                            <select class="form-control" name="cities[]" multiple>
                                                                 <option slected disabled>Select Cities</option>
 
                                                                 <?php
@@ -380,7 +380,7 @@ $objCityID = $obj->getCityID();
                                                                         $row = mysqli_fetch_assoc($newObj->getCityName($city_id));
 
 
-                                                                        $city = $row["city_en"]
+                                                                        $city = $row["city_en"]==NULL ? "<span class='text-danger'>English version not available</span>" : $row["city_en"];
                                                                 ?>
                                                                         <option selected value="<?php echo $city_id ?>"><?php echo ucwords($city) ?></option>
 
@@ -393,7 +393,7 @@ $objCityID = $obj->getCityID();
                                                                         # code...
 
                                                                         $row = mysqli_fetch_assoc($newObj->getCityName($id));
-                                                                        $city = $row["city_en"];
+                                                                        $city = $row["city_en"]==NULL ? "<span class='text-danger'>English version not available</span>" : $row["city_en"];
 
                                                                     ?>
                                                                         <option value="<?php echo $id ?>"><?php echo ucwords($city) ?></option>
