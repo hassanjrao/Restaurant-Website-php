@@ -33,6 +33,8 @@ class payment extends database
         }
         # code...
     }
+
+
     public function updateFunction2()
     {
         if (isset($_POST['update'])) {
@@ -43,10 +45,12 @@ class payment extends database
             $name = $_SESSION['Rname'];
             $payment = $name . '_payment';
 
-            $sql = "UPDATE $payment SET client = '$client', amount = '$amount', `status` = '$status' where `month` = '$month'  ";
+            $sql = "UPDATE $payment SET client = '$client', amount = '$amount', `status` = '$status' where `id` = '$month'  ";
             $res = mysqli_query($this->link, $sql);
+
+
             if ($res) {
-                header('location:payment.php');
+                header('location:payment_heb.php');
                 return $res;
             } else {
                 return false;
@@ -72,7 +76,7 @@ $objUpdate = $obj->updateFunction2();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Resturaunt Panel - Payment </title>
+    <title>תשלומים</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -108,14 +112,18 @@ $objUpdate = $obj->updateFunction2();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Payment</h1>
+                    <h1 class="h3 mb-2 text-gray-800">תשלומים</h1>
+
+                    <p class="mb-4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            לשלם
+                        </button></p>
 
                     <form action="" method="post">
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Make Update</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">לשלם</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -125,10 +133,10 @@ $objUpdate = $obj->updateFunction2();
                                             <div class="col-md-6">
                                                 <?php if ($objPayment2) { ?>
 
-                                                    <select name="month" id="" class="form-control ">
+                                                    <select name="month" id="months" onchange="getNumOfClients()" class="form-control ">
                                                         <option value="" disabled selected>Select Month</option>
                                                         <?php while ($row2 = mysqli_fetch_assoc($objPayment2)) { ?>
-                                                            <option value="<?php echo $row2['month']; ?>">
+                                                            <option value="<?php echo $row2['id']; ?>">
                                                                 <?php echo $row2['month']; ?>
                                                             </option>
 
@@ -138,29 +146,14 @@ $objUpdate = $obj->updateFunction2();
                                                 <?php } ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="number" name="client" class="form-control" placeholder="Client Number">
+                                                <input type="number" name="client" id="clients" class="form-control" placeholder="Client Number">
                                             </div>
-                                            <!-- <div class="col-md-4">
-                                                <select name="status" id="" class="form-control ">
-                                                    <option value="" disabled selected>Select Status</option>
-                                                    <option value="Done"><span
-                                                            class="badge badge-pill badge-success">Done</span>
-                                                    </option>
-                                                    <option value="Not Done"><span
-                                                            class="badge badge-pill badge-danger">Not
-                                                            Done</span>
-                                                    </option>
-                                                    <option value="In Progress"><span
-                                                            class="badge badge-pill badge-warning">In
-                                                            Progress</span>
-                                                    </option>
-                                                </select>
-                                            </div> -->
+
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" name="update" class="btn btn-success">Update</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">סגירה</button>
+                                        <button type="submit" name="update" class="btn btn-success">שמירה</button>
                                     </div>
                                 </div>
                             </div>
@@ -169,24 +162,25 @@ $objUpdate = $obj->updateFunction2();
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>חודשים</th>
-                                            <th>סה"כ כמות סועדים</th>
+                                            <th>Cסה"כ כמות סועדים</th>
                                             <th>סכום</th>
-                                            <th>סטטוס הזמנה </th>
+                                            <th>סטטוס הזמנה</th>
 
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>חודשים</th>
-                                            <th>סה"כ כמות סועדים</th>
+                                            <th>Cסה"כ כמות סועדים</th>
                                             <th>סכום</th>
-                                            <th>סטטוס הזמנה </th>
+                                            <th>סטטוס הזמנה</th>
 
 
                                         </tr>
@@ -299,6 +293,24 @@ $objUpdate = $obj->updateFunction2();
             "bPaginate": false
 
         });
+
+        function getNumOfClients() {
+            var month = document.getElementById("months").value;
+            console.log(month);
+
+            $.ajax({
+                type: "POST",
+                url: "getTotalClients.php",
+                data: {
+                    month: month
+                },
+                success: function(data) {
+                    console.log(data);
+
+                    $("#clients").attr("value", data);
+                }
+            });
+        }
     </script>
 
 </body>

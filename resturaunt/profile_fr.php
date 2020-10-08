@@ -300,9 +300,9 @@ $objCityID = $obj->getCityID();
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh ?></option>
-                                                                   
+
                                                                     <option value="no">Non </option>
-                                                                   
+
                                                                 </select>
 
 
@@ -314,7 +314,7 @@ $objCityID = $obj->getCityID();
                                                             ?>
                                                                 <select required onchange="createSpecif()" name="kosher" id="kosher" class="form-control w-50 mt-3">
                                                                     <option selected value="<?php echo $row['kosher']; ?>"><?php echo $kosh; ?></option>
-                                                                   
+
                                                                     <option value="yes">Oui</option>
                                                                 </select>
 
@@ -363,7 +363,7 @@ $objCityID = $obj->getCityID();
                                                             ?>
 
                                                             <select class="form-control" name="cities[]" multiple required>
-                                                               
+
 
                                                                 <?php
 
@@ -450,7 +450,7 @@ $objCityID = $obj->getCityID();
                                                             ?>
                                                             <select name="services[]" class="form-control w-50" multiple required>
 
-                                                              
+
 
                                                                 <?php
 
@@ -581,33 +581,65 @@ $objCityID = $obj->getCityID();
                                                         <?php
                                                         if ($objBank) {
                                                             $bank_info = mysqli_fetch_assoc($objBank);
-                                                        }
+
                                                         ?>
 
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Banque</th>
-                                                                <td scope="col"><input type="text" class="form-control" name="bank" value="<?php echo ucwords($bank_info["bank"]) ?>"></td>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Banque</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="bank" value="<?php echo ucwords($bank_info["bank"]) ?>"></td>
 
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">Numero de compte</th>
-                                                                <td scope="col"><input type="text" class="form-control" name="account_number" value="<?php echo ucwords($bank_info["account_number"]) ?>"></td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">Numero de compte</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="account_number" value="<?php echo ucwords($bank_info["account_number"]) ?>"></td>
 
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">Agence</th>
-                                                                <td scope="col"><input type="text" class="form-control" name="agency" value="<?php echo ucwords($bank_info["agency"]) ?>"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Agence</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="agency" value="<?php echo ucwords($bank_info["agency"]) ?>"></td>
 
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">Nom</th>
-                                                                <td scope="col"><input type="text" class="form-control" name="b_name" value="<?php echo ucwords($bank_info["name"]) ?>"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Nom</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="b_name" value="<?php echo ucwords($bank_info["name"]) ?>"></td>
 
-                                                            </tr>
-                                                        </tbody>
+                                                                </tr>
+                                                            </tbody>
+
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Banque</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="bank" ></td>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">Numero de compte</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="account_number"></td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Agence</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="agency" ></td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row">Nom</th>
+                                                                    <td scope="col"><input type="text" class="form-control" name="b_name"></td>
+
+                                                                </tr>
+                                                            </tbody>
+
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </table>
 
 

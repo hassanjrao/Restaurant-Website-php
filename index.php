@@ -108,62 +108,42 @@ class restaurant extends database
         }
     }
 
-    public function getUserLocation()
-    {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        $ip = '168.192.0.1';
-        $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
-
-        if ($query["status"] == "fail") {
-            return false;
-        } else {
-            return $query;
-        }
-    }
 
     public function nearestRestaurant()
     {
 
-        $user_location_arr = $this->getUserLocation();
 
 
-        //  var_dump($user_location_arr);
+        if (isset($_GET["lat"])) {
+            $lat = isset($_GET["lat"]) == true ? $_GET["lat"] : NULL;
+            $long = isset($_GET["lon"]) == true ? $_GET["lon"] : NULL;
 
-        // $lat = $user_location_arr["lat"];
-        // $long = $user_location_arr["lon"];
 
-        $lat = "32.07372";
-        $long = "34.78205";
 
-        $sql = "SELECT * , (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - lat) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(lat * pi()/180) * POWER(SIN(( $long - lon) * pi()/180 / 2), 2) ))) as distance  
+            $sql = "SELECT * , (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - lat) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(lat * pi()/180) * POWER(SIN(( $long - lon) * pi()/180 / 2), 2) ))) as distance  
         from restaurant_tbl
         having  distance <= 20
         order by distance";
-        $res = mysqli_query($this->link, $sql);
+            $res = mysqli_query($this->link, $sql);
 
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
-        } else {
-            return false;
+            if (mysqli_num_rows($res) > 0) {
+                return $res;
+            } else {
+                return false;
+            }
         }
 
 
         # code...
     }
-
-    
 }
 $obj = new restaurant;
 $objRestaurant = $obj->restaurantFunction();
 $objNearestRestaurant = $obj->nearestRestaurant();
 $objSpec = $obj->getSpec();
 $objCity = $obj->getCities();
+
+//$objLocation = $obj->getUserLocation();
 
 $permission = true;
 //var_dump($objNearestCities);
@@ -214,7 +194,7 @@ $permission = true;
 
 </head>
 
-<body class="bg-light" onload="askPermission()">
+<body class="bg-light" onload="getLocation()">
     <?php include('layout/navbar.php'); ?>
 
 
@@ -231,6 +211,9 @@ $permission = true;
 
             // echo "nearest obj";
             $objRestaurant = false;
+
+            $lat = $_GET["lat"];
+            $lon = $_GET["lon"];
 
     ?>
             <div class="back_img">
@@ -250,7 +233,7 @@ $permission = true;
                                 </div>
                                 <div class="col-md-2"></div>
                             </div>
-                            <form method="POST" action="filter_results.php?permission=true">
+                            <form method="POST" action="filter_results.php?permission=true&lat=<?php echo $lat ?>&lon=<?php echo $lon; ?>">
                                 <div class="row pt-4">
                                     <div class="col-md-2">
                                         <div class="input-group input-focus bg-light shadow">
@@ -381,10 +364,46 @@ $permission = true;
 
                         $day = strtolower(date("D"));
 
+                        //$user_location_arr = $obj->getUserLocation();
 
                         while ($row = mysqli_fetch_assoc($objNearestRestaurant)) {
 
+
+
+
                             $rest_id = $row["id"];
+
+
+
+
+
+                            $measure_unit = 'kilometers';
+
+                            $measure_state = false;
+
+                            $measure = 0;
+
+                            $error = '';
+                            $lat_b = $_GET["lat"];
+                            $lon_b = $_GET["lon"];
+
+                            $lat_a = $row["lat"];
+                            $lon_a = $row["lon"];
+
+
+                            $delta_lat = $lat_b - $lat_a;
+                            $delta_lon = $lon_b - $lon_a;
+
+                            $earth_radius = 6372.795477598;
+
+                            $alpha    = $delta_lat / 2;
+                            $beta     = $delta_lon / 2;
+                            $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($lat_a)) * cos(deg2rad($lat_b)) * sin(deg2rad($beta)) * sin(deg2rad($beta));
+                            $c        = asin(min(1, sqrt($a)));
+                            $distance = 2 * $earth_radius * $c;
+                            $distance = round($distance, 4);
+
+                            $measure = $distance;
 
                         ?>
 
@@ -460,6 +479,9 @@ $permission = true;
                                         </a>
 
                                         <small class="text-secondary"><i class="fas fa-map-marker-alt mr-2"></i><?php echo $row['address_en']; ?>
+                                        </small>
+
+                                        <small class="text-secondary"><i class="ml-5"></i><?php echo $measure . " km" ?>
                                         </small>
 
 
@@ -851,47 +873,59 @@ $permission = true;
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="filter_result_spec.php" method="POST">
-                                    <div class="modal-body">
-                                        <div class="container">
-                                            <div class="row">
 
-                                                <div class="col-lg-6">
+                                <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+                                ?>
+                                    <form action="filter_result_spec.php?permission=true&lat=<?php echo $lat ?>&lon=<?php echo $lon; ?>" method="POST">
+                                    <?php
+                                } else {
+                                    ?>
+                                        <form action="filter_result_spec.php" method="POST">
+                                        <?php
+                                    }
+                                        ?>
+
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row">
+
+                                                    <div class="col-lg-6">
 
 
-                                                    <?php
-                                                    if ($objSpec) { ?>
-                                                        <?php while ($row = mysqli_fetch_assoc($objSpec)) {
+                                                        <?php
+                                                        if ($objSpec) { ?>
+                                                            <?php while ($row = mysqli_fetch_assoc($objSpec)) {
 
-                                                        ?>
+                                                            ?>
 
 
 
-                                                            <div class="form-check">
-                                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
-                                                                <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
-                                                                    <?php echo $row["specialty_en"] ?>
-                                                                </label>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
+                                                                    <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
+                                                                        <?php echo $row["specialty_en"] ?>
+                                                                    </label>
 
-                                                            </div>
+                                                                </div>
 
-                                                    <?php
+                                                        <?php
+                                                            }
                                                         }
-                                                    }
-                                                    ?>
+                                                        ?>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <hr>
+
                                         </div>
-                                        <hr>
 
-                                    </div>
+                                        <div class="modal-footer text-center">
 
-                                    <div class="modal-footer text-center">
-
-                                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
-                                            Filters</button>
-                                    </div>
-                                </form>
+                                            <button type="submit" name="submit-filter" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
+                                                Filters</button>
+                                        </div>
+                                        </form>
                             </div>
                         </div>
                     </div>
@@ -909,14 +943,26 @@ $permission = true;
 
                         <?php if (!isset($_GET["permission"])) { ?>
 
-                            function askPermission() {
+                            function getLocation() {
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(showPosition);
+                                } else {
+                                    x.innerHTML = "Geolocation is not supported by this browser.";
+                                }
+                            }
+
+                            function showPosition(position) {
                                 if (confirm("Search Nearby Restaurants?")) {
 
-                                    location.replace("index.php?permission=true");
+                                    var lat = position.coords.latitude;
+                                    var lon = position.coords.longitude;
+                                    location.replace("index.php?permission=true&lat=" + lat + "&lon=" + lon);
 
                                 } else {
                                     <?php $permission = false; ?>
                                 }
+                                // x.innerHTML = "Latitude: " + position.coords.latitude +
+                                //     "<br>Longitude: " + position.coords.longitude;
                             }
 
                         <?php } ?>

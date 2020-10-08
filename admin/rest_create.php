@@ -11,7 +11,7 @@ class restaurant extends database
     public function createRestaurant()
     {
         if (isset($_POST['name_en'])) {
-            $name_en = addslashes(str_replace(" ", "_", $_POST['name_en']));
+            $name_en = addslashes(str_replace(" ", "_", ($_POST['name_en'])));
             $name_heb = addslashes(str_replace(" ", "_", $_POST['name_heb']));
             $name_fr = addslashes(str_replace(" ", "_", $_POST['name_fr']));
 

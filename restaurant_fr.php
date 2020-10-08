@@ -653,7 +653,7 @@ $objGetRest = $obj->getRestaurant();
 
                                             </div>
 
-                                            <div class="col-lg-6 col-md-6">
+                                            <div class="col-lg-6 col-md-6 mt-4">
 
                                                 <h4 class="font-weight-bold" style="color: #EEA11D;">Prix</h4>
                                                 <?php
@@ -699,7 +699,7 @@ $objGetRest = $obj->getRestaurant();
 
                                             <div class="col-lg-6 col-md-6">
 
-                                                <h4 class="font-weight-bold" style="color: #EEA11D;">Prix</h4>
+                                                <h4 class="font-weight-bold mt-4" style="color: #EEA11D;">Prix</h4>
                                                 <?php
                                                 $fObj = new Restaurant;
                                                 $fprice = $fObj->foodFunction3();

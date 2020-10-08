@@ -17,6 +17,7 @@ class sidebar extends database
 $obj = new sidebar;
 $objRestS = $obj->getRestaurants();
 $objRestS2 = $obj->getRestaurants();
+$objRestS3 = $obj->getRestaurants();
 
 ?>
 <!-- Sidebar -->
@@ -88,6 +89,29 @@ $objRestS2 = $obj->getRestaurants();
 
 
                         <a class="collapse-item" href="menu.php?id=<?php echo $row['id']; ?>&cat=1"><?php echo $row['name_en']; ?></a>
+
+                    <?php } ?>
+                <?php } ?>
+
+
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities23" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Payments</span>
+        </a>
+        <div id="collapseUtilities23" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Select Restaurant:</h6>
+
+                <?php if ($objRestS3) { ?>
+                    <?php while ($row = mysqli_fetch_assoc($objRestS3)) { ?>
+
+
+                        <a class="collapse-item" href="payment.php?id=<?php echo $row['id']; ?>&name=<?php echo $row['name_en']; ?>"><?php echo $row['name_en']; ?></a>
 
                     <?php } ?>
                 <?php } ?>

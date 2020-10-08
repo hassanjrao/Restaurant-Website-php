@@ -33,6 +33,8 @@ class payment extends database
         }
         # code...
     }
+
+
     public function updateFunction2()
     {
         if (isset($_POST['update'])) {
@@ -43,8 +45,10 @@ class payment extends database
             $name = $_SESSION['Rname'];
             $payment = $name . '_payment';
 
-            $sql = "UPDATE $payment SET client = '$client', amount = '$amount', `status` = '$status' where `month` = '$month'  ";
+            $sql = "UPDATE $payment SET client = '$client', amount = '$amount', `status` = '$status' where `id` = '$month'  ";
             $res = mysqli_query($this->link, $sql);
+
+        
             if ($res) {
                 header('location:payment.php');
                 return $res;
@@ -111,7 +115,7 @@ $objUpdate = $obj->updateFunction2();
                     <h1 class="h3 mb-2 text-gray-800">Payment</h1>
 
                     <p class="mb-4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                            Make Changes
+                            Make Payment
                         </button></p>
 
                     <form action="" method="post">
@@ -129,10 +133,10 @@ $objUpdate = $obj->updateFunction2();
                                             <div class="col-md-6">
                                                 <?php if ($objPayment2) { ?>
 
-                                                    <select name="month" id="" class="form-control ">
+                                                    <select name="month" id="months" onchange="getNumOfClients()" class="form-control ">
                                                         <option value="" disabled selected>Select Month</option>
                                                         <?php while ($row2 = mysqli_fetch_assoc($objPayment2)) { ?>
-                                                            <option value="<?php echo $row2['month']; ?>">
+                                                            <option value="<?php echo $row2['id']; ?>">
                                                                 <?php echo $row2['month']; ?>
                                                             </option>
 
@@ -142,24 +146,9 @@ $objUpdate = $obj->updateFunction2();
                                                 <?php } ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="number" name="client" class="form-control" placeholder="Client Number">
+                                                <input type="number" name="client" id="clients" class="form-control" placeholder="Client Number">
                                             </div>
-                                            <!-- <div class="col-md-4">
-                                                <select name="status" id="" class="form-control ">
-                                                    <option value="" disabled selected>Select Status</option>
-                                                    <option value="Done"><span
-                                                            class="badge badge-pill badge-success">Done</span>
-                                                    </option>
-                                                    <option value="Not Done"><span
-                                                            class="badge badge-pill badge-danger">Not
-                                                            Done</span>
-                                                    </option>
-                                                    <option value="In Progress"><span
-                                                            class="badge badge-pill badge-warning">In
-                                                            Progress</span>
-                                                    </option>
-                                                </select>
-                                            </div> -->
+
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -304,6 +293,24 @@ $objUpdate = $obj->updateFunction2();
             "bPaginate": false
 
         });
+
+        function getNumOfClients() {
+            var month = document.getElementById("months").value;
+            console.log(month);
+
+            $.ajax({
+                type: "POST",
+                url: "getTotalClients.php",
+                data: {
+                    month: month
+                },
+                success: function(data) {
+                    console.log(data);
+
+                     $("#clients").attr("value",data);
+                }
+            });
+        }
     </script>
 
 </body>

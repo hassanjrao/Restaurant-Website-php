@@ -78,7 +78,10 @@ class Restaurant extends database
             $password = addslashes($_POST['password']);
             $phone = $_POST['phone'];
 
-            $cities=serialize($_POST["cities"]);
+            $lat = $_POST["lat"];
+            $lon = $_POST["lan"];
+
+            $cities = serialize($_POST["cities"]);
 
             $pass = password_hash($password, PASSWORD_DEFAULT);
 
@@ -224,18 +227,20 @@ $objRestUpdate = $obj->updateRest();
                                             </div>
                                             <div class="modal-body bg-light">
                                                 <div class="row">
+                                                    <input type="hidden" required name="id" id="id" value="<?php echo $_GET["id"] ?>">
+                                                    <input type="hidden" required name="name" id="name" value="<?php echo $_GET["name"] ?>">
 
                                                     <div class="col-md-4">
                                                         Restaurant Name English
-                                                        <input type="text" required name="name_en" class="border-0 form-control" value="<?php echo $row["name_en"] ?>" placeholder="Restaurant Name English">
+                                                        <input type="text" required name="name_en" id="name_en" class="border-0 form-control" value="<?php echo $row["name_en"] ?>" placeholder="Restaurant Name English">
                                                     </div>
                                                     <div class="col-md-4">
                                                         Restaurant Name Hebrew
-                                                        <input type="text" name="name_heb" class="border-0 form-control" value="<?php echo $row["name_heb"] ?>" placeholder="Restaurant Name Hebrew">
+                                                        <input type="text" name="name_heb" id="name_heb" class="border-0 form-control" value="<?php echo $row["name_heb"] ?>" placeholder="Restaurant Name Hebrew">
                                                     </div>
                                                     <div class="col-md-4">
                                                         Restaurant Name French
-                                                        <input type="text" name="name_fr" class="border-0 form-control" value="<?php echo $row["name_fr"] ?>" placeholder="Restaurant Name French">
+                                                        <input type="text" name="name_fr" id="name_fr" class="border-0 form-control" value="<?php echo $row["name_fr"] ?>" placeholder="Restaurant Name French">
                                                     </div>
 
                                                 </div>
@@ -243,16 +248,16 @@ $objRestUpdate = $obj->updateRest();
                                                 <div class="row">
                                                     <div class="col-md-4 mt-3">
                                                         Email
-                                                        <input type="email" required name="email" value="<?php echo $row["email"] ?>" class="form-control border-0" placeholder="Restaurant Email">
+                                                        <input type="email" required name="email" id="email" value="<?php echo $row["email"] ?>" class="form-control border-0" placeholder="Restaurant Email">
                                                     </div>
                                                     <div class="col-md-4 mt-3">
                                                         Password
-                                                        <input type="text" required name="password" class="form-control border-0" placeholder="Password">
+                                                        <input type="text" required name="password" id="password" class="form-control border-0" placeholder="Password">
                                                     </div>
 
                                                     <div class="col-md-4 mt-3">
                                                         Phone
-                                                        <input type="text" required name="phone" value="<?php echo $row["phone"] ?>" class="form-control border-0" placeholder="Phone Number">
+                                                        <input type="text" required name="phone" id="phone" value="<?php echo $row["phone"] ?>" class="form-control border-0" placeholder="Phone Number">
                                                     </div>
 
                                                 </div>
@@ -262,17 +267,32 @@ $objRestUpdate = $obj->updateRest();
 
                                                     <div class="col-md-12 mt-3">
                                                         Address English
-                                                        <input type="text" required name="address_en" value="<?php echo $row["address_en"] ?>" class="form-control border-0" placeholder="Address English">
+                                                        <input type="text" required name="address_en" id="address_en" value="<?php echo $row["address_en"] ?>" class="form-control border-0" placeholder="Address English">
                                                     </div>
                                                     <div class="col-md-12 mt-3">
                                                         Address Hebrew
-                                                        <input type="text" name="address_heb" value="<?php echo $row["address_heb"] ?>" class="form-control border-0" placeholder="Address Hebrew">
+                                                        <input type="text" name="address_heb" id="address_heb" value="<?php echo $row["address_heb"] ?>" class="form-control border-0" placeholder="Address Hebrew">
                                                     </div>
                                                     <div class="col-md-12 mt-3">
                                                         Address French
-                                                        <input type="text" name="address_fr" value="<?php echo $row["name_fr"] ?>" class="form-control border-0" placeholder="Address French">
+                                                        <input type="text" name="address_fr" id="address_fr" value="<?php echo $row["name_fr"] ?>" class="form-control border-0" placeholder="Address French">
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6 mt-3">
+                                                        Latitude
+                                                        <input type="text" required name="lat" id="lat" value="<?php echo $row["lat"] ?>" class="form-control border-0" placeholder="Latitude">
+                                                    </div>
+                                                    <div class="col-md-6 mt-3">
+                                                        Longitude
+                                                        <input type="text" name="lon" id="lon" value="<?php echo $row["lon"] ?>" class="form-control border-0" placeholder="Longitude">
+                                                    </div>
+
+                                                </div>
+
+
 
                                                 <div class="row">
                                                     <?php
@@ -284,7 +304,7 @@ $objRestUpdate = $obj->updateRest();
                                                             $city_arr2[$i++] = $city_row["id"];
                                                         }
                                                         $city_arr = unserialize($row["cities"]);
-                                                       
+
 
                                                         if ($city_arr) {
 
@@ -292,16 +312,12 @@ $objRestUpdate = $obj->updateRest();
                                                         } else {
                                                             $remain_cities = $city_arr2;
                                                         }
-
-                                                      
-
-                                                      
                                                     }
 
                                                     ?>
 
                                                     <div class="col-md-6 mt-3">
-                                                        <select class="form-control" name="cities[]" multiple required>
+                                                        <select class="form-control" name="cities[]" id="cities" multiple required>
                                                             <option slected disabled>Select Cities</option>
 
                                                             <?php
@@ -348,10 +364,19 @@ $objRestUpdate = $obj->updateRest();
 
                                                 </div>
 
+
+                                                <div class="row">
+
+                                                    <div class="col-md-12 mt-3" id="success">
+                                                    </div>
+
+
+                                                </div>
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" onclick="updateRest()" name="submit" class="btn btn-primary">Save</button>
                                             </div>
                                         </div>
                                     </form>
@@ -442,6 +467,166 @@ $objRestUpdate = $obj->updateRest();
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <script>
+        function updateRest() {
+
+
+            if ($("#name_en").val() == "" || $("#name_heb").val() == "" || $("#name_fr").val() == "" || $("#email").val() == "" || $("#password").val() == "" || $("#phone").val() == "" || $("#address_en").val() == "" || $("#address_heb").val() == "" || $("#address_fr").val() == "" || $("#cities").val() == "") {
+                $("#success").html("<div class='alert alert-danger alert-dismissible fade show' role='alert'> Please fill the <strong>form lat and lon is expception!</strong></div>")
+                return false;
+            } else {
+
+                var id = document.getElementById("id").value;
+                var name = document.getElementById("name").value;
+                var name_en = document.getElementById("name_en").value;
+                var name_heb = document.getElementById("name_heb").value;
+                var name_fr = document.getElementById("name_fr").value;
+
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                var phone = document.getElementById("phone").value;
+
+                var address_en = document.getElementById("address_en").value;
+                var address_heb = document.getElementById("address_heb").value;
+                var address_fr = document.getElementById("address_fr").value;
+
+                var lat = document.getElementById("lat").value;
+                var lon = document.getElementById("lon").value;
+
+                // cities = document.getElementById("cities").value;
+
+                var cities = $('#cities').val();
+
+
+
+                console.log(name_en);
+                console.log(name_heb);
+                console.log(name_fr);
+
+                console.log(email);
+                console.log(password);
+                console.log(phone);
+
+                console.log(address_en);
+                console.log(address_heb);
+                console.log(address_fr);
+
+                console.log(lat);
+                console.log(lon);
+                console.log(cities);
+
+                if (lat == "" || lon == "") {
+
+                    console.log("if inside");
+
+                    $.ajax({
+
+                        url: 'https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=F8AWLo4qe51rnLMUknCs8HPYGwl7Q7p_5TNVahy0a8s&gen=9&searchtext=' + address_en,
+
+                        type: 'GET',
+
+                        data: address_en,
+
+                        success: function(result) {
+
+
+                            var longt = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Longitude"];
+
+                            var latit = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Latitude"];
+
+                            console.log("lat" + latit);
+
+                            console.log("long" + longt);
+
+
+                            $.ajax({
+
+
+                                url: "rest_update.php",
+
+                                type: 'POST',
+
+                                data: {
+                                    id: id,
+                                    name: name,
+                                    name_en: name_en,
+                                    name_heb: name_heb,
+                                    name_fr: name_fr,
+                                    email: email,
+                                    password: password,
+                                    phone: phone,
+                                    address_en: address_en,
+                                    address_heb: address_heb,
+                                    address_fr: address_fr,
+                                    cities: cities,
+                                    lat: latit,
+                                    lon: longt
+                                },
+
+                                success: function(status) {
+
+                                    // console.log(status);
+
+                                    if (status == "success") {
+                                        window.location.replace("all_restaurants.php?msg=success");
+                                    } else if (status == "fail_add") {
+                                        window.location.replace("all_restaurants.php?msg=fail_add");
+                                    }
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+                } else if (lat != "" && lon != "") {
+                    console.log(" elseif inside");
+                    $.ajax({
+
+
+                        url: "rest_update.php",
+
+                        type: 'POST',
+
+                        data: {
+                            id: id,
+                            name: name,
+                            name_en: name_en,
+                            name_heb: name_heb,
+                            name_fr: name_fr,
+                            email: email,
+                            password: password,
+                            phone: phone,
+                            address_en: address_en,
+                            address_heb: address_heb,
+                            address_fr: address_fr,
+                            cities: cities,
+                            lat: lat,
+                            lon: lon
+                        },
+
+                        success: function(status) {
+
+                            // console.log(status);
+
+                            if (status == "success") {
+                                window.location.replace("all_restaurants.php?msg=success");
+                                console.log("AS");
+                            } else if (status == "fail_add") {
+                                window.location.replace("all_restaurants.php?msg=fail_add");
+                            }
+
+                        }
+
+                    });
+
+                }
+            }
+        }
+    </script>
+
 
 </body>
 

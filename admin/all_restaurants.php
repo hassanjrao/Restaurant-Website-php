@@ -81,7 +81,7 @@ class restaurant extends database
                         )";
                     $res2 = mysqli_query($this->link, $sql2);
 
-                
+
 
 
                     $sqlPay = "CREATE TABLE $payment (
@@ -104,17 +104,17 @@ class restaurant extends database
 
                         $resPay2 = mysqli_query($this->link, $sqlPay2);
 
-                       
+
 
                         if ($res3) {
-                             header('location:all_restaurants.php');
+                            header('location:all_restaurants.php');
                             return $res3;
                         }
                         header('location:all_restaurants.php');
                         return $res2;
                     }
                 } else {
-                  
+
                     return false;
                 }
             }
@@ -133,7 +133,8 @@ class restaurant extends database
         }
     }
 
-    public function getCityName($city_id){
+    public function getCityName($city_id)
+    {
         $sql = "select * from cities_tb where id='$city_id'";
         $res = mysqli_query($this->link, $sql);
         if (mysqli_num_rows($res) > 0) {
@@ -218,7 +219,7 @@ $objCity = $obj->getCity();
                                 Restaurant</button>
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
-                                    <form >
+                                    <form>
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">Restaurant Information
@@ -271,6 +272,17 @@ $objCity = $obj->getCity();
                                                 <div class="row">
 
                                                     <div class="col-md-6 mt-3">
+                                                        <input type="text" required name="lat" id="lat" class="form-control border-0" placeholder="Latitude">
+                                                    </div>
+                                                    <div class="col-md-6 mt-3">
+                                                        <input type="text" name="lon" id="lon" class="form-control border-0" placeholder="Longitude">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6 mt-3">
                                                         <select class="form-control" name="cities[]" id="cities" multiple required>
                                                             <option slected disabled>Select Cities</option>
 
@@ -292,6 +304,14 @@ $objCity = $obj->getCity();
                                                             ?>
 
                                                         </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+
+                                                    <div class="col-md-12 mt-3" id="success">
+
                                                     </div>
 
                                                 </div>
@@ -363,6 +383,8 @@ $objCity = $obj->getCity();
                                             <th>Name</th>
                                             <th>Address</th>
                                             <th>Cities</th>
+                                            <th>Latitude</th>
+                                            <th>Longtitude</th>
                                             <th>Created</th>
                                             <th>Edit/Delete</th>
 
@@ -374,6 +396,8 @@ $objCity = $obj->getCity();
                                             <th>Name</th>
                                             <th>Address</th>
                                             <th>Cities</th>
+                                            <th>Latitude</th>
+                                            <th>Longtitude</th>
                                             <th>Created</th>
                                             <th>Edit/Delete</th>
 
@@ -390,7 +414,7 @@ $objCity = $obj->getCity();
 
                                                 $city_arr = unserialize($row["cities"]);
 
-                                             
+
 
                                             ?>
                                                 <tr>
@@ -400,17 +424,18 @@ $objCity = $obj->getCity();
                                                     <td>
                                                         <?php
                                                         if ($city_arr != NULL) {
-                                                            $newObj=new restaurant;
+                                                            $newObj = new restaurant;
                                                             foreach ($city_arr as $city_id) {
 
-                                                                $city_res=mysqli_fetch_assoc($newObj->getCityName($city_id));
+                                                                $city_res = mysqli_fetch_assoc($newObj->getCityName($city_id));
 
-                                                                echo $city_res["city_en"].",";
-                                                                
+                                                                echo $city_res["city_en"] . ",";
                                                             }
                                                         }
                                                         ?>
                                                     </td>
+                                                    <td><?php echo $row['lat']; ?></td>
+                                                    <td><?php echo $row['lon']; ?></td>
                                                     <td><?php echo $row['created']; ?></td>
                                                     <td><a href="<?php echo "restaurant_edit.php?id=$id&name=$name"; ?>" class="btn btn-primary btn-sm">Edit</a>
                                                         <a href="<?php echo "restaurant_delete.php?id=$id&name=$name"; ?>" class="btn btn-danger btn-sm">Delete</a></td>
@@ -487,64 +512,118 @@ $objCity = $obj->getCity();
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
 
-    
+
     <script>
         function sendDataR() {
 
-           var name_en = document.getElementById("name_en").value;
-           var name_heb = document.getElementById("name_heb").value;
-           var name_fr = document.getElementById("name_fr").value;
 
-           var email = document.getElementById("email").value;
-           var password = document.getElementById("password").value;
-           var phone = document.getElementById("phone").value;
+            if ($("#name_en").val() == "" || $("#name_heb").val() == "" || $("#name_fr").val() == "" || $("#email").val() == "" || $("#password").val() == "" || $("#phone").val() == "" || $("#address_en").val() == "" || $("#address_heb").val() == "" || $("#address_fr").val() == "" || $("#cities").val() == "") {
+                $("#success").html("<div class='alert alert-danger alert-dismissible fade show' role='alert'> Please fill the <strong>form lat and lon is expception!</strong></div>")
+                return false;
+            } else {
 
-           var address_en = document.getElementById("address_en").value;
-           var address_heb = document.getElementById("address_heb").value;
-           var address_fr = document.getElementById("address_fr").value;
+                var name_en = document.getElementById("name_en").value;
+                var name_heb = document.getElementById("name_heb").value;
+                var name_fr = document.getElementById("name_fr").value;
 
-            // cities = document.getElementById("cities").value;
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                var phone = document.getElementById("phone").value;
 
-            var cities = $('#cities').val();
-        
+                var address_en = document.getElementById("address_en").value;
+                var address_heb = document.getElementById("address_heb").value;
+                var address_fr = document.getElementById("address_fr").value;
 
+                var lat = document.getElementById("lat").value;
+                var lon = document.getElementById("lon").value;
 
-            console.log(name_en);
-            console.log(name_heb);
-            console.log(name_fr);
+                // cities = document.getElementById("cities").value;
 
-            console.log(email);
-            console.log(password);
-            console.log(phone);
-
-            console.log(address_en);
-            console.log(address_heb);
-            console.log(address_fr);
-
-            console.log(cities);
-          
+                var cities = $('#cities').val();
 
 
-            $.ajax({
 
-                url: 'https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=F8AWLo4qe51rnLMUknCs8HPYGwl7Q7p_5TNVahy0a8s&gen=9&searchtext=' + address_en,
+                console.log(name_en);
+                console.log(name_heb);
+                console.log(name_fr);
 
-                type: 'GET',
+                console.log(email);
+                console.log(password);
+                console.log(phone);
 
-                data: address_en,
+                console.log(address_en);
+                console.log(address_heb);
+                console.log(address_fr);
 
-                success: function(result) {
+                console.log(lat);
+                console.log(lon);
+                console.log(cities);
+
+                if (lat == "" || lon == "") {
+
+                    console.log("if inside");
+
+                    $.ajax({
+
+                        url: 'https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=F8AWLo4qe51rnLMUknCs8HPYGwl7Q7p_5TNVahy0a8s&gen=9&searchtext=' + address_en,
+
+                        type: 'GET',
+
+                        data: address_en,
+
+                        success: function(result) {
 
 
-                    var longt = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Longitude"];
+                            var longt = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Longitude"];
 
-                    var latit = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Latitude"];
+                            var latit = result["Response"]["View"][0]["Result"][0]["Location"]["DisplayPosition"]["Latitude"];
 
-                    console.log("lat" + latit);
+                            console.log("lat" + latit);
 
-                    console.log("long" + longt);
+                            console.log("long" + longt);
 
 
+                            $.ajax({
+
+
+                                url: "rest_create.php",
+
+                                type: 'POST',
+
+                                data: {
+                                    name_en: name_en,
+                                    name_heb: name_heb,
+                                    name_fr: name_fr,
+                                    email: email,
+                                    password: password,
+                                    phone: phone,
+                                    address_en: address_en,
+                                    address_heb: address_heb,
+                                    address_fr: address_fr,
+                                    cities: cities,
+                                    lat: latit,
+                                    lon: longt
+                                },
+
+                                success: function(status) {
+
+                                    console.log(status);
+
+                                    if (status == "success_add") {
+                                        window.location.replace("all_restaurants.php?msg=success_add");
+                                    } else if (status == "fail_add") {
+                                        window.location.replace("all_restaurants.php?msg=fail_add");
+                                    }
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+                } else if (lat != "" && lon != "") {
+                    console.log(" elseif inside");
                     $.ajax({
 
 
@@ -556,25 +635,24 @@ $objCity = $obj->getCity();
                             name_en: name_en,
                             name_heb: name_heb,
                             name_fr: name_fr,
-                            email:email,
-                            password:password,
+                            email: email,
+                            password: password,
                             phone: phone,
                             address_en: address_en,
                             address_heb: address_heb,
                             address_fr: address_fr,
                             cities: cities,
-                            lat: latit,
-                            lon: longt
+                            lat: lat,
+                            lon: lon
                         },
 
                         success: function(status) {
 
                             console.log(status);
 
-                            if(status=="success_add"){
+                            if (status == "success_add") {
                                 window.location.replace("all_restaurants.php?msg=success_add");
-                            }
-                            else if(status=="fail_add"){
+                            } else if (status == "fail_add") {
                                 window.location.replace("all_restaurants.php?msg=fail_add");
                             }
 
@@ -583,9 +661,7 @@ $objCity = $obj->getCity();
                     });
 
                 }
-
-            });
-
+            }
         }
     </script>
 

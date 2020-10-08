@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['Rname'])) {
-    header('location:restaurant_login.php');
+if (!isset($_SESSION['name'])) {
+    header("location: login.php");
 }
 include('class/database.php');
 class payment extends database
@@ -9,7 +9,7 @@ class payment extends database
     protected $link;
     public function paymentFunction()
     {
-        $name = $_SESSION['Rname'];
+        $name = $_GET["name"];
         $payment = $name . '_payment';
         $sql = "select * from $payment";
         $res = mysqli_query($this->link, $sql);
@@ -22,7 +22,7 @@ class payment extends database
     }
     public function paymentFunction2()
     {
-        $name = $_SESSION['Rname'];
+        $name = $_GET["name"];
         $payment = $name . '_payment';
         $sql = "select * from $payment";
         $res = mysqli_query($this->link, $sql);
@@ -33,36 +33,11 @@ class payment extends database
         }
         # code...
     }
-
-
-    public function updateFunction2()
-    {
-        if (isset($_POST['update'])) {
-            $month = $_POST['month'];
-            $client = $_POST['client'];
-            $status = "In Progress";
-            $amount = $client * 5;
-            $name = $_SESSION['Rname'];
-            $payment = $name . '_payment';
-
-            $sql = "UPDATE $payment SET client = '$client', amount = '$amount', `status` = '$status' where `id` = '$month'  ";
-            $res = mysqli_query($this->link, $sql);
-
-        
-            if ($res) {
-                header('location:payment.php');
-                return $res;
-            } else {
-                return false;
-            }
-        }
-        # code...
-    }
 }
 $obj = new payment;
 $objPayment = $obj->paymentFunction();
 $objPayment2 = $obj->paymentFunction2();
-$objUpdate = $obj->updateFunction2();
+$rr_name = $_GET["name"];
 
 ?>
 <!DOCTYPE html>
@@ -76,7 +51,7 @@ $objUpdate = $obj->updateFunction2();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Paiement </title>
+    <title>Resturaunt Panel - Payment </title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -96,7 +71,7 @@ $objUpdate = $obj->updateFunction2();
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php include('sidebar_fr.php'); ?>
+        <?php include('sidebar_admin.php'); ?>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -112,53 +87,10 @@ $objUpdate = $obj->updateFunction2();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Paiement</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Payment</h1>
 
-                    <p class="mb-4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Effectuer le paiement
-                        </button></p>
 
-                    <form action="" method="post">
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Effectuer le paiement</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <?php if ($objPayment2) { ?>
 
-                                                    <select name="month" id="months" onchange="getNumOfClients()" class="form-control ">
-                                                        <option value="" disabled selected>Select Month</option>
-                                                        <?php while ($row2 = mysqli_fetch_assoc($objPayment2)) { ?>
-                                                            <option value="<?php echo $row2['id']; ?>">
-                                                                <?php echo $row2['month']; ?>
-                                                            </option>
-
-                                                        <?php } ?>
-                                                    </select>
-
-                                                <?php } ?>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="number" name="client" id="clients" class="form-control" placeholder="Client Number">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                        <button type="submit" name="update" class="btn btn-success">Mise à jour</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -168,10 +100,10 @@ $objUpdate = $obj->updateFunction2();
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Mois</th>
-                                            <th>Clients Confirmes </th>
-                                            <th>Montant</th>
-                                            <th>Statut</th>
+                                            <th>Months</th>
+                                            <th>Clients Confirmed</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
 
                                         </tr>
                                     </thead>
@@ -193,15 +125,23 @@ $objUpdate = $obj->updateFunction2();
                                                     <td><?php echo $row['client']; ?></td>
                                                     <td><?php echo $row['amount']; ?></td>
                                                     <td>
-                                                        <?php if (strcmp($row['status'], 'Done') == 0) { ?>
-                                                            <span class="badge badge-pill badge-success"><?php echo $row['status']; ?></span>
-                                                        <?php } ?>
-                                                        <?php if (strcmp($row['status'], 'Not Done') == 0) { ?>
-                                                            <span class="badge badge-pill badge-danger"><?php echo $row['status']; ?></span>
-                                                        <?php } ?>
-                                                        <?php if (strcmp($row['status'], 'In Progress') == 0) { ?>
-                                                            <span class="badge badge-pill badge-warning"><?php echo $row['status']; ?></span>
-                                                        <?php } ?>
+                                                        <?php if ($row['status'] != NULL) { ?>
+                                                            <select id="status<?php echo $row['id'] ?>" class="form-control" onchange="changeStatus(<?php echo $row['id'] ?>)">
+
+
+                                                                <?php if (strcmp($row['status'], 'In Progress') == 0) { ?>
+                                                                    <option selected><?php echo $row['status']; ?></option>
+                                                                    <option value="Done">Done</option>
+                                                                <?php } ?>
+
+
+                                                                <?php if (strcmp($row['status'], 'Done') == 0) { ?>
+                                                                    <option selected><?php echo $row['status']; ?></option>
+                                                                    <option>In Progress</option>
+                                                            <?php }
+                                                            } ?>
+
+
                                                     </td>
 
                                                 </tr>
@@ -294,20 +234,22 @@ $objUpdate = $obj->updateFunction2();
 
         });
 
-        function getNumOfClients() {
-            var month = document.getElementById("months").value;
-            console.log(month);
+        function changeStatus(id) {
+            var status = document.getElementById("status" + id).value;
+           
 
             $.ajax({
                 type: "POST",
-                url: "getTotalClients.php",
+                url: "changeStatus.php",
                 data: {
-                    month: month
+                    status: status,
+                    id: id,
+                    name: "<?php echo "$rr_name"; ?>"
                 },
                 success: function(data) {
                     console.log(data);
 
-                     $("#clients").attr("value",data);
+                  
                 }
             });
         }

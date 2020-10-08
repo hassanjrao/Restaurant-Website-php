@@ -12,12 +12,35 @@ class restaurant extends database
     {
 
 
-        $sql = "SELECT id,speciality FROM `restaurant_tbl`";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
+        if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+
+            $lat = $_GET["lat"];
+            $long = $_GET["lon"];
+
+
+            $sql = "SELECT * , (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - lat) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(lat * pi()/180) * POWER(SIN(( $long - lon) * pi()/180 / 2), 2) ))) as distance  
+             from restaurant_tbl
+             having  distance <= 20
+             order by distance";
+            $res = mysqli_query($this->link, $sql);
+
+            if (mysqli_num_rows($res) > 0) {
+                return $res;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+
+
+            $sql = "SELECT id,speciality FROM `restaurant_tbl`";
+            $res = mysqli_query($this->link, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                return $res;
+            } else {
+                return false;
+            }
+            # code...
         }
         # code...
     }
@@ -47,6 +70,7 @@ class restaurant extends database
         }
         # code...
     }
+
     public function getCities()
     {
         $sql = "select * from cities_tb";
@@ -115,13 +139,14 @@ $objCity = $obj->getCities();
     <div class="back_img">
         <div class="container">
             <div class="caption pt-5">
-                <h3 class="font-weight-bold">Faster, Cheaper And Easier Way To Book <br>A Restaurant In Israel</h3>
+                <h3 class="font-weight-bold">Faster, Cheaper And Easier Way To Book <br>A Restaurant In Israel
+                </h3>
                 <!-- <p>Faster, cheaper and easier way to book a restaurant in Israel</p> -->
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8">
                             <form action="" method="post">
-                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="Restaurants ou cuisines">
+                                <input type="text" id="username" name="username" class="form-control p-4 border-0 w-100 bg-light shadow" placeholder="Restaurants ou cuisines">
                                 <div id="searchSuggestion">
 
                                 </div>
@@ -129,123 +154,138 @@ $objCity = $obj->getCities();
                         </div>
                         <div class="col-md-2"></div>
                     </div>
-                    <div class="row pt-4">
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="far fa-clock"></i></span>
+                    <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
+
+
+                        $lat = $_GET["lat"];
+                        $lon = $_GET["lon"];
+                    ?>
+                        <form action="filter_results.php?permission=true&lat=<?php echo $lat ?>&lon=<?php echo $lon ?>" method="POST">
+                        <?php
+                    } else {
+                        ?>
+                            <form action="filter_results.php" method="POST">
+                            <?php
+                        }
+                            ?>
+                            <div class="row pt-4">
+                                <div class="col-md-2">
+                                    <div class="input-group input-focus bg-light shadow">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 bg-light "><i class="far fa-clock"></i></span>
+                                        </div>
+
+                                        <select name="time" class="form-control border-0 bg-light ">
+                                            <option value="" selected disabled class="">Time</option>
+
+                                            <option value="09:00-09:30">09:00-9:30</option>
+                                            <option value="09:30-10:00">09:30-10:00</option>
+                                            <option value="10:00-10:30">10:00-10:30</option>
+                                            <option value="10:30-11:00">10:30-11:00</option>
+                                            <option value="11:00-11:30">11:00-11:30</option>
+                                            <option value="11:30-12:00">11:30-12:00</option>
+                                            <option value="12:00-13:30">12:00-13:30</option>
+                                            <option value="13:30-14:00">13:30-14:00</option>
+                                            <option value="14:00-14:30">14:00-14:30</option>
+                                            <option value="14:30-15:00">14:30-15:00</option>
+                                            <option value="15:00-15:30">15:00-15:30</option>
+                                            <option value="15:30-16:00">15:30-16:00</option>
+                                            <option value="16:00-16:30">16:00-16:30</option>
+                                            <option value="16:30-17:00">16:30-17:00</option>
+                                            <option value="17:00-17:30">17:00-17:30</option>
+                                            <option value="17:30-18:00">17:30-18:00</option>
+                                            <option value="18:00-18:30">18:00-18:30</option>
+                                            <option value="18:30-19:00">18:30-19:00</option>
+                                            <option value="19:00-19:30">19:00-19:30</option>
+                                            <option value="19:30-20:00">19:30-20:00</option>
+                                            <option value="20:00-20:30">20:00-20:30</option>
+                                            <option value="20:30-21:00">20:30-21:00</option>
+                                            <option value="21:00-21:30">21:00-21:30</option>
+                                            <option value="21:30-22:00">21:30-22:00</option>
+                                            <option value="22:00-22:30">22:00-22:30</option>
+                                            <option value="22:30-23:00">22:30-23:00</option>
+
+                                        </select>
+                                    </div>
                                 </div>
-                                <select class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled class="">Time</option>
-                                    <option value="9:00-9:30">9:00-9:30</option>
-
-
-                                    <option value="9:30-10:00">9:30-10:00</option>
-                                    <option value="10:00-10:30">10:00-10:30</option>
-                                    <option value="10:30-11:00">10:30-11:00</option>
-                                    <option value="11:00-11:30">11:00-11:30</option>
-                                    <option value="11:30-12:00">11:30-12:00</option>
-                                    <option value="12:00-13:30">12:00-13:30</option>
-                                    <option value="13:30-14:00">13:30-14:00</option>
-                                    <option value="14:00-14:30">14:00-14:30</option>
-                                    <option value="14:30-15:00">14:30-15:00</option>
-                                    <option value="15:00-15:30">15:00-15:30</option>
-                                    <option value="15:30-16:00">15:30-16:00</option>
-                                    <option value="16:00-16:30">16:00-16:30</option>
-                                    <option value="16:30-17:00">16:30-17:00</option>
-                                    <option value="17:00-17:30">17:00-17:30</option>
-                                    <option value="17:30-18:00">17:30-18:00</option>
-                                    <option value="18:00-18:30">18:00-18:30</option>
-                                    <option value="18:30-19:00">18:30-19:00</option>
-                                    <option value="19:00-19:30">19:00-19:30</option>
-                                    <option value="19:30-20:00">19:30-20:00</option>
-                                    <option value="20:00-20:30">20:00-20:30</option>
-                                    <option value="20:30-21:00">20:30-21:00</option>
-                                    <option value="21:00-21:30">21:00-21:30</option>
-                                    <option value="21:30-22:00">21:30-22:00</option>
-                                    <option value="22:00-22:30">22:00-22:30</option>
-                                    <option value="22:30-23:00">22:30-23:00</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
+                                <div class="col-md-2">
+                                    <div class="input-group input-focus bg-light shadow">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 bg-light "><i class="fas fa-user-friends"></i></span>
+                                        </div>
+                                        <select name="people" class="form-control border-0 bg-light ">
+                                            <option value="" selected disabled class="">People</option>
+                                            <option value="1">1 Person</option>
+                                            <option value="2">2 Person</option>
+                                            <option value="3">3 Person</option>
+                                            <option value="4">4 Person</option>
+                                            <option value="5">5 Person</option>
+                                            <option value="6">6 Person</option>
+                                            <option value="7">7 Person</option>
+                                            <option value="8">8 Person</option>
+                                            <option value="9">9 Person</option>
+                                            <option value="10">10 Person</option>
+                                            <option value="11">11 Person</option>
+                                            <option value="12">12 Person</option>
+                                            <option value="13">13 Person</option>
+                                            <option value="14">14 Person</option>
+                                            <option value="15">15 Person</option>
+                                            <option value="16">16 Person</option>
+                                            <option value="17">17 Person</option>
+                                            <option value="18">18 Person</option>
+                                            <option value="19">19 Person</option>
+                                            <option value="20">20 Person</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <select class="form-control border-0 bg-light ">
-                                    <option value="" selected disabled class="">Person</option>
-                                    <option value="1">1 people</option>
-                                    <option value="2">2 people</option>
-                                    <option value="3">3 people</option>
-                                    <option value="4">4 people</option>
-                                    <option value="5">5 people</option>
-                                    <option value="6">6 people</option>
-                                    <option value="7">7 people</option>
-                                    <option value="8">8 people</option>
-                                    <option value="9">9 people</option>
-                                    <option value="10">10 people</option>
-                                    <option value="11">11 people</option>
-                                    <option value="12">12 people</option>
-                                    <option value="13">13 people</option>
-                                    <option value="14">14 people</option>
-                                    <option value="15">15 people</option>
-                                    <option value="16">16 people</option>
-                                    <option value="17">17 people</option>
-                                    <option value="18">18 people</option>
-                                    <option value="19">19 people</option>
-                                    <option value="20">20 people</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt"></i></span>
+                                <div class="col-md-2">
+                                    <div class="input-group input-focus bg-light shadow">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 bg-light "><i class="fas fa-calendar-alt"></i></span>
+                                        </div>
+                                        <input placeholder="Date" name="filter-date" type="text" class="form-control bg-light border-0" id="datepicker">
+                                    </div>
                                 </div>
-                                <input placeholder="Select a date" type="text" class="form-control bg-light border-0" id="datepicker">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group input-focus bg-light shadow">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0 bg-light "><i class="fas fa-map-marker-alt"></i></span>
+                                <div class="col-md-2">
+                                    <div class="input-group input-focus bg-light shadow">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 bg-light "><i class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+
+
+                                        <select class="form-control border-0 bg-light " name="location[]">
+                                            <option value="" selected disabled>Location</option>
+                                            <?php
+                                            if ($objCity) { ?>
+                                                <?php while ($row = mysqli_fetch_assoc($objCity)) {
+
+                                                ?>
+
+                                                    <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_en"]) ?></option>
+
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </select>
+                                    </div>
                                 </div>
-
-
-                                <select class="form-control border-0 bg-light " name="location[]">
-                                    <option value="" selected disabled>Location</option>
-                                    <?php
-                                    if ($objCity) { ?>
-                                        <?php while ($row = mysqli_fetch_assoc($objCity)) {
-
-                                        ?>
-
-                                            <option value="<?php echo $row["id"] ?>"><?php echo ucwords($row["city_en"]) ?></option>
-
-                                    <?php
-                                        }
-                                    }
-                                    ?>
-
-                                </select>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
                             </div>
-                        </div>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-2"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-7 col-10">
-                            <button type="submit" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Search</button>
-                        </div>
-                        <div class="col-md-1 col-2">
-                            <button class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
-                        </div>
-                    </div>
+                            <div class="row">
+                                <div class="col-md-7 col-10">
+                                    <button type="submit" name="submit-search" class="font-weight-bold home_btn p-3 mt-4 shadow btn btn-block">Search</button>
+                                </div>
+                                <div class="col-md-1 col-2">
+                                    <button type="button" class="btn home_btn shadow p-3 mt-4 btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
+                                </div>
+                            </div>
+                            </form>
                 </div>
 
             </div>
-
         </div>
     </div>
 
@@ -287,7 +327,7 @@ $objCity = $obj->getCities();
                 ?>
                                 <div class="col-md-4 wow fadeInUp" data-wow-delay="0.5s">
                                     <div class="card mb-3">
-                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
+                                        <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>" style="text-decoration: none;">
                                             <div id="carouselExampleControls<?php echo $row['id']; ?>" class="carousel slide" data-ride="carousel">
                                                 <div class="carousel-inner">
 
@@ -339,7 +379,7 @@ $objCity = $obj->getCities();
                                             </div>
                                         </a>
                                         <div class="card-body">
-                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>" style="text-decoration: none;">
+                                            <a href="restaurant.php?name=<?php echo $row['name_en']; ?>&address=<?php echo $row['address_en']; ?>&id=<?php echo $row['id']; ?>" style="text-decoration: none;">
                                                 <div class="row">
 
                                                     <div class="col-md-6">
@@ -452,80 +492,57 @@ $objCity = $obj->getCities();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="filter_result_spec.php" method="POST">
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
+                <?php if (isset($_GET["permission"]) && $_GET["permission"] == "true") {
 
-                                <div class="col-lg-6">
+                ?>
+                    <form action="filter_result_spec.php?permission=true&lat=<?php echo $lat ?>&lon=<?php echo $lon; ?>" method="POST">
+                    <?php
+                } else {
+                    ?>
+                        <form action="filter_result_spec.php" method="POST">
+                        <?php
+                    }
+                        ?>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row">
+
+                                    <div class="col-lg-6">
 
 
-                                    <?php
-                                    if ($objSpec) { ?>
-                                        <?php while ($row = mysqli_fetch_assoc($objSpec)) {
+                                        <?php
+                                        if ($objSpec) { ?>
+                                            <?php while ($row = mysqli_fetch_assoc($objSpec)) {
 
-                                        ?>
+                                            ?>
 
 
 
-                                            <div class="form-check">
-                                                <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
-                                                <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
-                                                    <?php echo $row["specialty_en"] ?>
-                                                </label>
+                                                <div class="form-check">
+                                                    <input class="form-check-input big-checkbox" type="checkbox" name="specialty[]" value="<?php echo $row["id"] ?>" id="defaultCheck1">
+                                                    <label class="form-check-label ml-3" for="defaultCheck1" style="font-size: 19px;">
+                                                        <?php echo $row["specialty_en"] ?>
+                                                    </label>
 
-                                            </div>
+                                                </div>
 
-                                    <?php
+                                        <?php
+                                            }
                                         }
-                                    }
-                                    ?>
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
+                            <hr>
+
                         </div>
-                        <hr>
-                        <!-- <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="modal-title" id="exampleModalLabel"><strong>Sort</strong> By</h5>
-                            <div class="form-check mt-3">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck11">
-                                <label class="form-check-label ml-3" for="defaultCheck11" style="font-size: 19px;">
-                                    Location
-                                </label>
 
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck12">
-                                <label class="form-check-label ml-3" for="defaultCheck12" style="font-size: 19px;">
-                                    Rating
-                                </label>
+                        <div class="modal-footer text-center">
 
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck13">
-                                <label class="form-check-label ml-3" for="defaultCheck13" style="font-size: 19px;">
-                                    Price
-                                </label>
-
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input checkbox-round" type="checkbox" value="" id="defaultCheck14">
-                                <label class="form-check-label ml-3" for="defaultCheck14" style="font-size: 19px;">
-                                    Discounts
-                                </label>
-
-                            </div>
+                            <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
+                                Filters</button>
                         </div>
-                        <div class="col-md-6"></div>
-                    </div> -->
-                    </div>
-
-                    <div class="modal-footer text-center">
-
-                        <button type="submit" class="mx-auto log_btn btn  text-center font-weight-bold">Apply
-                            Filters</button>
-                    </div>
-                </form>
+                        </form>
             </div>
         </div>
     </div>
